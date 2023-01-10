@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon  -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="images/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="images/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Google Fonts  -->
+
+    <!-- CSS files  -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- JS files  -->
+    <script defer src="js/script.js"></script>
+
+    <title>mapMyTrainings</title>
+  </head>
+  <body>
+    <div class="app-bar">
+      <img src="./images/logo.png" alt="App logo" />
+      <ul class="workouts">
+        <form class="form hidden">
+          <div class="form-row">
+            <label class="form-label">Type</label>
+            <select class="form-input form-input-type">
+              <option value="running">Running</option>
+              <option value="cycling">Cycling</option>
+              <option value="swimming">Swimming</option>
+              <option value="gym">Gym</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Distance</label>
+            <input class="form-input form-input-distance" placeholder="km" />
+          </div>
+          <div class="form-row">
+            <label class="form-label">Training</label>
+            <select class="form-input form-input-training">
+              <option value="strength">Strength</option>
+              <option value="endurance">Endurance</option>
+              <option value="cardio">Cardio</option>
+              <option value="crossfit">Crossfit</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Duration</label>
+            <input class="form-input form-input-duration" placeholder="min" />
+          </div>
+          <div class="form-row">
+            <label class="form-label">Cadence</label>
+            <input
+              class="form-input form-input-cadence"
+              placeholder="step/min"
+            />
+          </div>
+          <div class="form-row">
+            <label class="form-label">Elev Gain</label>
+            <input
+              class="form-input form-input-elevation"
+              placeholder="meters"
+            />
+          </div>
+          <button class="form-btn">Ok</button>
+        </form>
+        <li class="workout workout-running" data-id="1234567899">
+          <h2 class="workout-title">Running on September 13</h2>
+          <div class="workout-info">
+            <span class="workout-icon">🏃‍♂️</span>
+            <span class="workout-value">5.5</span>
+            <span class="workout-unit">km</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⏱</span>
+            <span class="workout-value">20</span>
+            <span class="workout-unit">min</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⚡</span>
+            <span class="workout-value">5.2</span>
+            <span class="workout-unit">min/km</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">🦶</span>
+            <span class="workout-value">194</span>
+            <span class="workout-unit">spm</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">🔥</span>
+            <span class="workout-value">500</span>
+            <span class="workout-unit">kcal</span>
+          </div>
+        </li>
+        <li class="workout workout-cycling" data-id="1234567899">
+          <h2 class="workout-title">Cycling on September 13</h2>
+          <div class="workout-info">
+            <span class="workout-icon">🚴‍♂️</span>
+            <span class="workout-value">12.5</span>
+            <span class="workout-unit">km</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⏱</span>
+            <span class="workout-value">20</span>
+            <span class="workout-unit">min</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⚡</span>
+            <span class="workout-value">16.8</span>
+            <span class="workout-unit">km/h</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⛰</span>
+            <span class="workout-value">260</span>
+            <span class="workout-unit">m</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">🔥</span>
+            <span class="workout-value">500</span>
+            <span class="workout-unit">kcal</span>
+          </div>
+        </li>
+        <li class="workout workout-swimming" data-id="1234567899">
+          <h2 class="workout-title">Swimming on September 13</h2>
+          <div class="workout-info">
+            <span class="workout-icon">🏊‍♂️</span>
+            <span class="workout-value">3.8</span>
+            <span class="workout-unit">km</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⏱</span>
+            <span class="workout-value">25</span>
+            <span class="workout-unit">min</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⚡</span>
+            <span class="workout-value">66</span>
+            <span class="workout-unit">s/50m</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">🔥</span>
+            <span class="workout-value">500</span>
+            <span class="workout-unit">kcal</span>
+          </div>
+        </li>
+        <li class="workout workout-gym" data-id="1234567899">
+          <h2 class="workout-title">Gym Exercising on September 13</h2>
+          <div class="workout-info">
+            <span class="workout-icon">🏋️‍♂️</span>
+            <span class="workout-value">Strength</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">⏱</span>
+            <span class="workout-value">90</span>
+            <span class="workout-unit">min</span>
+          </div>
+          <div class="workout-info">
+            <span class="workout-icon">🔥</span>
+            <span class="workout-value">500</span>
+            <span class="workout-unit">kcal</span>
+          </div>
+        </li>
+      </ul>
+      <p class="copyright">
+        &copy; Copyright by
+        <a
+          class="github-link"
+          target="_blank"
+          href="https://github.com/kewinpyza"
+          >Kewin Pyza</a
+        >. All rights reserved.
+      </p>
+    </div>
+    <div id="mappy"></div>
+  </body>
+</html>
