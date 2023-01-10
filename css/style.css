@@ -1,0 +1,199 @@
+:root {
+  --color-running: #dc9913;
+  --color-cycling: #c02109;
+  --color-swimming: #007208;
+  --color-gym: #63058f;
+
+  --color-blue-dark: #0f5caf;
+  --color-blue-light: #3988dc;
+  --color-light--1: #dadada;
+  --color-light--2: #efefef;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* 10px  */
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: var(--color-light--2);
+  font-weight: 400;
+  line-height: 1.5;
+  height: 100vh;
+  overscroll-behavior-y: none;
+
+  background-color: #fff;
+  padding: 2.4rem;
+
+  display: flex;
+}
+
+/* GENERAL  */
+a:link,
+a:visited {
+  color: var(--color-light--2);
+}
+
+/* APP BAR  */
+.app-bar {
+  flex-basis: 50rem;
+  background-color: var(--color-blue-dark);
+  padding: 3rem 3.5rem 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  height: 6.4rem;
+  align-self: center;
+  margin-bottom: 3.2rem;
+}
+
+.workouts {
+  list-style: none;
+  height: 78vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.workouts::-webkit-scrollbar {
+  width: 0;
+}
+
+.workout {
+  background-color: var(--color-blue-light);
+  border-radius: 6px;
+  padding: 1.6rem 2.4rem;
+  margin-bottom: 1.6rem;
+  cursor: pointer;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem 1.2rem;
+}
+
+.workout-running {
+  border-left: 6px solid var(--color-running);
+}
+.workout-cycling {
+  border-left: 6px solid var(--color-cycling);
+}
+.workout-swimming {
+  border-left: 6px solid var(--color-swimming);
+}
+.workout-gym {
+  border-left: 6px solid var(--color-gym);
+}
+
+.workout-title {
+  font-size: 1.6rem;
+  grid-column: 1 / -1;
+  margin-left: -0.3rem;
+  font-weight: 600;
+}
+
+.workout-info {
+  display: flex;
+  align-items: baseline;
+}
+
+.workout-icon {
+  font-size: 1.7rem;
+  margin-right: 0.2rem;
+  height: 0.26rem;
+}
+
+.workout-value {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.workout-unit {
+  font-size: 1.1rem;
+  color: var(--color-light--1);
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.form {
+  background-color: var(--color-blue-light);
+  border-radius: 6px;
+  padding: 1.6rem 3rem;
+  margin-bottom: 1.6rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 2.8rem;
+
+  /* Match height and activity boxes */
+  height: 11.5rem;
+  transition: all 0.5s, transform 1ms;
+}
+
+.form.hidden {
+  transform: translateY(-30rem);
+  height: 0;
+  padding: 0 2.25rem;
+  margin-bottom: 0;
+  opacity: 0;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+}
+
+.form-row-hidden {
+  display: none;
+}
+
+.form-label {
+  flex: 0 0 50%;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.3rem 1.1rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--color-light--2);
+  transition: all 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: #fff;
+}
+
+.form-btn {
+  display: none;
+}
+
+.copyright {
+  text-align: center;
+  margin-top: auto;
+  font-size: 1.4rem;
+  color: var(--color-light--1);
+}
+
+.github-link:link,
+.github-link:visited {
+  color: var(--color-light--1);
+  transition: all 0.3s ease;
+}
+
+.github-link:hover,
+.github-link:active {
+  color: var(--color-light--2);
+}
