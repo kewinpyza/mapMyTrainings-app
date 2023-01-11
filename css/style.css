@@ -1,11 +1,11 @@
 :root {
-  --color-running: #dc9913;
-  --color-cycling: #c02109;
-  --color-swimming: #007208;
-  --color-gym: #63058f;
+  --color-running: #dba63e;
+  --color-cycling: #bf4330;
+  --color-swimming: #308836;
+  --color-gym: #6e288f;
 
-  --color-blue-dark: #0f5caf;
-  --color-blue-light: #3988dc;
+  --color-grey--1: #2c2c2c;
+  --color-grey--2: #505050;
   --color-light--1: #dadada;
   --color-light--2: #efefef;
 }
@@ -43,9 +43,9 @@ a:visited {
 
 /* APP BAR  */
 .app-bar {
-  flex-basis: 50rem;
-  background-color: var(--color-blue-dark);
-  padding: 3rem 3.5rem 4rem 3.5rem;
+  flex-basis: 54rem;
+  background-color: var(--color-grey--1);
+  padding: 3rem 3rem 3.5rem 3rem;
   display: flex;
   flex-direction: column;
 }
@@ -58,7 +58,7 @@ a:visited {
 
 .workouts {
   list-style: none;
-  height: 78vh;
+  height: 69vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -68,7 +68,7 @@ a:visited {
 }
 
 .workout {
-  background-color: var(--color-blue-light);
+  background-color: var(--color-grey--2);
   border-radius: 6px;
   padding: 1.6rem 2.4rem;
   margin-bottom: 1.6rem;
@@ -76,7 +76,7 @@ a:visited {
 
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 1.2rem;
+  gap: 0.5rem 0.8rem;
 }
 
 .workout-running {
@@ -123,7 +123,7 @@ a:visited {
 }
 
 .form {
-  background-color: var(--color-blue-light);
+  background-color: var(--color-grey--2);
   border-radius: 6px;
   padding: 1.6rem 3rem;
   margin-bottom: 1.6rem;
@@ -196,4 +196,11 @@ a:visited {
 .github-link:hover,
 .github-link:active {
   color: var(--color-light--2);
+}
+
+/* MAP */
+#mappy {
+  height: 100%;
+  flex: 1;
+  background-color: var(--color-light--1);
 }
