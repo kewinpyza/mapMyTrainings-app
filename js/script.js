@@ -26,6 +26,7 @@ class Workout {
 }
 
 class Running extends Workout {
+  type = 'running';
   constructor(coords, kcal, duration, distance, cadence) {
     super(coords, kcal, duration);
     this.distance = distance; // in km
@@ -41,6 +42,7 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
+  type = 'cycling';
   constructor(coords, kcal, duration, distance, elevationGain) {
     super(coords, kcal, duration);
     this.distance = distance; // in km
@@ -56,6 +58,7 @@ class Cycling extends Workout {
 }
 
 class Swimming extends Workout {
+  type = 'swimming';
   constructor(coords, kcal, duration, distance) {
     super(coords, kcal, duration);
     this.distance = distance; // in km
@@ -69,16 +72,12 @@ class Swimming extends Workout {
 }
 
 class Gym extends Workout {
-  constructor(coords, kcal, duration) {
+  type = 'gym';
+  constructor(coords, kcal, duration, training) {
     super(coords, kcal, duration);
+    this.training = training;
   }
 }
-
-const run1 = new Running([39, -12], 384, 38, 6.4, 208);
-const cycling1 = new Cycling([56, -15], 485, 94, 40, 680);
-const swimming1 = new Swimming([39, 12], 820, 48, 3.8);
-const gym1 = new Gym([28, 11], 320, 95);
-console.log(run1, cycling1, swimming1, gym1);
 
 ////////////////////////////////////
 // APPLICATION ARCHITECTURE
@@ -87,10 +86,10 @@ console.log(run1, cycling1, swimming1, gym1);
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
 
   constructor() {
     this._getPosition();
-
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._changeInputType.bind(this));
   }
@@ -126,25 +125,26 @@ class App {
   }
 
   _changeInputType() {
-    if (inputType.value === 'running') {
+    const type = inputType.value;
+    if (type === 'running') {
       inputCadence.closest('.form-row').classList.remove('form-row-hidden');
       inputElevation.closest('.form-row').classList.add('form-row-hidden');
       inputDistance.closest('.form-row').classList.remove('form-row-hidden');
       inputTraining.closest('.form-row').classList.add('form-row-hidden');
     }
-    if (inputType.value === 'cycling') {
+    if (type === 'cycling') {
       inputCadence.closest('.form-row').classList.add('form-row-hidden');
       inputElevation.closest('.form-row').classList.remove('form-row-hidden');
       inputDistance.closest('.form-row').classList.remove('form-row-hidden');
       inputTraining.closest('.form-row').classList.add('form-row-hidden');
     }
-    if (inputType.value === 'swimming') {
+    if (type === 'swimming') {
       inputCadence.closest('.form-row').classList.add('form-row-hidden');
       inputElevation.closest('.form-row').classList.add('form-row-hidden');
       inputDistance.closest('.form-row').classList.remove('form-row-hidden');
       inputTraining.closest('.form-row').classList.add('form-row-hidden');
     }
-    if (inputType.value === 'gym') {
+    if (type === 'gym') {
       inputCadence.closest('.form-row').classList.add('form-row-hidden');
       inputElevation.closest('.form-row').classList.add('form-row-hidden');
       inputDistance.closest('.form-row').classList.add('form-row-hidden');
@@ -153,19 +153,100 @@ class App {
   }
 
   _newWorkout(e) {
+    const validInputs = (...inputs) =>
+      inputs.every(inp => Number.isFinite(inp));
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
     e.preventDefault();
 
-    // Clear inputs
-    inputKcal.value =
-      inputDistance.value =
-      inputCadence.value =
-      inputDuration.value =
-      inputElevation.value =
-        '';
-
-    // Display the marker
+    // Get data from form
+    const type = inputType.value;
+    const calories = +inputKcal.value;
+    const duration = +inputDuration.value;
     const { lat, lng } = this.#mapEvent.latlng;
-    L.marker([lat, lng])
+    let distance;
+    let workout;
+
+    // Create running object if workout is running
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+      distance = +inputDistance.value;
+      // Check if data is correct
+      if (
+        !validInputs(distance, duration, calories, cadence) ||
+        !allPositive(distance, duration, calories, cadence)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Running([lat, lng], calories, duration, distance, cadence);
+    }
+
+    // Create cycling object if workout is cycling
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+      distance = +inputDistance.value;
+      // Check if data is correct
+      if (
+        !validInputs(distance, duration, calories, elevation) ||
+        !allPositive(distance, duration, calories)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Cycling(
+        [lat, lng],
+        calories,
+        duration,
+        distance,
+        elevation
+      );
+    }
+
+    // Create swimming object if workout is swimming
+    if (type === 'swimming') {
+      distance = +inputDistance.value;
+      // Check if data is correct
+      if (
+        !validInputs(distance, duration, calories) ||
+        !allPositive(distance, duration, calories)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Swimming([lat, lng], calories, duration, distance);
+    }
+
+    // Create gym object if workout is gym
+    if (type === 'gym') {
+      const training = inputTraining.value;
+      // Check if data is correct
+      if (!validInputs(duration, calories) || !allPositive(duration, calories))
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Gym([lat, lng], calories, duration, training);
+    }
+
+    // Add new object to workout array
+    this.#workouts.push(workout);
+    console.log(workout);
+
+    // Render workout as marker on map
+    this.renderWorkoutMarker(workout);
+
+    // Render workout on list
+
+    // Hide form + Clear inputs
+    const clearInputs = [
+      inputKcal,
+      inputDistance,
+      inputCadence,
+      inputElevation,
+      inputDuration,
+    ];
+    clearInputs.forEach(inp => (inp.value = ''));
+    form.classList.add('hidden');
+  }
+
+  renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -173,7 +254,7 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'running-popup',
+          className: `${workout.type}-popup`,
         })
       )
       .setPopupContent('Workout')
