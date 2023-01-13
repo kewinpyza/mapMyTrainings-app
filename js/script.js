@@ -1,8 +1,5 @@
 'use strict';
 
-// prettier-ignore
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 // DOM Variables
 const form = document.querySelector('.form');
 const workoutsContainer = document.querySelector('.workouts');
@@ -23,6 +20,15 @@ class Workout {
     this.kcal = kcal;
     this.duration = duration; // in min
   }
+
+  _setDescription() {
+    // prettier-ignore
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    this.description = `${this.type[0].toUpperCase() + this.type.slice(1)} ${
+      this.type === 'gym' ? 'Exercises' : ''
+    } on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
+  }
 }
 
 class Running extends Workout {
@@ -32,11 +38,12 @@ class Running extends Workout {
     this.distance = distance; // in km
     this.cadence = cadence;
     this.calcPace();
+    this._setDescription();
   }
 
   calcPace() {
     // min/km
-    this.pace = this.duration / this.distance;
+    this.pace = parseFloat((this.duration / this.distance).toFixed(1));
     return this.pace;
   }
 }
@@ -48,11 +55,12 @@ class Cycling extends Workout {
     this.distance = distance; // in km
     this.elevationGain = elevationGain;
     this.calcSpeed();
+    this._setDescription();
   }
 
   calcSpeed() {
     // km/h
-    this.speed = this.distance / (this.duration / 60);
+    this.speed = parseFloat((this.distance / (this.duration / 60)).toFixed(1));
     return this.speed;
   }
 }
@@ -63,6 +71,7 @@ class Swimming extends Workout {
     super(coords, kcal, duration);
     this.distance = distance; // in km
     this.calcPace();
+    this._setDescription();
   }
 
   calcPace() {
@@ -76,6 +85,7 @@ class Gym extends Workout {
   constructor(coords, kcal, duration, training) {
     super(coords, kcal, duration);
     this.training = training;
+    this._setDescription();
   }
 }
 
@@ -229,9 +239,10 @@ class App {
     console.log(workout);
 
     // Render workout as marker on map
-    this.renderWorkoutMarker(workout);
+    this._renderWorkoutMarker(workout);
 
     // Render workout on list
+    this._renderWorkout(workout);
 
     // Hide form + Clear inputs
     const clearInputs = [
@@ -245,7 +256,7 @@ class App {
     form.classList.add('hidden');
   }
 
-  renderWorkoutMarker(workout) {
+  _renderWorkoutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
@@ -259,6 +270,98 @@ class App {
       )
       .setPopupContent('Workout')
       .openPopup();
+  }
+
+  _renderWorkout(workout) {
+    if (workout.type === 'gym') {
+      const htmlGym = `
+      <li class="workout workout-${workout.type}" data-id="${workout.id}">
+        <h2 class="workout-title">Gym Exercising on September 13</h2>
+        <div class="workout-info">
+          <span class="workout-icon">🏋️‍♂️</span>
+          <span class="workout-value">${
+            workout.training[0].toUpperCase() + workout.training.slice(1)
+          }</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">⏱</span>
+          <span class="workout-value">${workout.duration}</span>
+          <span class="workout-unit">min</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">🔥</span>
+          <span class="workout-value">${workout.kcal}</span>
+          <span class="workout-unit">kcal</span>
+        </div>
+      </li>
+    `;
+      form.insertAdjacentHTML('afterend', htmlGym);
+    } else {
+      const cycleOrSwimIcon = workout.type === 'cycling' ? '🚴‍♂️' : '🏊‍♂️';
+      let html = `
+      <li class="workout workout-${workout.type}" data-id="${workout.id}">
+        <h2 class="workout-title">${workout.description}</h2>
+        <div class="workout-info">
+          <span class="workout-icon">${
+            workout.type === 'running' ? '🏃‍♂️' : cycleOrSwimIcon
+          }</span>
+          <span class="workout-value">${workout.distance}</span>
+          <span class="workout-unit">km</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">⏱</span>
+          <span class="workout-value">${workout.duration}</span>
+          <span class="workout-unit">min</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">🔥</span>
+          <span class="workout-value">${workout.kcal}</span>
+          <span class="workout-unit">kcal</span>
+        </div>
+  `;
+      if (workout.type === 'running') {
+        html += `
+        <div class="workout-info">
+          <span class="workout-icon">⚡</span>
+          <span class="workout-value">${workout.pace}</span>
+          <span class="workout-unit">min/km</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">🦶</span>
+          <span class="workout-value">${workout.cadence}</span>
+          <span class="workout-unit">spm</span>
+        </div>
+      </li>
+        `;
+      }
+      if (workout.type === 'cycling') {
+        html += `
+        <div class="workout-info">
+          <span class="workout-icon">⚡</span>
+          <span class="workout-value">${workout.speed}</span>
+          <span class="workout-unit">km/h</span>
+        </div>
+        <div class="workout-info">
+          <span class="workout-icon">⛰</span>
+          <span class="workout-value">${workout.elevationGain}</span>
+          <span class="workout-unit">m</span>
+        </div>
+      </li>
+      `;
+      }
+      if (workout.type === 'swimming') {
+        html += `
+        <div class="workout-info">
+          <span class="workout-icon">⚡</span>
+          <span class="workout-value">${workout.pace}</span>
+          <span class="workout-unit">s/50m</span>
+        </div>
+      </li>
+      `;
+      }
+
+      form.insertAdjacentHTML('afterend', html);
+    }
   }
 }
 
