@@ -124,10 +124,10 @@ body {
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.4rem 2.8rem;
+  gap: 0.6rem 2.8rem;
 
   /* Match height and activity boxes */
-  height: 11.5rem;
+  height: 11.8rem;
   transition: all 0.5s, transform 1ms;
 }
 
@@ -171,7 +171,21 @@ body {
 }
 
 .form-btn {
-  display: none;
+  background-image: linear-gradient(to bottom right, #5de000, #eb7a10);
+  color: #fff;
+  width: 100%;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.form-btn:hover,
+.form-btn:active {
+  opacity: 0.85;
+  cursor: pointer;
 }
 
 .copyright {
