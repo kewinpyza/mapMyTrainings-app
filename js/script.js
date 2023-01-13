@@ -26,7 +26,7 @@ class Workout {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     this.description = `${this.type[0].toUpperCase() + this.type.slice(1)} ${
-      this.type === 'gym' ? 'Exercises' : ''
+      this.type === 'gym' ? '(' + this.trainingType + ')' : ''
     } on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
   }
 }
@@ -85,6 +85,7 @@ class Gym extends Workout {
   constructor(coords, kcal, duration, training) {
     super(coords, kcal, duration);
     this.training = training;
+    this.trainingType = training[0].toUpperCase() + training.slice(1);
     this._setDescription();
   }
 }
@@ -132,6 +133,21 @@ class App {
     this.#mapEvent = mapE;
     form.classList.remove('hidden');
     inputDuration.focus();
+  }
+
+  _hideForm() {
+    // Make inputs empty
+    const clearInputs = [
+      inputKcal,
+      inputDistance,
+      inputCadence,
+      inputElevation,
+      inputDuration,
+    ];
+    clearInputs.forEach(inp => (inp.value = ''));
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
   _changeInputType() {
@@ -245,15 +261,7 @@ class App {
     this._renderWorkout(workout);
 
     // Hide form + Clear inputs
-    const clearInputs = [
-      inputKcal,
-      inputDistance,
-      inputCadence,
-      inputElevation,
-      inputDuration,
-    ];
-    clearInputs.forEach(inp => (inp.value = ''));
-    form.classList.add('hidden');
+    this._hideForm();
   }
 
   _renderWorkoutMarker(workout) {
@@ -261,14 +269,24 @@ class App {
       .addTo(this.#map)
       .bindPopup(
         L.popup({
-          maxWidth: 240,
+          maxWidth: 250,
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
           className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent('Workout')
+      .setPopupContent(
+        `${
+          workout.type === 'running'
+            ? '🏃‍♂️'
+            : workout.type === 'cycling'
+            ? '🚴‍♂️'
+            : workout.type === 'swimming'
+            ? '🏊‍♂️'
+            : '🏋️‍♂️'
+        } ${workout.description}`
+      )
       .openPopup();
   }
 
@@ -279,9 +297,7 @@ class App {
         <h2 class="workout-title">Gym Exercising on September 13</h2>
         <div class="workout-info">
           <span class="workout-icon">🏋️‍♂️</span>
-          <span class="workout-value">${
-            workout.training[0].toUpperCase() + workout.training.slice(1)
-          }</span>
+          <span class="workout-value">${workout.trainingType}</span>
         </div>
         <div class="workout-info">
           <span class="workout-icon">⏱</span>
@@ -353,7 +369,7 @@ class App {
         html += `
         <div class="workout-info">
           <span class="workout-icon">⚡</span>
-          <span class="workout-value">${workout.pace}</span>
+          <span class="workout-value">${workout.speed}</span>
           <span class="workout-unit">s/50m</span>
         </div>
       </li>
