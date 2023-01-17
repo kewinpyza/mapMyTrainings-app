@@ -1,0 +1,37 @@
+/* MAP */
+#mappy {
+  height: 100%;
+  flex: 1;
+  background-color: $color-light-1;
+}
+
+/* Popup width is defined in JS using options */
+.leaflet-popup {
+  &__content-wrapper {
+    background-color: $color-grey-1;
+    color: $color-light-2;
+    border-radius: 6px;
+    padding-right: 0.5rem;
+
+    &-running-popup {
+      border-left: 5px solid $color-running;
+    }
+    &-cycling-popup {
+      border-left: 5px solid $color-cycling;
+    }
+    &-swimming-popup {
+      border-left: 5px solid $color-swimming;
+    }
+    &-gym-popup {
+      border-left: 5px solid $color-gym;
+    }
+  }
+
+  &__content {
+    font-size: 1.5rem;
+  }
+
+  &__tip {
+    background-color: $color-grey-1;
+  }
+}

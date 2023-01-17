@@ -9,27 +9,25 @@
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="images/favicon/apple-touch-icon.png"
+      href="src/images/favicon/apple-touch-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="images/favicon/favicon-32x32.png"
+      href="src/images/favicon/favicon-32x32.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="images/favicon/favicon-16x16.png"
+      href="src/images/favicon/favicon-16x16.png"
     />
     <link
       rel="mask-icon"
-      href="images/favicon/safari-pinned-tab.svg"
+      href="src/images/favicon/safari-pinned-tab.svg"
       color="#5bbad5"
     />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <meta name="theme-color" content="#ffffff" />
 
     <!-- Google Fonts  -->
     <link
@@ -51,64 +49,64 @@
       crossorigin=""
     ></script>
 
-    <!-- CSS files  -->
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- SCSS files  -->
+    <link defer rel="stylesheet" href="src/sass/main.scss" />
 
     <!-- JS files  -->
-    <script defer src="js/script.js"></script>
+    <script defer type="module" src="src/js/controller.js"></script>
 
     <title>mapMyTrainings</title>
   </head>
   <body>
     <div class="app-bar">
-      <img class="logo" src="./images/logo1.png" alt="App logo" />
-      <ul class="workouts">
+      <img class="logo" src="src/images/logo1.png" alt="App logo" />
+      <ul class="uts">
         <form class="form hidden">
-          <div class="form-row">
-            <label class="form-label">Type</label>
-            <select class="form-input form-input-type">
+          <div class="form__row">
+            <label class="form__label">Type</label>
+            <select class="form__input form__input-type">
               <option value="running">Running</option>
               <option value="cycling">Cycling</option>
               <option value="swimming">Swimming</option>
               <option value="gym">Gym</option>
             </select>
           </div>
-          <div class="form-row">
-            <label class="form-label">Distance</label>
-            <input class="form-input form-input-distance" placeholder="km" />
+          <div class="form__row">
+            <label class="form__label">Distance</label>
+            <input class="form__input form__input-distance" placeholder="km" />
           </div>
-          <div class="form-row form-row-hidden">
-            <label class="form-label">Training</label>
-            <select class="form-input form-input-training">
+          <div class="form__row-hidden">
+            <label class="form__label">Training</label>
+            <select class="form__input form__input-training">
               <option value="strength">Strength</option>
               <option value="endurance">Endurance</option>
               <option value="cardio">Cardio</option>
               <option value="crossfit">Crossfit</option>
             </select>
           </div>
-          <div class="form-row">
-            <label class="form-label">Duration</label>
-            <input class="form-input form-input-duration" placeholder="min" />
+          <div class="form__row">
+            <label class="form__label">Duration</label>
+            <input class="form__input form__input-duration" placeholder="min" />
           </div>
-          <div class="form-row">
-            <label class="form-label">Cadence</label>
+          <div class="form__row">
+            <label class="form__label">Cadence</label>
             <input
-              class="form-input form-input-cadence"
+              class="form__input form__input-cadence"
               placeholder="step/min"
             />
           </div>
-          <div class="form-row form-row-hidden">
-            <label class="form-label">Elev Gain</label>
+          <div class="form__row form__row-hidden">
+            <label class="form__label">Elev Gain</label>
             <input
-              class="form-input form-input-elevation"
+              class="form__input form__input-elevation"
               placeholder="meters"
             />
           </div>
-          <div class="form-row">
-            <label class="form-label">Kcal</label>
-            <input class="form-input form-input-kcal" placeholder="kcal" />
+          <div class="form__row">
+            <label class="form__label">Kcal</label>
+            <input class="form__input form__input-kcal" placeholder="kcal" />
           </div>
-          <button class="form-btn">Ok</button>
+          <button class="form__btn">Ok</button>
         </form>
       </ul>
       <p class="copyright">

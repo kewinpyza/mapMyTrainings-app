@@ -1,0 +1,65 @@
+.workouts {
+  list-style: none;
+  height: 69vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.workout {
+  background-color: $color-grey-2;
+  border-radius: 6px;
+  padding: 1.6rem 2.4rem;
+  margin-bottom: 1.6rem;
+  cursor: pointer;
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem 0.8rem;
+
+  &__running {
+    border-left: 6px solid $color-running;
+  }
+  &__cycling {
+    border-left: 6px solid $color-cycling;
+  }
+  &__swimming {
+    border-left: 6px solid $color-swimming;
+  }
+  &__gym {
+    border-left: 6px solid $color-gym;
+  }
+
+  &__title {
+    font-size: 1.6rem;
+    grid-column: 1 / -1;
+    margin-left: -0.3rem;
+    font-weight: 600;
+  }
+
+  &__info {
+    display: flex;
+    align-items: baseline;
+  }
+
+  &__icon {
+    font-size: 1.7rem;
+    margin-right: 0.2rem;
+    height: 0.26rem;
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+  }
+
+  &__unit {
+    font-size: 1.1rem;
+    color: $color-light-1;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+}

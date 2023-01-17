@@ -1,0 +1,25 @@
+{
+  "name": "mapmytrainings",
+  "version": "1.0.0",
+  "description": "Web app to map your trainings",
+  "default": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kewinpyza/mapMyTrainings-app.git"
+  },
+  "author": "Kewin Pyza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kewinpyza/mapMyTrainings-app/issues"
+  },
+  "homepage": "https://github.com/kewinpyza/mapMyTrainings-app#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
+    "parcel": "^2.8.2",
+    "sass": "^1.57.1"
+  }
+}
