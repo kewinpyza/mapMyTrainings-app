@@ -42,12 +42,12 @@
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin=""
     />
-    <script
+    <!-- <script
       defer
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
-    ></script>
+    ></script> -->
 
     <!-- SCSS files  -->
     <link defer rel="stylesheet" href="src/sass/main.scss" />
@@ -60,15 +60,17 @@
   <body>
     <div class="app-bar">
       <img class="logo" src="src/images/logo1.png" alt="App logo" />
-      <ul class="uts">
+      <ul class="workouts">
         <form class="form hidden">
           <div class="form__row">
             <label class="form__label">Type</label>
-            <select class="form__input form__input-type">
-              <option value="running">Running</option>
-              <option value="cycling">Cycling</option>
-              <option value="swimming">Swimming</option>
-              <option value="gym">Gym</option>
+            <select class="form__input">
+              <option class="form__input-type" value="running">Running</option>
+              <option class="form__input-type" value="cycling">Cycling</option>
+              <option class="form__input-type" value="swimming">
+                Swimming
+              </option>
+              <option class="form__input-type" value="gym">Gym</option>
             </select>
           </div>
           <div class="form__row">
@@ -120,5 +122,12 @@
       </p>
     </div>
     <div id="mappy"></div>
+    <div class="overlay hidden"></div>
+    <div class="error-window hidden">
+      <h2 class="error-window__heading">⚠ Inputs Error ⚠</h2>
+
+      <p class="error-window__text"></p>
+      <button class="error-window__btn-close">&times;</button>
+    </div>
   </body>
 </html>
