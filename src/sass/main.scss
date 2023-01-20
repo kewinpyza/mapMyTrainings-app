@@ -1,4 +1,5 @@
 @import 'abstracts/variables';
+@import 'abstracts/functions';
 
 @import 'base/base';
 @import 'base/typography';
@@ -9,52 +10,6 @@
 @import 'layout/footer';
 @import 'layout/error';
 
+@import 'components/location_pin';
 @import 'components/form';
 @import 'components/workout_cards';
-
-.startIcon {
-  &--in {
-    position: relative;
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: #00c46a;
-    border-radius: 50%;
-    border: solid 0.2rem #fff;
-    padding: 0.8rem;
-
-    &::before {
-      padding: 1.5rem;
-      background-color: #ff9c08ad;
-      position: absolute;
-      content: '';
-      top: 50%;
-      left: 50%;
-      border-radius: 50%;
-      z-index: -1;
-      animation: InfiniteScale 1s linear infinite;
-      transform-origin: center;
-    }
-  }
-}
-.myIcon {
-  width: 4rem;
-  height: 4rem;
-  background-image: url(../images/marker.png);
-  background-size: 100%;
-}
-@keyframes InfiniteScale {
-  0% {
-    opacity: 0.3;
-    transform: translate(-50%, -50%) scale(0.1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(3);
-  }
-}

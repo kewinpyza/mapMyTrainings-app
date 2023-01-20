@@ -10,7 +10,9 @@ class mapView {
   #mapData;
   #accessToken;
   #map = document.querySelector('#map');
-  #form = document.querySelector('.form');
+  #clickCount = 0;
+
+  _form = document.querySelector('.form');
 
   renderMap(mapData) {
     this.#mapData = mapData;
@@ -25,23 +27,62 @@ class mapView {
       center: reversedPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
     });
-
-    this.#map.on('load', () => {
-      this.#map.addLayer({
-        id: 'rpd_parks',
-        type: 'fill',
-        source: {
-          type: 'vector',
-          url: 'mapbox://mapbox.3o7ubwm8',
-        },
-        'source-layer': 'RPD_Parks',
-      });
-    });
+    // Add starting pin location on map
+    this.renderStartingPin(reversedPosition);
+    // Add zoom and rotation controls to the map
+    this.#map.addControl(new mapboxgl.NavigationControl());
+    // Disables the "double click to zoom" interaction
+    this.#map.doubleClickZoom.disable();
+    // Handle click on map to show input form
+    this.#map.on('click', this.showForm.bind(this));
   }
 
-  // async showForm(mapEvent) {
-  //   this.#form.classList.remove('hidden');
-  // }
+  async showForm(mapEvent) {
+    let timeout = [];
+    this.#clickCount++;
+
+    if (this.#clickCount === 1) {
+      timeout = setTimeout(() => {
+        this.#clickCount = 0;
+      }, 300);
+    }
+    if (this.#clickCount === 2) {
+      clearTimeout(timeout);
+      this._form.classList.remove('hidden');
+
+      // Add destination coords to #mapData
+      const { lat, lng } = mapEvent.lngLat;
+      const destinationCoords = [lng, lat];
+      this.#mapData.destinationCoords = destinationCoords;
+      // Render marker on map
+
+      this.#clickCount = 0;
+    }
+  }
+
+  renderStartingPin(coords) {
+    const startingMarkerEl = document.createElement('div');
+    startingMarkerEl.className = 'starterPin';
+    new mapboxgl.Marker(startingMarkerEl).setLngLat(coords).addTo(this.#map);
+  }
 }
 
 export default new mapView();
+
+// this.#map.on('load', () => {
+//   this.#map.addLayer({
+//     id: 'rpd_parks',
+//     type: 'fill',
+//     source: {
+//       type: 'vector',
+//       url: 'mapbox://mapbox.3o7ubwm8',
+//     },
+//     'source-layer': 'RPD_Parks',
+//     layout: {
+//       visibility: 'visible',
+//     },
+//     paint: {
+//       'fill-color': 'rgba(61,153,80,0.55)',
+//     },
+//   });
+// });
