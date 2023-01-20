@@ -20,22 +20,33 @@ class mapView {
     mapboxgl.accessToken =
       'pk.eyJ1IjoiamFzb25jb2Rpbmc3MjMiLCJhIjoiY2tvN2FlcmF6MW1raDJvbHJhN2ptMG01NCJ9.ZDZ7zl030QE1REiaDIYWnQ';
     this.#accessToken = mapboxgl.accessToken;
-    const reversedPosition = this.#mapData.currentPosition.slice().reverse(); // from [lat, lng] to [lng, lat]
 
     this.#map = new mapboxgl.Map({
       container: 'map', // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
-      center: reversedPosition, // starting position [lng, lat]
+      center: this.#mapData.currentPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
     });
 
+    const geocoder = new MapboxGeocoder({
+      accessToken: this.#accessToken,
+      mapboxgl: mapboxgl,
+      marker: false,
+    });
+
     // Add starting pin location on map
-    this._renderStartingPin(reversedPosition);
+    this._renderStartingPin(this.#mapData.currentPosition);
+
+    // Add a geocoder to map
+    this.#map.addControl(geocoder);
+    // Add full screen control on map
+    this.#map.addControl(new mapboxgl.FullscreenControl());
     // Add zoom and rotation controls to the map
     this.#map.addControl(new mapboxgl.NavigationControl());
+
     // Disables the "double click to zoom" interaction
     this.#map.doubleClickZoom.disable();
-    // Handle click on map to show input form
+    // Handle click on map to show input form and marker
     this.#map.on('click', this._showForm.bind(this));
   }
 
@@ -56,17 +67,70 @@ class mapView {
       const { lat, lng } = mapEvent.lngLat;
       const destinationCoords = [lng, lat];
       this.#mapData.destinationCoords = destinationCoords;
-      console.log(this.#mapData.destinationCoords);
-      // Render marker on map
+
+      // Render marker on map and path
       this._updateWorkoutMarker(this.#mapData.destinationCoords);
+      this._renderPath(
+        this.#mapData.currentPosition,
+        this.#mapData.destinationCoords
+      );
 
       this.#clickCount = 0;
     }
   }
 
-  _updateWorkoutMarker(coords) {
-    if (!this.#workoutMarker) this._renderWorkoutMarker(coords);
+  async _renderPath(startPoint, endPoint) {
+    const url = `https://api.mapbox.com/directions/v5/mapbox/cycling/${
+      startPoint[0]
+    },${startPoint[1]};${endPoint[0]},${
+      endPoint[1]
+    }?geometries=geojson&access_token=${this.#accessToken}`;
+
+    const directionData = await AJAX(
+      url,
+      'There was some error to render a path :('
+    );
+
+    const data = directionData.routes[0];
+    const route = data.geometry.coordinates;
+    const geojson = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates: route,
+      },
+    };
+    // Using setData to reset, if the route already exists on the map
+    if (this.#map.getSource('route')) {
+      this.#map.getSource('route').setData(geojson);
+    }
+    // Otherwise, make a new request
     else {
+      this.#map.addLayer({
+        id: 'route',
+        type: 'line',
+        source: {
+          type: 'geojson',
+          data: geojson,
+        },
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#1054AE',
+          'line-width': 4,
+          'line-opacity': 0.7,
+        },
+      });
+    }
+  }
+
+  _updateWorkoutMarker(coords) {
+    if (!this.#workoutMarker) {
+      this._renderWorkoutMarker(coords);
+    } else {
       this.#workoutMarker.remove();
       this._renderWorkoutMarker(coords);
     }
@@ -98,7 +162,10 @@ class mapView {
   _getDragPosition(e) {
     const { lng, lat } = e.target._lngLat;
     this.#mapData.destinationCoords = [lng, lat];
-    console.log(this.#mapData.destinationCoords);
+    this._renderPath(
+      this.#mapData.currentPosition,
+      this.#mapData.destinationCoords
+    );
   }
 }
 

@@ -13,7 +13,7 @@ export const getPosition = async function () {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(pos => {
           const { latitude: lat, longitude: lng } = pos.coords;
-          const coords = [lat, lng];
+          const coords = [lng, lat];
           state.map.currentPosition = coords;
           resolve(coords);
         });
@@ -44,7 +44,6 @@ export const getWeather = async function () {
     const [lat, lng] = state.map.currentPosition;
     const weatherData = await AJAX(
       `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
-      // `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${WEATHER_API_KEY}`,
       'There was some error to load data from from openWeatherMap API!'
     );
     console.log(weatherData);
