@@ -11,6 +11,7 @@ class mapView {
   #accessToken;
   #map = document.querySelector('#map');
   #clickCount = 0;
+  #workoutMarker;
 
   _form = document.querySelector('.form');
 
@@ -27,17 +28,18 @@ class mapView {
       center: reversedPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
     });
+
     // Add starting pin location on map
-    this.renderStartingPin(reversedPosition);
+    this._renderStartingPin(reversedPosition);
     // Add zoom and rotation controls to the map
     this.#map.addControl(new mapboxgl.NavigationControl());
     // Disables the "double click to zoom" interaction
     this.#map.doubleClickZoom.disable();
     // Handle click on map to show input form
-    this.#map.on('click', this.showForm.bind(this));
+    this.#map.on('click', this._showForm.bind(this));
   }
 
-  async showForm(mapEvent) {
+  async _showForm(mapEvent) {
     let timeout = [];
     this.#clickCount++;
 
@@ -54,16 +56,49 @@ class mapView {
       const { lat, lng } = mapEvent.lngLat;
       const destinationCoords = [lng, lat];
       this.#mapData.destinationCoords = destinationCoords;
+      console.log(this.#mapData.destinationCoords);
       // Render marker on map
+      this._updateWorkoutMarker(this.#mapData.destinationCoords);
 
       this.#clickCount = 0;
     }
   }
 
-  renderStartingPin(coords) {
+  _updateWorkoutMarker(coords) {
+    if (!this.#workoutMarker) this._renderWorkoutMarker(coords);
+    else {
+      this.#workoutMarker.remove();
+      this._renderWorkoutMarker(coords);
+    }
+  }
+
+  _renderStartingPin(coords) {
     const startingMarkerEl = document.createElement('div');
     startingMarkerEl.className = 'starterPin';
     new mapboxgl.Marker(startingMarkerEl).setLngLat(coords).addTo(this.#map);
+  }
+
+  _renderWorkoutMarker(coords) {
+    let markerIcon = document.createElement('div');
+    markerIcon.className = 'markerIcon';
+
+    const markerOptions = {
+      element: markerIcon,
+      draggable: true,
+      offset: [0, -25],
+    };
+
+    this.#workoutMarker = new mapboxgl.Marker(markerOptions)
+      .setLngLat(coords)
+      .addTo(this.#map);
+
+    this.#workoutMarker.on('dragend', this._getDragPosition.bind(this));
+  }
+
+  _getDragPosition(e) {
+    const { lng, lat } = e.target._lngLat;
+    this.#mapData.destinationCoords = [lng, lat];
+    console.log(this.#mapData.destinationCoords);
   }
 }
 
