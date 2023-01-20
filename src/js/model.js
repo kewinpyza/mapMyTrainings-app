@@ -1,7 +1,10 @@
+import { async } from 'regenerator-runtime';
 import { AJAX } from './helpers';
+import { WEATHER_API_KEY } from './config';
 
 export const state = {
   map: {},
+  workoutData: {},
 };
 
 export const getPosition = async function () {
@@ -9,8 +12,8 @@ export const getPosition = async function () {
     try {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(pos => {
-          const { latitude, longitude } = pos.coords;
-          const coords = [latitude, longitude];
+          const { latitude: lat, longitude: lng } = pos.coords;
+          const coords = [lat, lng];
           state.map.currentPosition = coords;
           resolve(coords);
         });
@@ -19,6 +22,39 @@ export const getPosition = async function () {
       console.error(err);
     }
   });
+};
+
+export const getLocation = async function () {
+  try {
+    const [lat, lng] = state.map.currentPosition;
+    const geoData = await AJAX(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+      `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
+    );
+    state.workoutData.locationCountry = geoData.address.country;
+    state.workoutData.locationCity = geoData.address.city;
+    state.workoutData.locationName = geoData.address.city_district;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getWeather = async function () {
+  try {
+    const [lat, lng] = state.map.currentPosition;
+    const weatherData = await AJAX(
+      `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
+      // `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${WEATHER_API_KEY}`,
+      'There was some error to load data from from openWeatherMap API!'
+    );
+    console.log(weatherData);
+    state.workoutData.weatherIcon = weatherData.current.condition.icon;
+    state.workoutData.weatherText = weatherData.current.condition.text;
+
+    // state.workoutData.iconMessage = ``;
+  } catch (err) {
+    throw err;
+  }
 };
 
 class Workout {

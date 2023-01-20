@@ -7,11 +7,14 @@ import * as model from './model';
 import mapView from './views/mapView';
 
 const controlMap = async function () {
-  // Get user position
+  // Get user position and location
   await model.getPosition();
+  await model.getLocation();
+  // Get weather location
+  await model.getWeather();
 
   // Render Map
-  mapView.render(model.state.map);
+  mapView.renderMap(model.state.map);
 };
 
 const init = function () {

@@ -35,6 +35,9 @@
       rel="stylesheet"
     />
 
+    <!-- SCSS files  -->
+    <link defer rel="stylesheet" href="src/sass/main.scss" />
+
     <!-- Leaflet Library -->
     <link
       rel="stylesheet"
@@ -42,15 +45,30 @@
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin=""
     />
-    <!-- <script
+    <script
       defer
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
-    ></script> -->
+    ></script>
 
-    <!-- SCSS files  -->
-    <link defer rel="stylesheet" href="src/sass/main.scss" />
+    <!-- Using Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+
+    <!-- Using leaflet-routing-machine -->
+    <link
+      defer
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"
+    ></script>
 
     <!-- JS files  -->
     <script defer type="module" src="src/js/controller.js"></script>
@@ -121,7 +139,7 @@
         >. All rights reserved.
       </p>
     </div>
-    <div id="mappy"></div>
+    <div id="map"></div>
     <div class="overlay hidden"></div>
     <div class="error-window hidden">
       <h2 class="error-window__heading">⚠ Inputs Error ⚠</h2>
