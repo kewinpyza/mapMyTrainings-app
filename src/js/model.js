@@ -19,7 +19,7 @@ export const getPosition = async function () {
         });
       }
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   });
 };
@@ -35,7 +35,7 @@ export const getLocation = async function () {
     state.workoutData.locationCity = geoData.address.city;
     state.workoutData.locationName = geoData.address.city_district;
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 };
 
@@ -46,11 +46,8 @@ export const getWeather = async function () {
       `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
       'There was some error to load data from from openWeatherMap API!'
     );
-    console.log(weatherData);
     state.workoutData.weatherIcon = weatherData.current.condition.icon;
     state.workoutData.weatherText = weatherData.current.condition.text;
-
-    // state.workoutData.iconMessage = ``;
   } catch (err) {
     throw err;
   }

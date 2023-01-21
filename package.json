@@ -23,6 +23,7 @@
     "@parcel/transformer-sass": "^2.8.2",
     "npm": "^9.3.1",
     "parcel": "^2.8.2",
+    "postcss": "^8.4.21",
     "sass": "^1.57.1"
   },
   "dependencies": {

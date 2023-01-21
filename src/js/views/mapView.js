@@ -1,18 +1,16 @@
-import { async } from 'regenerator-runtime';
-import 'core-js/stable';
-import 'leaflet';
+import { MAP_ZOOM_LEVEL } from '../config';
 import { AJAX } from '../helpers';
+import View from './View';
 // import markerIcon from 'url:../../images/marker.png';
 
-import { MAP_ZOOM_LEVEL, MAX_ZOOM_MAP } from '../config';
-
-class mapView {
+class mapView extends View {
   #mapData;
   #accessToken;
-  #map = document.querySelector('#map');
   #clickCount = 0;
   #workoutMarker;
+  #pathData;
 
+  #map = document.querySelector('#map');
   _form = document.querySelector('.form');
 
   renderMap(mapData) {
@@ -34,24 +32,24 @@ class mapView {
       marker: false,
     });
 
-    // Add starting pin location on map
-    this._renderStartingPin(this.#mapData.currentPosition);
-
-    // Add a geocoder to map
-    this.#map.addControl(geocoder);
-    // Add full screen control on map
-    this.#map.addControl(new mapboxgl.FullscreenControl());
-    // Add zoom and rotation controls to the map
-    this.#map.addControl(new mapboxgl.NavigationControl());
-
-    // Disables the "double click to zoom" interaction
-    this.#map.doubleClickZoom.disable();
-    // Handle click on map to show input form and marker
+    // Add handle click events on map
+    this.#map.on('load', () => {
+      // Add starting pin location on map
+      this._renderStartingPin(this.#mapData.currentPosition);
+      // Add geocoder to map
+      this.#map.addControl(geocoder);
+      // Add full screen control on map
+      this.#map.addControl(new mapboxgl.FullscreenControl());
+      // Add zoom and rotation controls to the map
+      this.#map.addControl(new mapboxgl.NavigationControl());
+      // Disables the "double click to zoom" interaction
+      this.#map.doubleClickZoom.disable();
+    });
     this.#map.on('click', this._showForm.bind(this));
   }
 
   async _showForm(mapEvent) {
-    let timeout = [];
+    let timeout;
     this.#clickCount++;
 
     if (this.#clickCount === 1) {
@@ -86,12 +84,12 @@ class mapView {
       endPoint[1]
     }?geometries=geojson&access_token=${this.#accessToken}`;
 
-    const directionData = await AJAX(
+    this.#pathData = await AJAX(
       url,
       'There was some error to render a path :('
     );
 
-    const data = directionData.routes[0];
+    const data = this.#pathData.routes[0];
     const route = data.geometry.coordinates;
     const geojson = {
       type: 'Feature',

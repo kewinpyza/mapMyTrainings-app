@@ -1,20 +1,22 @@
 'use strict';
-import { async } from 'regenerator-runtime';
-import 'core-js/stable';
-import 'leaflet';
-
 import * as model from './model';
 import mapView from './views/mapView';
+import 'core-js/stable';
+import { async } from 'regenerator-runtime';
 
 const controlMap = async function () {
-  // Get user position and location
-  await model.getPosition();
-  await model.getLocation();
-  // Get weather location
-  await model.getWeather();
+  try {
+    // Get user position and location
+    await model.getPosition();
+    await model.getLocation();
+    // Get weather location
+    await model.getWeather();
 
-  // Render Map
-  mapView.renderMap(model.state.map);
+    // Render Map
+    mapView.renderMap(model.state.map);
+  } catch (err) {
+    mapView.renderError(err);
+  }
 };
 
 const init = function () {
