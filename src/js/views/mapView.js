@@ -24,6 +24,9 @@ class mapView extends View {
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this.#mapData.currentPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
+      pitch: 45,
+      bearing: -17.6,
+      antialias: true,
     });
 
     const geocoder = new MapboxGeocoder({
@@ -46,6 +49,53 @@ class mapView extends View {
       this.#map.doubleClickZoom.disable();
     });
     this.#map.on('click', this._showForm.bind(this));
+
+    // Render 3D building to map
+    this._showBuildings3D();
+  }
+
+  _showBuildings3D() {
+    this.#map.on('style.load', () => {
+      // Insert the layer beneath any symbol layer.
+      const layers = this.#map.getStyle().layers;
+      const labelLayerId = layers.find(
+        layer => layer.type === 'symbol' && layer.layout['text-field']
+      ).id;
+
+      this.#map.addLayer(
+        {
+          id: 'add-3d-buildings',
+          source: 'composite',
+          'source-layer': 'building',
+          filter: ['==', 'extrude', 'true'],
+          type: 'fill-extrusion',
+          minzoom: 15,
+          paint: {
+            'fill-extrusion-color': '#aaa',
+            'fill-extrusion-height': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              15,
+              0,
+              15.05,
+              ['get', 'height'],
+            ],
+            'fill-extrusion-base': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              15,
+              0,
+              15.05,
+              ['get', 'min_height'],
+            ],
+            'fill-extrusion-opacity': 0.6,
+          },
+        },
+        labelLayerId
+      );
+    });
   }
 
   async _showForm(mapEvent) {
