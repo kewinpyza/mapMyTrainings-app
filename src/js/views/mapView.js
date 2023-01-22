@@ -24,9 +24,9 @@ class mapView extends View {
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this.#mapData.currentPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
-      pitch: 45,
-      bearing: -17.6,
-      antialias: true,
+      // pitch: 45,
+      // bearing: -17.6,
+      // antialias: true,
     });
 
     const geocoder = new MapboxGeocoder({

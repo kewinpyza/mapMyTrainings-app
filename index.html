@@ -31,7 +31,7 @@
 
     <!-- Google Fonts  -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -86,7 +86,63 @@
   <body>
     <div class="app-bar">
       <img class="logo" src="src/images/logo1.png" alt="App logo" />
-      
+      <div class="state">
+        <div class="state__type">
+          <h1 class="state__type--text">
+            Workout type : <span class="state__type--text-workout">All</span>
+          </h1>
+        </div>
+        <div class="state__number">
+          <h2 class="state__number--text">
+            Number of workouts :
+            <span class="state__number--text-quantity">0</span>
+          </h2>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="controls__btn">
+          <button class="controls__btn--sort">Sort</button>
+          <button class="controls__btn--overview">Overview</button>
+          <button class="controls__btn--clear">Clear All</button>
+        </div>
+        <div class="controls__hamburger">
+          <input
+            type="checkbox"
+            class="controls__hamburger--checkbox"
+            id="sort-toggle"
+          />
+          <label class="controls__hamburger--label" for="sort-toggle">
+            <span class="controls__hamburger--icon">&nbsp;</span>
+          </label>
+          <div class="controls__hamburger--container">&nbsp;</div>
+          <nav class="controls__hamburger--nav controls__hamburger--nav-active">
+            <ul class="controls__hamburger--list">
+              <li>
+                <a href="#1" class="controls__hamburger--link">All types</a>
+              </li>
+              <li>
+                <a href="#2" class="controls__hamburger--link"> 🏃‍♂️ Running</a>
+              </li>
+              <li>
+                <a href="#3" class="controls__hamburger--link"> 🚴‍♀️ Cycling</a>
+              </li>
+              <li>
+                <a href="#4" class="controls__hamburger--link">🤩 Most liked</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <ul class="sort__container">
+        <li class="sort__btn"><a class="sort__btn--icon" href="#">📆</a></li>
+        <li class="sort__btn"><a class="sort__btn--icon" href="#">🏃‍♂️</a></li>
+        <li class="sort__btn"><a class="sort__btn--icon" href="#">🚴‍♀️</a></li>
+        <li class="sort__btn"><a class="sort__btn--icon" href="#">⏱</a></li>
+        <li class="sort__btn"><a class="sort__btn--icon" href="#">⚡</a></li>
+      </ul>
+      <hr class="sort__devider" />
+
       <ul class="workouts">
         <form class="form hidden">
           <div class="form__row">
@@ -156,5 +212,24 @@
       <button class="error-window__btn-close">&times;</button>
     </div>
     <div id="map"></div>
+    <div class="confirmation hidden">
+      <div class="confirmation__window">
+        <div class="confirmation__window--msg">
+          <p>You will <span>clear all</span> your data! Are you sure?</p>
+        </div>
+        <div class="confirmation__window--buttons">
+          <button
+            class="confirmation__window--button confirmation__window--button-yes"
+          >
+            YES
+          </button>
+          <button
+            class="confirmation__window--button confirmation__window--button-no"
+          >
+            NO
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

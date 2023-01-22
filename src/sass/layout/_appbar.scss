@@ -1,8 +1,8 @@
 /* APP BAR  */
 .app-bar {
-  flex-basis: 54rem;
+  flex-basis: 50rem;
   background-color: $color-grey-1;
-  padding: 3rem 3rem 3.5rem 3rem;
+  padding: 2rem 3rem 2rem 3.5rem;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -11,5 +11,5 @@
 .logo {
   height: 6.4rem;
   align-self: center;
-  margin-bottom: 3.2rem;
+  margin-bottom: 1rem;
 }
