@@ -21,5 +21,6 @@ const controlMap = async function () {
 
 const init = function () {
   controlMap();
+  model.createSpanEffect();
 };
 init();

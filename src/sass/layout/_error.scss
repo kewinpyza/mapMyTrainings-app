@@ -4,7 +4,6 @@
   min-height: 18rem;
   border-radius: 1.5rem;
   box-shadow: 0 3rem 5rem rgba(#000, 0.3);
-  color: #d32109e2;
   text-align: center;
   background-color: $color-light-2;
   transition: all 0.5s;
@@ -21,19 +20,25 @@
   justify-content: center;
 
   &__heading {
+    color: #ed2626f4;
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
+    display: inline-block;
   }
 
   &__text {
-    font-weight: 700;
-    font-size: 2.2rem;
+    font-weight: 500;
+    font-size: 1.6rem;
     max-width: 100%;
-    color: $color-grey-2;
+    color: $color-grey-1;
   }
 
-  &__btn-close {
+  &__btn--try {
+    margin-top: 2rem;
+  }
+
+  &__btn--close {
     position: absolute;
     top: 2%;
     right: 3%;
@@ -59,11 +64,70 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(225, 0, 0, 0.3);
+  background-color: rgba(#ed2626, 0.4);
   backdrop-filter: blur(3px);
   transition: all 0.4s;
 
   &.hidden {
     display: none;
   }
+}
+
+.btn {
+  &:link,
+  &:visited {
+    position: relative;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 4.5rem;
+    display: inline-block;
+    border-radius: 10rem;
+    font-size: 1.6rem;
+    transition: all 0.3s;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1.2rem 2rem rgba(#000, 0.25);
+
+    &::after {
+      transform: scaleX(1.5) scaleY(1.7);
+      opacity: 0;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 0 0.6rem 1.2rem rgba(#000, 0.25);
+  }
+
+  &--red {
+    background-color: #ed2626;
+    color: #fff;
+    font-weight: 600;
+
+    &::after {
+      background-color: rgba(#ed2626, 0.7);
+    }
+  }
+
+  &::after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 10rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.3s;
+  }
+}
+
+#icon-cross {
+  width: 6.5rem;
+  height: 6.5rem;
+  margin-bottom: 0.8rem;
+  display: inline-block;
 }

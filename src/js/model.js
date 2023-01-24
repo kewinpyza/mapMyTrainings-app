@@ -53,6 +53,30 @@ export const getWeather = async function () {
   }
 };
 
+const controlBtns = document.querySelectorAll('.controls__btn');
+const controls = document.querySelector('body');
+
+export const createSpanEffect = function () {
+  controlBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      console.log(e);
+      console.log(e.clientX);
+      console.log(e.clientY);
+      let x = e.offsetX + 'px';
+      // console.log(x);
+      let y = e.offsetY + 'px';
+      // console.log(y);
+
+      const spanEffect = document.createElement('span');
+      spanEffect.classList.add('span-effect');
+      spanEffect.style.left = x;
+      spanEffect.style.top = y;
+
+      btn.append(spanEffect);
+    });
+  });
+};
+
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
