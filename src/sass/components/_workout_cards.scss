@@ -1,8 +1,9 @@
 .workouts {
   list-style: none;
-  height: 69vh;
+  height: 62vh;
   overflow-x: hidden;
   overflow-y: scroll;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 0;
@@ -17,8 +18,19 @@
   cursor: pointer;
   display: grid;
   position: relative;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 0.8rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem 1.2rem;
+  transition: all 0.5s;
+
+  &:hover {
+    transform: translateY(-0.3rem);
+    background-color: rgb(244, 244, 244);
+    color: $color-grey-2;
+  }
+
+  &:hover &__unit {
+    color: rgb(85, 85, 85);
+  }
 
   &__running {
     border-left: 6px solid $color-running;
@@ -26,29 +38,64 @@
   &__cycling {
     border-left: 6px solid $color-cycling;
   }
-  &__swimming {
-    border-left: 6px solid $color-swimming;
-  }
-  &__gym {
-    border-left: 6px solid $color-gym;
-  }
 
   &__title {
     font-size: 1.6rem;
     grid-column: 1 / -1;
-    margin-left: -0.3rem;
-    font-weight: 600;
+    // margin-left: -0.3rem;
+    font-weight: 700;
+    transition: all 0.3s;
+
+    &:hover {
+      color: #ff9900;
+    }
+
+    &:hover &--star {
+      color: #ff9900;
+    }
+
+    &--circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background-color: $color-light-2;
+      position: relative;
+      display: inline-block;
+      transform: translateY(0.3rem);
+      margin-right: 1rem;
+      box-shadow: 0 1rem 3rem 3rem rgba(#000, 0.1);
+    }
+
+    &--star {
+      position: absolute;
+      font-size: 1.4rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $color-grey-2;
+      transition: all 0.3s;
+    }
   }
 
   &__info {
     display: flex;
     align-items: baseline;
+
+    &.weather {
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &__icon {
     font-size: 1.7rem;
     margin-right: 0.2rem;
     height: 0.26rem;
+
+    &.location {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__value {
@@ -61,5 +108,58 @@
     color: $color-light-1;
     text-transform: uppercase;
     font-weight: 800;
+    transition: all 0.3s;
+  }
+
+  &__data {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-column: 1 / -1;
+  }
+
+  &__destination {
+    display: flex;
+    align-items: center;
+
+    &--info {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__street {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    font-weight: 400;
+  }
+
+  &__city {
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+}
+
+.icon {
+  &__settings {
+    font-size: 1.7rem;
+    display: block;
+    // justify-self: end;
+    position: absolute;
+    top: 10%;
+    right: 3%;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__fog {
+    height: 2.5rem;
+    margin-right: 0.7rem;
+  }
+
+  &__marker {
+    height: 2.5rem;
+    margin-right: 0.7rem;
   }
 }

@@ -8,12 +8,13 @@
 .github-link {
   &:link,
   &:visited {
-    color: $color-light-1;
+    color: #00a2ff;
+
     transition: all 0.3s ease;
 
     &:hover,
     &:active {
-      color: $color-light-2;
+      color: #34ccff;
     }
   }
 }

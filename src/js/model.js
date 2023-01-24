@@ -99,8 +99,8 @@ class Workout {
 
 class Running extends Workout {
   type = 'running';
-  constructor(coords, kcal, duration, distance, cadence) {
-    super(coords, kcal, duration);
+  constructor(coords, duration, distance, cadence) {
+    super(coords, duration);
     this.distance = distance; // in km
     this.cadence = cadence;
     this.calcPace();
@@ -116,8 +116,8 @@ class Running extends Workout {
 
 class Cycling extends Workout {
   type = 'cycling';
-  constructor(coords, kcal, duration, distance, elevationGain) {
-    super(coords, kcal, duration);
+  constructor(coords, duration, distance, elevationGain) {
+    super(coords, duration);
     this.distance = distance; // in km
     this.elevationGain = elevationGain;
     this.calcSpeed();
@@ -128,31 +128,6 @@ class Cycling extends Workout {
     // km/h
     this.speed = parseFloat((this.distance / (this.duration / 60)).toFixed(1));
     return this.speed;
-  }
-}
-
-class Swimming extends Workout {
-  type = 'swimming';
-  constructor(coords, kcal, duration, distance) {
-    super(coords, kcal, duration);
-    this.distance = distance; // in km
-    this.calcPace();
-    this._setDateDescription();
-  }
-
-  calcPace() {
-    const swimmingSpeed = (this.duration * 60) / ((this.distance * 1000) / 50);
-    this.speed = parseFloat(swimmingSpeed.toFixed(2));
-  }
-}
-
-class Gym extends Workout {
-  type = 'gym';
-  constructor(coords, kcal, duration, training) {
-    super(coords, kcal, duration);
-    this.training = training;
-    this.trainingType = training[0].toUpperCase() + training.slice(1);
-    this._setDateDescription();
   }
 }
 

@@ -64,6 +64,12 @@
       type="text/css"
     />
 
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/675709e2b0.js"
+      crossorigin="anonymous"
+    ></script>
+
     <!-- Using leaflet-routing-machine -->
     <link
       defer
@@ -141,7 +147,7 @@
         </div>
       </div>
 
-      <ul class="sort__container">
+      <ul class="sort__container hidden">
         <li class="sort__btn"><a class="sort__btn--icon" href="#">📆</a></li>
         <li class="sort__btn"><a class="sort__btn--icon" href="#">🏃‍♂️</a></li>
         <li class="sort__btn"><a class="sort__btn--icon" href="#">🚴‍♀️</a></li>
@@ -215,6 +221,123 @@
           <p class="validation__msg validation__msg--elev-cad"></p>
           <button class="form__row form__row--btn">Ok</button>
         </form>
+
+        <li class="workout workout__running" data-id="1234567890">
+          <h2 class="workout__title">
+            <span class="workout__title--circle">
+              <i class="workout__title--star fa-solid fa-star"></i>
+            </span>
+            Running on April 14, 18:27
+          </h2>
+          <i class="icon__settings fa-solid fa-gear"></i>
+          <div class="workout__info">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">5.2</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">4.6</span>
+            <span class="workout__unit">min/km</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+          <div class="workout__data">
+            <div class="workout__destination">
+              <span class="workout__icon location">
+                <img
+                  class="icon__marker"
+                  src="src/images/cancel.png"
+                  alt="Marker icon"
+                />
+              </span>
+              <div class="workout__destination--info">
+                <span class="workout__street"
+                  >Powstańców Warszawskich Wielkich</span
+                >
+                <span class="workout__city">Wrocław</span>
+              </div>
+            </div>
+            <div class="workout__info weather">
+              <span class="weather__icon">
+                <img
+                  class="icon__fog"
+                  src="src/images/marker.png"
+                  alt="Weather icon"
+                />
+              </span>
+              <span class="workout__value">2</span>
+              <span class="workout__unit">°C</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="workout workout__cycling" data-id="1234567891">
+          <h2 class="workout__title">
+            <span class="workout__title--circle">
+              <i class="workout__title--star fa-solid fa-star"></i>
+            </span>
+            Cycling on April 5, 9:21
+          </h2>
+          <i class="icon__settings fa-solid fa-gear"></i>
+
+          <div class="workout__info">
+            <span class="workout__icon">🚴‍♀️</span>
+            <span class="workout__value">27</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">95</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">16</span>
+            <span class="workout__unit">km/h</span>
+          </div>
+          <div class="workout__info">
+            <span class="workout__icon">🚵🏻‍♂️</span>
+            <span class="workout__value">223</span>
+            <span class="workout__unit">m</span>
+          </div>
+          <div class="workout__data">
+            <div class="workout__destination">
+              <span class="workout__icon location">
+                <img
+                  class="icon__marker"
+                  src="src/images/cancel.png"
+                  alt="Marker icon"
+                />
+              </span>
+              <div class="workout__destination--info">
+                <span class="workout__street"
+                  >Powstańców Warszawskich Wielkich</span
+                >
+                <span class="workout__city">Wrocław</span>
+              </div>
+            </div>
+            <div class="workout__info weather">
+              <span class="weather__icon">
+                <img
+                  class="icon__fog"
+                  src="src/images/marker.png"
+                  alt="Weather icon"
+                />
+              </span>
+              <span class="workout__value">2</span>
+              <span class="workout__unit">°C</span>
+            </div>
+          </div>
+        </li>
       </ul>
       <p class="copyright">
         &copy; Copyright by
