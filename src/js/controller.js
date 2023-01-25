@@ -10,7 +10,7 @@ const controlMap = async function () {
     await model.getPosition();
     await model.getLocation();
     // Get weather location
-    await model.getWeather();
+    // await model.getWeather();
 
     // Render Map
     mapView.renderMap(model.state.map);
