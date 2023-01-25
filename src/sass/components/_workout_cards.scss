@@ -41,15 +41,12 @@
 
   &__title {
     font-size: 1.6rem;
-    grid-column: 1 / -1;
+    grid-column: 1 / 4;
     // margin-left: -0.3rem;
     font-weight: 700;
     transition: all 0.3s;
 
-    &:hover {
-      color: #ff9900;
-    }
-
+    &:hover,
     &:hover &--star {
       color: #ff9900;
     }
@@ -63,7 +60,7 @@
       display: inline-block;
       transform: translateY(0.3rem);
       margin-right: 1rem;
-      box-shadow: 0 1rem 3rem 3rem rgba(#000, 0.1);
+      box-shadow: 0 0 0.5rem 0.2rem rgba(#000, 0.2);
     }
 
     &--star {
@@ -142,14 +139,15 @@
 .icon {
   &__settings {
     font-size: 1.7rem;
-    display: block;
-    // justify-self: end;
-    position: absolute;
-    top: 10%;
-    right: 3%;
+    margin-top: 0.2rem;
+    grid-column: 4 / -1;
+    grid-row: 1 / 2;
+    justify-self: end;
+    position: relative;
+    transition: all 0.3s;
 
     &:hover {
-      opacity: 0.8;
+      color: #000;
     }
   }
 
@@ -161,5 +159,14 @@
   &__marker {
     height: 2.5rem;
     margin-right: 0.7rem;
+  }
+
+  &__edit,
+  &__delete {
+    font-size: 1.6rem;
+    margin-right: 0.5rem;
+    width: 2rem;
+    opacity: 0.6;
+    transition: all 0.2s;
   }
 }
