@@ -121,6 +121,22 @@
   }
 }
 
-.validation__msg {
-  display: none;
+.validation {
+  &__msg {
+    display: none;
+    font-weight: 700;
+    color: #ffb300;
+    word-spacing: 0.1rem;
+    transition: all 0.7s;
+
+    &--duration {
+      grid-column: 1 / span 3;
+      grid-row: 4;
+    }
+
+    &--elev-cad {
+      grid-column: 4 / span 3;
+      grid-row: 4;
+    }
+  }
 }

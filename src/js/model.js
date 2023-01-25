@@ -4,8 +4,14 @@ import { WEATHER_API_KEY } from './config';
 
 export const state = {
   map: {},
-  workoutData: {},
+  time: {
+    start: {},
+    end: {},
+  },
+  location: {},
+  weather: {},
 };
+export const workouts = [];
 
 export const getPosition = async function () {
   return new Promise((resolve, reject) => {
@@ -24,30 +30,38 @@ export const getPosition = async function () {
   });
 };
 
-export const getLocation = async function () {
+export const getLocation = async (coords, pos = 'starter') => {
   try {
-    const [lat, lng] = state.map.currentPosition;
+    const [lat, lng] = coords;
     const geoData = await AJAX(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
       `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
     );
-    state.workoutData.locationCountry = geoData.address.country;
-    state.workoutData.locationCity = geoData.address.city;
-    state.workoutData.locationName = geoData.address.city_district;
+    if (pos === 'starter') {
+      state.location.starterLocationStreet = geoData.address.city_district;
+      state.location.starterLocationCity = geoData.address.city;
+      state.location.starterLocationCountry = geoData.address.country;
+    }
+    if (pos === 'end') {
+      state.location.endLocationStreet = geoData.address.city_district;
+      state.location.endLocationCity = geoData.address.city;
+      state.location.endLocationCountry = geoData.address.country;
+    }
   } catch (err) {
     throw err;
   }
 };
 
-export const getWeather = async function () {
+export const getWeather = async coords => {
   try {
-    const [lat, lng] = state.map.currentPosition;
+    const [lat, lon] = coords;
     const weatherData = await AJAX(
-      `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
+      `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lon}`,
       'There was some error to load data from from openWeatherMap API!'
     );
-    state.workoutData.weatherIcon = weatherData.current.condition.icon;
-    state.workoutData.weatherText = weatherData.current.condition.text;
+    state.weather.icon = weatherData.current.condition.icon;
+    state.weather.iconText = weatherData.current.condition.text;
+    // state.weather.temp =
   } catch (err) {
     throw err;
   }
@@ -77,31 +91,71 @@ export const createSpanEffect = function () {
   });
 };
 
-class Workout {
-  date = new Date();
-  id = (Date.now() + '').slice(-10);
+export const addTimeToPopup = async min => {
+  let ms = +min * 60 * 1000;
+  let currentDateMs = Date.now(); // in ms
+  let endWorkoutTimeMs = currentDate + ms;
+  let startDate = new Date(currentDate);
+  let endDate = new Date(endWorkoutTime);
+  let startMinutes =
+    startDate.getSeconds() < 31
+      ? (startDate.getMinutes() + '').padStart(2, 0)
+      : (startDate.getMinutes() + 1 + '').padStart(2, 0);
+  let endMinutes =
+    endDate.getSeconds() < 31
+      ? (endDate.getMinutes() + '').padStart(2, 0)
+      : (endDate.getMinutes() + 1 + '').padStart(2, 0);
 
-  constructor(coords, kcal, duration) {
-    this.coords = coords; // [lat, lng]
-    this.kcal = kcal;
+  // prettier-ignore
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  state.time.start.workoutDate = `${
+    months[startDate.getMonth()]
+  } ${startDate.getDate()}`;
+  state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+
+  state.time.end.workoutDate = `${
+    months[endDate.getMonth()]
+  } ${startDate.getDate()}`;
+  state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+};
+
+export class Workout {
+  date = new Date();
+  // Creating workout ID as last 12 numbers from date
+  id = (Date.now() + '').slice(-12);
+
+  constructor(startCoords, endCoords, duration, distance, time, weather) {
+    this.startCoords = startCoords; // [lat, lng]
+    this.endCoords = endCoords; // [lat, lng]
     this.duration = duration; // in min
+    this.distance = distance; // in km
+    this.time = time;
+    this.weather = weather;
   }
 
   _setDateDescription() {
     // prettier-ignore
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    this.dateDescription = `${
+    this.description = `${this.type[0].toUpperCase() + this.type.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
   }
 }
 
-class Running extends Workout {
+export class Running extends Workout {
   type = 'running';
-  constructor(coords, duration, distance, cadence) {
-    super(coords, duration);
-    this.distance = distance; // in km
+  constructor(
+    startCoords,
+    endCoords,
+    duration,
+    distance,
+    time,
+    weather,
+    cadence
+  ) {
+    super(startCoords, endCoords, duration, distance, time, weather);
     this.cadence = cadence;
     this.calcPace();
     this._setDateDescription();
@@ -114,11 +168,18 @@ class Running extends Workout {
   }
 }
 
-class Cycling extends Workout {
+export class Cycling extends Workout {
   type = 'cycling';
-  constructor(coords, duration, distance, elevationGain) {
-    super(coords, duration);
-    this.distance = distance; // in km
+  constructor(
+    startCoords,
+    endCoords,
+    duration,
+    distance,
+    time,
+    weather,
+    elevationGain
+  ) {
+    super(startCoords, endCoords, duration, distance, time, weather);
     this.elevationGain = elevationGain;
     this.calcSpeed();
     this._setDateDescription();
@@ -143,7 +204,7 @@ export const getLocalStorage = function () {
   state.workouts = data;
 };
 
-const clearData = function () {
+export const clearData = function () {
   localStorage.removeItem('workouts');
   location.reload();
 };
