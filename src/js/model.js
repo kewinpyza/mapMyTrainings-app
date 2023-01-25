@@ -39,19 +39,19 @@ export const getLocation = async function () {
   }
 };
 
-// export const getWeather = async function () {
-//   try {
-//     const [lat, lng] = state.map.currentPosition;
-//     const weatherData = await AJAX(
-//       `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
-//       'There was some error to load data from from openWeatherMap API!'
-//     );
-//     state.workoutData.weatherIcon = weatherData.current.condition.icon;
-//     state.workoutData.weatherText = weatherData.current.condition.text;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
+export const getWeather = async function () {
+  try {
+    const [lat, lng] = state.map.currentPosition;
+    const weatherData = await AJAX(
+      `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lng}`,
+      'There was some error to load data from from openWeatherMap API!'
+    );
+    state.workoutData.weatherIcon = weatherData.current.condition.icon;
+    state.workoutData.weatherText = weatherData.current.condition.text;
+  } catch (err) {
+    throw err;
+  }
+};
 
 const controlBtns = document.querySelectorAll('.controls__btn');
 const controls = document.querySelector('body');
