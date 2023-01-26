@@ -23,6 +23,7 @@ const controlMap = async function () {
 
 const controlForm = async function () {
   try {
+    await console.log('Everything is working fine');
   } catch (err) {
     mapView.renderError(err);
   }
@@ -38,7 +39,7 @@ const controlWorkout = async function () {
 const init = function () {
   controlMap();
   model.createSpanEffect();
-  // formView.renderForm(controlForm);
+  formView.renderForm(controlForm);
   // workoutsView.renderWorkout(controlWorkout);
 };
 init();

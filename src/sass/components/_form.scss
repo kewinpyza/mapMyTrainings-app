@@ -123,7 +123,7 @@
 
 .validation {
   &__msg {
-    display: none;
+    display: grid;
     font-weight: 700;
     color: #ffb300;
     word-spacing: 0.1rem;
@@ -132,11 +132,19 @@
     &--duration {
       grid-column: 1 / span 3;
       grid-row: 4;
+
+      &.hidden {
+        display: none;
+      }
     }
 
     &--elev-cad {
       grid-column: 4 / span 3;
       grid-row: 4;
+
+      &.hidden {
+        display: none;
+      }
     }
   }
 }

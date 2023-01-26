@@ -176,7 +176,7 @@
           </div>
           <div class="form__row form__row--type">
             <label class="form__label form__label--type">Type</label>
-            <select class="form__input">
+            <select class="form__input form__input--select">
               <option class="form__input--type" value="running">Running</option>
               <option class="form__input--type" value="cycling">Cycling</option>
             </select>
@@ -199,9 +199,7 @@
               placeholder="min"
             />
           </div>
-          <p class="validation__msg validation__msg--duration">
-            Duration is required
-          </p>
+          <p class="validation__msg validation__msg--duration hidden"></p>
           <div class="form__row form__row--cadence">
             <label class="form__label form__label--cadence">Cadence</label>
             <input
@@ -216,13 +214,11 @@
             <input
               id="elevation"
               type="text"
-              class="form__input form__input-elevation"
+              class="form__input form__input--elevation"
               placeholder="meters"
             />
           </div>
-          <p class="validation__msg validation__msg--elev-cad">
-            Duration is required
-          </p>
+          <p class="validation__msg validation__msg--elev-cad hidden"></p>
           <button class="form__row form__row--btn">Ok</button>
         </form>
 
