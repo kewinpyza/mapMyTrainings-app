@@ -158,15 +158,17 @@
 
       <ul class="workouts">
         <form class="form hidden">
-          <div class="form__row form__row--position start">
-            <label class="form__label form__label--position start">From</label>
-            <select class="form__input form__input--position start">
+          <div class="form__row form__row--position from">
+            <label class="form__label form__label--position">From</label>
+            <select
+              class="form__input form__input--position form__input--position-type start"
+            >
               <option>Current Location</option>
               <option>Change Starter Point</option>
             </select>
           </div>
-          <div class="form__row form__row--position end">
-            <label class="form__label form__label--position end">To</label>
+          <div class="form__row form__row--position to">
+            <label class="form__label form__label--position">To</label>
             <input
               class="form__input form__input--position end"
               type="text"
@@ -264,7 +266,7 @@
             <div class="workout__destination">
               <span class="workout__icon location">
                 <img
-                  class="icon__marker"
+                  class="icon__card"
                   src="src/images/marker.png"
                   alt="Marker icon"
                 />
@@ -333,7 +335,7 @@
             <div class="workout__destination">
               <span class="workout__icon location">
                 <img
-                  class="icon__marker"
+                  class="icon__card"
                   src="src/images/marker.png"
                   alt="Marker icon"
                 />

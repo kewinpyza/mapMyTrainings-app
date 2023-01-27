@@ -15,7 +15,7 @@ const controlMap = async function () {
     // await model.getWeather();
 
     // Render Map
-    mapView.renderMap(model.state.map);
+    await mapView.renderMap(model.state.map);
   } catch (err) {
     mapView.renderError(err);
   }
@@ -31,6 +31,7 @@ const controlForm = async function () {
 
 const controlWorkout = async function () {
   try {
+    // await console.log('Elo');
   } catch (err) {
     mapView.renderError(err);
   }
@@ -40,6 +41,6 @@ const init = function () {
   controlMap();
   model.createSpanEffect();
   formView.renderForm(controlForm);
-  // workoutsView.renderWorkout(controlWorkout);
+  workoutsView.renderWorkout(controlWorkout);
 };
 init();

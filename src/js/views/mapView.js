@@ -7,11 +7,15 @@ class mapView extends View {
   #mapData;
   #accessToken;
   #clickCount = 0;
-  #workoutMarker;
+  #myMarker;
   #pathData;
+  #startMarker;
+  #startMarkerPopup;
 
+  #workoutsContainer = document.querySelector('.workouts');
   #map = document.querySelector('#map');
-  _form = document.querySelector('.form');
+  #form = document.querySelector('.form');
+  #starterPosition = document.querySelector('.form__input--position-type');
 
   renderMap(mapData) {
     this.#mapData = mapData;
@@ -36,9 +40,10 @@ class mapView extends View {
     });
 
     // Add handle click events on map
+    this.#map.on('click', this._showForm.bind(this));
     this.#map.on('load', () => {
       // Add starting pin location on map
-      this._renderStartingPin(this.#mapData.currentPosition);
+      this.renderMarker(this.#mapData.currentPosition);
       // Add geocoder to map
       this.#map.addControl(geocoder);
       // Add full screen control on map
@@ -48,10 +53,24 @@ class mapView extends View {
       // Disables the "double click to zoom" interaction
       this.#map.doubleClickZoom.disable();
     });
-    this.#map.on('click', this._showForm.bind(this));
 
     // Render 3D building to map
     this._showBuildings3D();
+
+    this.#starterPosition.addEventListener('change', () => {
+      if (this.#starterPosition.selectedIndex === 1) {
+        this.renderMarker(this.#mapData.currentPosition, 1);
+      } else {
+        this.#startMarker.remove();
+        this.#startMarker = undefined;
+        delete this.#mapData.startPositionCoords;
+        this._renderPath(
+          this.#mapData.currentPosition,
+          this.#mapData.destinationCoords
+        );
+        this._fetchInputData();
+      }
+    });
   }
 
   _showBuildings3D() {
@@ -99,9 +118,11 @@ class mapView extends View {
   }
 
   async _showForm(mapEvent) {
+    // if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
+
+    // Double click functionality on map
     let timeout;
     this.#clickCount++;
-
     if (this.#clickCount === 1) {
       timeout = setTimeout(() => {
         this.#clickCount = 0;
@@ -109,7 +130,7 @@ class mapView extends View {
     }
     if (this.#clickCount === 2) {
       clearTimeout(timeout);
-      this._form.classList.remove('hidden');
+      this.#form.classList.remove('hidden');
 
       // Add destination coords to #mapData
       const { lat, lng } = mapEvent.lngLat;
@@ -117,14 +138,34 @@ class mapView extends View {
       this.#mapData.destinationCoords = destinationCoords;
 
       // Render marker on map and path
-      this._updateWorkoutMarker(this.#mapData.destinationCoords);
-      this._renderPath(
-        this.#mapData.currentPosition,
-        this.#mapData.destinationCoords
-      );
+      this.renderMarker(this.#mapData.destinationCoords, 2);
+      if (this.#startMarker) {
+        await this._renderPath(
+          this.#mapData.startPositionCoords,
+          this.#mapData.destinationCoords
+        );
+      } else {
+        await this._renderPath(
+          this.#mapData.currentPosition,
+          this.#mapData.destinationCoords
+        );
+      }
 
+      this._fetchInputData();
       this.#clickCount = 0;
     }
+  }
+
+  _fetchInputData() {
+    const inputDestinationCoords = document.querySelector('.end');
+    const inputDistance = document.querySelector('.form__input--distance');
+
+    let pathDistance = (this.#pathData.routes[0].distance / 1000).toFixed(2);
+    this.#mapData.distance = pathDistance;
+    inputDistance.placeholder = `${pathDistance}km`;
+    inputDestinationCoords.placeholder = `(${this.#mapData.destinationCoords[1].toFixed(
+      3
+    )} , ${this.#mapData.destinationCoords[0].toFixed(3)})`;
   }
 
   async _renderPath(startPoint, endPoint) {
@@ -173,26 +214,66 @@ class mapView extends View {
         },
       });
     }
+    // Sign path parameters in mapData
+    this.#mapData.pathStart = startPoint;
+    this.#mapData.pathEnd = endPoint;
   }
 
-  _updateWorkoutMarker(coords) {
-    if (!this.#workoutMarker) {
-      this._renderWorkoutMarker(coords);
+  async renderMarker(coords, index = 0) {
+    if (index === 0) {
+      this._renderStartingPin(coords);
+    }
+    if (index === 1) {
+      this._changeStartingPin(coords);
     } else {
-      this.#workoutMarker.remove();
-      this._renderWorkoutMarker(coords);
+      this._renderMarkerTo(coords);
+    }
+  }
+
+  async _renderMarkerTo(coords) {
+    if (!this.#myMarker) {
+      await this._updateMarkerTo(coords);
+    } else {
+      this.#myMarker.remove();
+      this.#myMarker = undefined;
+      await this._updateMarkerTo(coords);
     }
   }
 
   _renderStartingPin(coords) {
     const startingMarkerEl = document.createElement('div');
-    startingMarkerEl.className = 'starterPin';
+    startingMarkerEl.className = 'pin__starter';
     new mapboxgl.Marker(startingMarkerEl).setLngLat(coords).addTo(this.#map);
   }
 
-  _renderWorkoutMarker(coords) {
-    let markerIcon = document.createElement('div');
-    markerIcon.className = 'markerIcon';
+  async _changeStartingPin(coords) {
+    const starterIcon = document.createElement('div');
+    starterIcon.className = 'marker-icon';
+
+    const markerOptions = {
+      element: starterIcon,
+      draggable: true,
+      offset: [0, -25],
+    };
+
+    this.#startMarker = new mapboxgl.Marker(markerOptions)
+      .setLngLat(coords)
+      .addTo(this.#map);
+    this.#mapData.startPositionCoords = coords;
+    this.#startMarker.on('dragend', async e => {
+      let { lng, lat } = e.target._lngLat;
+      this.#mapData.startPositionCoords = [lng, lat];
+      await this._renderPath(
+        this.#mapData.startPositionCoords,
+        this.#mapData.destinationCoords
+      );
+      this._fetchInputData();
+    });
+  }
+
+  async _updateMarkerTo(coords) {
+    const markerIcon = document.createElement('div');
+    markerIcon.className = 'starter-icon';
 
     const markerOptions = {
       element: markerIcon,
@@ -200,39 +281,58 @@ class mapView extends View {
       offset: [0, -25],
     };
 
-    this.#workoutMarker = new mapboxgl.Marker(markerOptions)
+    this.#myMarker = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
       .addTo(this.#map);
 
-    this.#workoutMarker.on('dragend', this._getDragPosition.bind(this));
+    this.#myMarker.on('dragend', async e => {
+      let { lng, lat } = e.target._lngLat;
+      this.#mapData.destinationCoords = [lng, lat];
+      if (this.#starterPosition.selectedIndex === 1) {
+        await this._renderPath(
+          this.#mapData.startPositionCoords,
+          this.#mapData.destinationCoords
+        );
+        this._fetchInputData();
+      } else {
+        await this._renderPath(
+          this.#mapData.currentPosition,
+          this.#mapData.destinationCoords
+        );
+        this._fetchInputData();
+      }
+    });
   }
 
-  _getDragPosition(e) {
-    const { lng, lat } = e.target._lngLat;
-    this.#mapData.destinationCoords = [lng, lat];
-    this._renderPath(
-      this.#mapData.currentPosition,
-      this.#mapData.destinationCoords
-    );
-  }
+  // async _getDragPositionTo(e) {
+  //   const { lng, lat } = e.target._lngLat;
+  //   this.#mapData.destinationCoords = [lng, lat];
+  //   if (this.#starterPosition.selectedIndex === 1) {
+  //     await this._renderPath(
+  //       this.#mapData.startPositionCoords,
+  //       this.#mapData.destinationCoords
+  //     );
+  //     this._fetchInputData();
+  //   } else {
+  //     await this._renderPath(
+  //       this.#mapData.currentPosition,
+  //       this.#mapData.destinationCoords
+  //     );
+  //     this._fetchInputData();
+  //   }
+  // }
+
+  // async _getDragPositionFrom(e) {
+  //   const { lng, lat } = e.target._lngLat;
+  //   this.#mapData.startPositionCoords = [lng, lat];
+  //   await this._renderPath(
+  //     this.#mapData.startPositionCoords,
+  //     this.#mapData.destinationCoords
+  //   );
+  //   this._fetchInputData();
+  // }
+
+  async _getDragPositionTo(e) {}
 }
 
 export default new mapView();
-
-// this.#map.on('load', () => {
-//   this.#map.addLayer({
-//     id: 'rpd_parks',
-//     type: 'fill',
-//     source: {
-//       type: 'vector',
-//       url: 'mapbox://mapbox.3o7ubwm8',
-//     },
-//     'source-layer': 'RPD_Parks',
-//     layout: {
-//       visibility: 'visible',
-//     },
-//     paint: {
-//       'fill-color': 'rgba(61,153,80,0.55)',
-//     },
-//   });
-// });

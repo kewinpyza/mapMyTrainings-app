@@ -1,29 +1,16 @@
 class formView {
   _form = document.querySelector('.form');
   _inputDuration = document.querySelector('.form__input--duration');
-  _inputType = document.querySelector('.form__input--type');
-  _inputSelect = document.querySelector('.form__input--select');
+  _inputType = document.querySelector('.form__input--select');
   _inputCadence = document.querySelector('.form__input--cadence');
   _inputElevation = document.querySelector('.form__input--elevation');
   _toggleInput = document.querySelector('.form__input--cadence');
 
-  renderForm() {
-    this._inputSelect.addEventListener(
+  renderForm(handler) {
+    this._inputType.addEventListener(
       'change',
       this._changeInputType.bind(this)
     );
-
-    window.addEventListener('keypress', async e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (this.formValidation()) {
-          this._form.classList.add('hidden');
-
-          await handler();
-          this._form.reset();
-        }
-      }
-    });
 
     this._form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -37,7 +24,6 @@ class formView {
   }
 
   _changeInputType() {
-    console.log('Elo');
     this._toggleInput =
       this._inputType.value === 'running'
         ? this._inputCadence

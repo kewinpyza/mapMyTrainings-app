@@ -135,38 +135,3 @@
     font-weight: 300;
   }
 }
-
-.icon {
-  &__settings {
-    font-size: 1.7rem;
-    margin-top: 0.2rem;
-    grid-column: 4 / -1;
-    grid-row: 1 / 2;
-    justify-self: end;
-    position: relative;
-    transition: all 0.3s;
-
-    &:hover {
-      color: #000;
-    }
-  }
-
-  &__fog {
-    height: 2.5rem;
-    margin-right: 0.7rem;
-  }
-
-  &__marker {
-    height: 2.5rem;
-    margin-right: 0.7rem;
-  }
-
-  &__edit,
-  &__delete {
-    font-size: 1.6rem;
-    margin-right: 0.5rem;
-    width: 2rem;
-    opacity: 0.6;
-    transition: all 0.2s;
-  }
-}

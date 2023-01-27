@@ -17,3 +17,68 @@
 @import 'components/workout_cards';
 @import 'components/dropdown';
 @import 'components/button';
+
+// .icon {
+//   &__marker {
+//     width: 2.8rem;
+//     height: 4rem;
+//     background-size: cover;
+
+//     &--from {
+//       background-image: url(../images/startMarker.png);
+//     }
+
+//     &--to {
+//       background-image: url(../images/marker.png);
+//     }
+//   }
+// }
+
+.icon {
+  &__settings {
+    font-size: 1.7rem;
+    margin-top: 0.2rem;
+    grid-column: 4 / -1;
+    grid-row: 1 / 2;
+    justify-self: end;
+    position: relative;
+    transition: all 0.3s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &__fog {
+    height: 2.5rem;
+    margin-right: 0.7rem;
+  }
+
+  &__card {
+    height: 2.5rem;
+    margin-right: 0.7rem;
+  }
+
+  &__edit,
+  &__delete {
+    font-size: 1.6rem;
+    margin-right: 0.5rem;
+    width: 2rem;
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+}
+
+.marker-icon {
+  width: 2.8rem;
+  height: 4rem;
+  background-size: cover;
+  background-image: url(../images/startMarker.png);
+}
+
+.starter-icon {
+  width: 2.8rem;
+  height: 4rem;
+  background-size: cover;
+  background-image: url(../images/marker.png);
+}
