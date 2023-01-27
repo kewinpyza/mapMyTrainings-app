@@ -52,25 +52,24 @@ class mapView extends View {
       this.#map.addControl(new mapboxgl.NavigationControl());
       // Disables the "double click to zoom" interaction
       this.#map.doubleClickZoom.disable();
-    });
 
+      this.#starterPosition.addEventListener('change', async () => {
+        if (this.#starterPosition.selectedIndex === 1) {
+          this.renderMarker(this.#mapData.currentPosition, 1);
+        } else {
+          this.#startMarker.remove();
+          this.#startMarker = '';
+          delete this.#mapData.startPositionCoords;
+          await this._renderPath(
+            this.#mapData.currentPosition,
+            this.#mapData.destinationCoords
+          );
+          this._fetchInputData();
+        }
+      });
+    });
     // Render 3D building to map
     this._showBuildings3D();
-
-    this.#starterPosition.addEventListener('change', () => {
-      if (this.#starterPosition.selectedIndex === 1) {
-        this.renderMarker(this.#mapData.currentPosition, 1);
-      } else {
-        this.#startMarker.remove();
-        this.#startMarker = undefined;
-        delete this.#mapData.startPositionCoords;
-        this._renderPath(
-          this.#mapData.currentPosition,
-          this.#mapData.destinationCoords
-        );
-        this._fetchInputData();
-      }
-    });
   }
 
   _showBuildings3D() {
@@ -220,14 +219,9 @@ class mapView extends View {
   }
 
   async renderMarker(coords, index = 0) {
-    if (index === 0) {
-      this._renderStartingPin(coords);
-    }
-    if (index === 1) {
-      this._changeStartingPin(coords);
-    } else {
-      this._renderMarkerTo(coords);
-    }
+    if (index === 0) this._renderStartingPin(coords);
+    if (index === 1) this._changeStartingPin(coords);
+    if (index === 2) this._renderMarkerTo(coords);
   }
 
   async _renderMarkerTo(coords) {
@@ -235,7 +229,7 @@ class mapView extends View {
       await this._updateMarkerTo(coords);
     } else {
       this.#myMarker.remove();
-      this.#myMarker = undefined;
+      this.#myMarker = '';
       await this._updateMarkerTo(coords);
     }
   }
@@ -303,36 +297,6 @@ class mapView extends View {
       }
     });
   }
-
-  // async _getDragPositionTo(e) {
-  //   const { lng, lat } = e.target._lngLat;
-  //   this.#mapData.destinationCoords = [lng, lat];
-  //   if (this.#starterPosition.selectedIndex === 1) {
-  //     await this._renderPath(
-  //       this.#mapData.startPositionCoords,
-  //       this.#mapData.destinationCoords
-  //     );
-  //     this._fetchInputData();
-  //   } else {
-  //     await this._renderPath(
-  //       this.#mapData.currentPosition,
-  //       this.#mapData.destinationCoords
-  //     );
-  //     this._fetchInputData();
-  //   }
-  // }
-
-  // async _getDragPositionFrom(e) {
-  //   const { lng, lat } = e.target._lngLat;
-  //   this.#mapData.startPositionCoords = [lng, lat];
-  //   await this._renderPath(
-  //     this.#mapData.startPositionCoords,
-  //     this.#mapData.destinationCoords
-  //   );
-  //   this._fetchInputData();
-  // }
-
-  async _getDragPositionTo(e) {}
 }
 
 export default new mapView();
