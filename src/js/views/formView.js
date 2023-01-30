@@ -1,43 +1,51 @@
+import mapView from './mapView';
+import { timeout } from '../helpers';
+import { TIMEOUT_SEC } from '../config';
+
 class formView {
-  _form = document.querySelector('.form');
-  _inputDuration = document.querySelector('.form__input--duration');
-  _inputType = document.querySelector('.form__input--select');
-  _inputCadence = document.querySelector('.form__input--cadence');
-  _inputElevation = document.querySelector('.form__input--elevation');
-  _toggleInput = document.querySelector('.form__input--cadence');
+  #form = document.querySelector('.form');
+  #inputDuration = document.querySelector('.form__input--duration');
+  #inputType = document.querySelector('.form__input--select');
+  #inputCadence = document.querySelector('.form__input--cadence');
+  #inputElevation = document.querySelector('.form__input--elevation');
+  #toggleInput = document.querySelector('.form__input--cadence');
 
   renderForm(handler) {
-    this._inputType.addEventListener(
+    this.#inputType.addEventListener(
       'change',
       this._changeInputType.bind(this)
     );
 
-    this._form.addEventListener('submit', async e => {
-      e.preventDefault();
-      if (this.formValidation()) {
-        this._form.classList.add('hidden');
+    this.#form.addEventListener('submit', async e => {
+      try {
+        e.preventDefault();
+        if (this.formValidation()) {
+          this.#form.classList.add('hidden');
 
-        await handler();
-        this._form.reset();
+          await Promise.race([handler(), timeout(TIMEOUT_SEC)]);
+          this.#form.reset();
+        }
+      } catch (err) {
+        mapView.renderError(err);
       }
     });
   }
 
   _changeInputType() {
-    this._toggleInput =
-      this._inputType.value === 'running'
-        ? this._inputCadence
-        : this._inputElevation;
+    this.#toggleInput =
+      this.#inputType.value === 'running'
+        ? this.#inputCadence
+        : this.#inputElevation;
     this.toggleElevationField();
   }
 
   formValidation() {
     let checkToggleInput, checkDuration;
 
-    if (this.checkRequired(this._toggleInput))
-      checkToggleInput = this.checkInput(this._toggleInput);
-    if (this.checkRequired(this._inputDuration))
-      checkDuration = this.checkInput(this._inputDuration);
+    if (this.checkRequired(this.#toggleInput))
+      checkToggleInput = this.checkInput(this.#toggleInput);
+    if (this.checkRequired(this.#inputDuration))
+      checkDuration = this.checkInput(this.#inputDuration);
     return checkToggleInput && checkDuration;
   }
 
@@ -56,9 +64,8 @@ class formView {
   // Check if input is valid
   checkInput(inp) {
     const validInp = isFinite(inp.value);
-    console.log(validInp);
     const positiveNum = inp.value > 0;
-    const type = this._inputType.value;
+    const type = this.#inputType.value;
 
     if (inp.id === 'elevation' && !validInp) {
       this.showError(
@@ -87,17 +94,11 @@ class formView {
     return `${inp.id[0].toUpperCase()}${inp.id.slice(1)}`;
   }
 
-  // Check if inputs are valid
-  // checkInput(input) {
-  //   const validInp = Number.isFinite(input);
-  //   const positiveInp = input > 0;
-  // }
-
   toggleElevationField() {
-    this._inputElevation
+    this.#inputElevation
       .closest('.form__row')
       .classList.toggle('form__row--hidden');
-    this._inputCadence
+    this.#inputCadence
       .closest('.form__row')
       .classList.toggle('form__row--hidden');
   }
@@ -113,6 +114,14 @@ class formView {
     let id = inp.id === 'duration' ? inp.id : 'elev-cad';
     const validationEl = document.querySelector(`.validation__msg--${id}`);
     validationEl.classList.add('hidden');
+  }
+
+  saveFormValues() {
+    const formValues = {};
+    formValues.workout.cadElev = this.#toggleInput.value;
+    formValues.workout.duration = this.#inputDuration.value;
+    formValues.workout.type = this.#inputType.value;
+    return formValues;
   }
 }
 

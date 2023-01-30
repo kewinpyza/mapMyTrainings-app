@@ -73,13 +73,8 @@ const controls = document.querySelector('body');
 export const createSpanEffect = function () {
   controlBtns.forEach(btn => {
     btn.addEventListener('click', e => {
-      console.log(e);
-      console.log(e.clientX);
-      console.log(e.clientY);
       let x = e.offsetX + 'px';
-      // console.log(x);
       let y = e.offsetY + 'px';
-      // console.log(y);
 
       const spanEffect = document.createElement('span');
       spanEffect.classList.add('span-effect');
@@ -95,8 +90,8 @@ export const addTimeToPopup = async min => {
   let ms = +min * 60 * 1000;
   let currentDateMs = Date.now(); // in ms
   let endWorkoutTimeMs = currentDate + ms;
-  let startDate = new Date(currentDate);
-  let endDate = new Date(endWorkoutTime);
+  let startDate = new Date(currentDateMs);
+  let endDate = new Date(endWorkoutTimeMs);
   let startMinutes =
     startDate.getSeconds() < 31
       ? (startDate.getMinutes() + '').padStart(2, 0)
