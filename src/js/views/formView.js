@@ -116,11 +116,11 @@ class formView {
     validationEl.classList.add('hidden');
   }
 
-  saveFormValues() {
+  getFormValues() {
     const formValues = {};
-    formValues.workout.cadElev = this.#toggleInput.value;
-    formValues.workout.duration = this.#inputDuration.value;
-    formValues.workout.type = this.#inputType.value;
+    formValues[this.#toggleInput.id] = this.#toggleInput.value;
+    formValues.duration = this.#inputDuration.value;
+    formValues.type = this.#inputType.value;
     return formValues;
   }
 }

@@ -89,7 +89,7 @@ export const createSpanEffect = function () {
 export const addTimeToPopup = async min => {
   let ms = +min * 60 * 1000;
   let currentDateMs = Date.now(); // in ms
-  let endWorkoutTimeMs = currentDate + ms;
+  let endWorkoutTimeMs = currentDateMs + ms;
   let startDate = new Date(currentDateMs);
   let endDate = new Date(endWorkoutTimeMs);
   let startMinutes =

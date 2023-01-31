@@ -23,24 +23,38 @@ const controlMap = async function () {
 
 const controlForm = async function () {
   try {
-    await console.log('Everything is working fine');
+    let createNewWorkout;
+    Object.assign(model.state, formView.getFormValues());
+    await model.getWeather(model.state.map.pathStart);
+    model.addTimeToPopup(model.state.duration);
+    workoutsView.newWorkout(
+      model.Running,
+      model.Cycling,
+      model.state,
+      model.workouts
+    );
+    createNewWorkout = model.workouts[model.workouts.length - 1];
+    await model.getLocation(createNewWorkout.startCoords);
+    await model.getLocation(createNewWorkout.endCoords, 'end');
+    createNewWorkout.location = { ...model.state.location };
+    workoutsView.renderWorkout(createNewWorkout);
   } catch (err) {
     mapView.renderError(err);
   }
 };
 
-const controlWorkout = async function () {
-  try {
-    // await console.log('Elo');
-  } catch (err) {
-    mapView.renderError(err);
-  }
-};
+// const controlWorkout = async function () {
+//   try {
+//     // await console.log('Elo');
+//   } catch (err) {
+//     mapView.renderError(err);
+//   }
+// };
 
-const init = function () {
-  controlMap();
+const init = async () => {
+  await controlMap();
   model.createSpanEffect();
   formView.renderForm(controlForm);
-  workoutsView.renderWorkout(controlWorkout);
+  // workoutsView.renderWorkout(controlWorkout);
 };
 init();

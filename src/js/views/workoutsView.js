@@ -20,7 +20,7 @@ class workoutsView {
     let workout;
 
     if (data.type === 'running') {
-      workout = new Running(
+      workout = new running(
         data.map.pathStart,
         data.map.pathEnd,
         data.map.pathDistance,
@@ -31,7 +31,7 @@ class workoutsView {
       );
     }
     if (data.type === 'cycling') {
-      workout = new Cycling(
+      workout = new cycling(
         data.map.pathStart,
         data.map.pathEnd,
         data.map.pathDistance,
@@ -70,7 +70,7 @@ class workoutsView {
         <span class="workout__title--circle">
           <i class="workout__title--star fa-solid fa-star"></i>
         </span>
-        ${workout.description}, 18:27
+        ${workout.description}, ${workout.time.start.workoutTime}
       </h2>
       <i class="icon__settings fa-solid fa-gear"></i>
       <div class="workout__info">
@@ -87,17 +87,29 @@ class workoutsView {
         <span class="workout__value">${
           workout.duration < 60 ? workout.duration : workoutTimeHour
         }</span>
-        <span class="workout__unit">min</span>
+        <span class="workout__unit">${
+          workout.duration < 60 ? 'min' : 'h'
+        }</span>
       </div>
       <div class="workout__info">
         <span class="workout__icon">⚡️</span>
-        <span class="workout__value">4.6</span>
-        <span class="workout__unit">min/km</span>
+        <span class="workout__value">${
+          workout.type === 'running' ? workout.pace : workout.speed
+        }</span>
+        <span class="workout__unit">${
+          workout.type === 'running' ? 'min/km' : 'km/h'
+        }min/km</span>
       </div>
       <div class="workout__info">
-        <span class="workout__icon">🦶🏼</span>
-        <span class="workout__value">178</span>
-        <span class="workout__unit">spm</span>
+        <span class="workout__icon">${
+          workout.type === 'running' ? '🦶🏼' : '🚵🏻‍♂️'
+        }</span>
+        <span class="workout__value">${
+          workout.type === 'running' ? workout.cadence : workout.elevationGain
+        }</span>
+        <span class="workout__unit">${
+          workout.type === 'running' ? 'spm' : 'm'
+        }</span>
       </div>
       <div class="workout__data">
         <div class="workout__destination">
@@ -110,17 +122,20 @@ class workoutsView {
           </span>
           <div class="workout__destination--info">
             <span class="workout__street"
-              >Stanisława Eugeniusza Drobnera</span
+              >${workout.location.endLocationStreet}</span
             >
-            <span class="workout__city">Wrocław</span>
+            <span class="workout__city">${workout.location.endLocationCity}, ${
+      workout.location.endLocationCountry
+    }
+            </span>
           </div>
         </div>
         <div class="workout__info weather">
           <span class="weather__icon">
             <img
-              class="icon__fog"
+              class="${workout.weather.icon}"
               src="src/images/cancel.png"
-              alt="Weather icon"
+              alt="${workout.weather.iconText}"
             />
           </span>
           <span class="workout__value">2</span>
@@ -129,6 +144,7 @@ class workoutsView {
       </div>
     </li>
     `;
+    this.#form.insertAdjacentHTML('afterend', html);
   }
 }
 
