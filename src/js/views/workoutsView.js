@@ -57,7 +57,7 @@ class workoutsView {
     ).padStart(2, 0)}`;
     let html = `
     <li class="workout workout__${workout.type}" data-id="${workout.id}">
-      <ul class="settings__dropdown hidden">
+      <ul id="dropdown" class="settings__dropdown hidden">
         <li class="settings__dropdown--item edit">
           <i class="icon__edit fa-solid fa-file-pen"></i>
           <span class="settings__dropdown--name">Edit</span>

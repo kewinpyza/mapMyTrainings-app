@@ -139,13 +139,16 @@
 .weather {
   position: relative;
   &__icon {
+    position: relative;
     margin-right: 0.5rem;
+    bottom: 15%;
   }
   &__text {
     position: absolute;
     display: flex;
     align-self: flex-end;
     justify-self: center;
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 }

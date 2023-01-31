@@ -3,6 +3,7 @@ import * as model from './model';
 import mapView from './views/mapView';
 import formView from './views/formView';
 import workoutsView from './views/workoutsView';
+import settingsDropdown from './views/settingsDropdown';
 import 'core-js/stable';
 import { async } from 'regenerator-runtime';
 
@@ -10,10 +11,6 @@ const controlMap = async function () {
   try {
     // Get user position
     await model.getPosition();
-    // await model.getLocation();
-    // Get weather location
-    // await model.getWeather();
-
     // Render Map
     await mapView.renderMap(model.state.map);
   } catch (err) {
@@ -27,7 +24,6 @@ const controlForm = async function () {
     Object.assign(model.state, formView.getFormValues());
     await model.getWeather(model.state.map.pathStart);
     model.addTimeToPopup(model.state.duration);
-    console.log(model.state.type);
     workoutsView.newWorkout(
       model.Running,
       model.Cycling,
@@ -44,18 +40,16 @@ const controlForm = async function () {
   }
 };
 
-// const controlWorkout = async function () {
-//   try {
-//     // await console.log('Elo');
-//   } catch (err) {
-//     mapView.renderError(err);
-//   }
-// };
+const controlDropdown = e => {
+  settingsDropdown.showSettingsContainer(e);
+  settingsDropdown.hideDropdownClickOutside(e);
+};
 
 const init = async () => {
   await controlMap();
   model.createSpanEffect();
   formView.renderForm(controlForm);
-  // workoutsView.renderWorkout(controlWorkout);
+  settingsDropdown.hideSettingsDropdown(controlDropdown);
+  settingsDropdown.showSettingsDropdown(controlDropdown);
 };
 init();
