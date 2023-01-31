@@ -1,4 +1,5 @@
 import mapView from './mapView';
+import img from 'url:../../images/marker.png';
 
 class workoutsView {
   #map = document.querySelector('#map');
@@ -23,10 +24,10 @@ class workoutsView {
       workout = new running(
         data.map.pathStart,
         data.map.pathEnd,
-        data.map.pathDistance,
         data.duration,
+        data.map.pathDistance,
         { ...data.time },
-        { ...data.weatherData },
+        { ...data.weather },
         data.cadence
       );
     }
@@ -34,10 +35,10 @@ class workoutsView {
       workout = new cycling(
         data.map.pathStart,
         data.map.pathEnd,
-        data.map.pathDistance,
         data.duration,
+        data.map.pathDistance,
         { ...data.time },
-        { ...data.weatherData },
+        { ...data.weather },
         data.elevation
       );
     }
@@ -77,9 +78,7 @@ class workoutsView {
         <span class="workout__icon">${
           workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
         }</span>
-        <span class="workout__value">${(workout.distance / 1000).toFixed(
-          2
-        )}</span>
+        <span class="workout__value">${workout.distance}</span>
         <span class="workout__unit">km</span>
       </div>
       <div class="workout__info">
@@ -98,7 +97,7 @@ class workoutsView {
         }</span>
         <span class="workout__unit">${
           workout.type === 'running' ? 'min/km' : 'km/h'
-        }min/km</span>
+        }</span>
       </div>
       <div class="workout__info">
         <span class="workout__icon">${
@@ -116,7 +115,7 @@ class workoutsView {
           <span class="workout__icon location">
             <img
               class="icon__card"
-              src="src/images/marker.png"
+              src="${img}"
               alt="Marker icon"
             />
           </span>
@@ -133,13 +132,14 @@ class workoutsView {
         <div class="workout__info weather">
           <span class="weather__icon">
             <img
-              class="${workout.weather.icon}"
-              src="src/images/cancel.png"
+              class="icon__fog"
+              src="${workout.weather.icon}"
               alt="${workout.weather.iconText}"
             />
           </span>
-          <span class="workout__value">2</span>
+          <span class="workout__value">${workout.weather.temp}</span>
           <span class="workout__unit">°C</span>
+          <span class="weather__text">${workout.weather.iconText}</span>
         </div>
       </div>
     </li>

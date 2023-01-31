@@ -27,6 +27,7 @@ const controlForm = async function () {
     Object.assign(model.state, formView.getFormValues());
     await model.getWeather(model.state.map.pathStart);
     model.addTimeToPopup(model.state.duration);
+    console.log(model.state.type);
     workoutsView.newWorkout(
       model.Running,
       model.Cycling,

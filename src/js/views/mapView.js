@@ -159,9 +159,9 @@ class mapView extends View {
     const inputDestinationCoords = document.querySelector('.end');
     const inputDistance = document.querySelector('.form__input--distance');
 
-    let pathDistance = (this.#pathData.routes[0].distance / 1000).toFixed(2);
-    this.#mapData.distance = pathDistance;
-    inputDistance.placeholder = `${pathDistance}km`;
+    let distance = (this.#pathData.routes[0].distance / 1000).toFixed(2);
+    this.#mapData.pathDistance = distance;
+    inputDistance.placeholder = `${distance}km`;
     inputDestinationCoords.placeholder = `(${this.#mapData.destinationCoords[1].toFixed(
       3
     )} , ${this.#mapData.destinationCoords[0].toFixed(3)})`;

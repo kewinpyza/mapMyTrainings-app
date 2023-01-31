@@ -32,7 +32,7 @@ export const getPosition = async function () {
 
 export const getLocation = async (coords, pos = 'starter') => {
   try {
-    const [lat, lng] = coords;
+    const [lng, lat] = coords;
     const geoData = await AJAX(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
       `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
@@ -54,14 +54,15 @@ export const getLocation = async (coords, pos = 'starter') => {
 
 export const getWeather = async coords => {
   try {
-    const [lat, lon] = coords;
+    const [lat, lng] = coords;
     const weatherData = await AJAX(
-      `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat}, ${lon}`,
+      `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lng}, ${lat}`,
       'There was some error to load data from from openWeatherMap API!'
     );
     state.weather.icon = weatherData.current.condition.icon;
     state.weather.iconText = weatherData.current.condition.text;
-    // state.weather.temp =
+    state.weather.temp = weatherData.current.temp_c;
+    console.log(weatherData);
   } catch (err) {
     throw err;
   }
