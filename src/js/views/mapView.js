@@ -1,23 +1,30 @@
 import { MAP_ZOOM_LEVEL } from '../config';
 import { AJAX } from '../helpers';
 import View from './View';
+import * as model from '../model';
 // import markerIcon from 'url:../../images/marker.png';
 
 class mapView extends View {
   #mapData;
   #accessToken;
   #clickCount = 0;
-  #myMarker;
   #pathData;
+  #myMarker;
   #startMarker;
   #startMarkerPopup;
+  #preserveMarker;
 
-  #workoutsContainer = document.querySelector('.workouts');
   #map = document.querySelector('#map');
   #form = document.querySelector('.form');
   #starterPosition = document.querySelector('.form__input--position-type');
+  #parentEl = document.querySelector('.app-bar');
 
-  renderMap(mapData) {
+  constructor() {
+    super();
+    this.markerOnClick = this.markerOnClick();
+  }
+
+  async renderMap(mapData) {
     this.#mapData = mapData;
     mapboxgl.accessToken =
       'pk.eyJ1IjoiamFzb25jb2Rpbmc3MjMiLCJhIjoiY2tvN2FlcmF6MW1raDJvbHJhN2ptMG01NCJ9.ZDZ7zl030QE1REiaDIYWnQ';
@@ -33,6 +40,23 @@ class mapView extends View {
       // antialias: true,
     });
 
+    // Add handle click outside map
+    this.#parentEl.addEventListener('click', async e => {
+      if (
+        !this.#form.classList.contains('hidden') &&
+        !e.target.closest('.form')
+      ) {
+        // Remove marker and path when closing form
+        this.#form.classList.add('hidden');
+        this.#myMarker.remove();
+        this.#myMarker = '';
+        await this._renderPath(
+          this.#mapData.currentPosition,
+          this.#mapData.currentPosition
+        );
+      }
+    });
+
     const geocoder = new MapboxGeocoder({
       accessToken: this.#accessToken,
       mapboxgl: mapboxgl,
@@ -41,7 +65,7 @@ class mapView extends View {
 
     // Add handle click events on map
     this.#map.on('click', this._showForm.bind(this));
-    this.#map.on('load', () => {
+    this.#map.on('load', async () => {
       // Add starting pin location on map
       this.renderMarker(this.#mapData.currentPosition);
       // Add geocoder to map
@@ -52,24 +76,34 @@ class mapView extends View {
       this.#map.addControl(new mapboxgl.NavigationControl());
       // Disables the "double click to zoom" interaction
       this.#map.doubleClickZoom.disable();
+      // Make fake path which start and end at the same point
+      await this._renderPath(
+        this.#mapData.currentPosition,
+        this.#mapData.currentPosition
+      );
 
-      this.#starterPosition.addEventListener('change', async () => {
-        if (this.#starterPosition.selectedIndex === 1) {
-          this.renderMarker(this.#mapData.currentPosition, 1);
-        } else {
-          this.#startMarker.remove();
-          this.#startMarker = '';
-          delete this.#mapData.startPositionCoords;
-          await this._renderPath(
-            this.#mapData.currentPosition,
-            this.#mapData.destinationCoords
-          );
-          this._fetchInputData();
-        }
-      });
+      this.#starterPosition.addEventListener(
+        'change',
+        this._changeTrainingType.bind(this)
+      );
     });
     // Render 3D building to map
     this._showBuildings3D();
+  }
+
+  async _changeTrainingType() {
+    if (this.#starterPosition.selectedIndex === 1) {
+      this.renderMarker(this.#mapData.currentPosition, 1);
+    } else {
+      this.#startMarker.remove();
+      this.#startMarker = '';
+      delete this.#mapData.startPositionCoords;
+      await this._renderPath(
+        this.#mapData.currentPosition,
+        this.#mapData.destinationCoords
+      );
+      this._fetchInputData();
+    }
   }
 
   _showBuildings3D() {
@@ -117,8 +151,6 @@ class mapView extends View {
   }
 
   async _showForm(mapEvent) {
-    // if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
-
     // Double click functionality on map
     let timeout;
     this.#clickCount++;
@@ -252,6 +284,12 @@ class mapView extends View {
 
     this.#startMarker = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
+      .onClick(() => {
+        this.#map.flyTo({
+          center: [coords[0], coords[1]],
+          zoom: MAP_ZOOM_LEVEL,
+        });
+      })
       .addTo(this.#map);
     this.#mapData.startPositionCoords = coords;
     this.#startMarker.on('dragend', async e => {
@@ -277,6 +315,12 @@ class mapView extends View {
 
     this.#myMarker = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
+      .onClick(() => {
+        this.#map.flyTo({
+          center: [coords[0], coords[1]],
+          zoom: MAP_ZOOM_LEVEL,
+        });
+      })
       .addTo(this.#map);
 
     this.#myMarker.on('dragend', async e => {
@@ -296,6 +340,77 @@ class mapView extends View {
         this._fetchInputData();
       }
     });
+  }
+  async preserveMarker(coords) {
+    const markerIcon = document.createElement('div');
+    markerIcon.className = 'starter-icon';
+
+    const markerOptions = {
+      element: markerIcon,
+      draggable: true,
+      offset: [0, -25],
+    };
+
+    this.#preserveMarker = new mapboxgl.Marker(markerOptions)
+      .setLngLat(coords)
+      .onClick(() => {
+        this.#map.flyTo({
+          center: [coords[0], coords[1]],
+          zoom: MAP_ZOOM_LEVEL,
+        });
+      })
+      .addTo(this.#map);
+
+    // Fake render path await
+    await this._renderPath(
+      this.#mapData.currentPosition,
+      this.#mapData.currentPosition
+    );
+  }
+
+  async removeStarterMarker() {
+    if (this.#startMarker) {
+      this.#startMarker.remove();
+      this.#startMarker = '';
+      // Fake render path await
+      await this._renderPath(
+        this.#mapData.currentPosition,
+        this.#mapData.currentPosition
+      );
+    }
+  }
+
+  async moveToWorkoutPosition(e, workouts) {
+    const workoutEl = e.target.closest('.workout');
+    if (!workoutEl) return;
+    const workout = workouts.find(work => work.id === workoutEl.dataset.id);
+    let bound = [workout.startCoords, workout.endCoords];
+    if (this.#startMarkerPopup) {
+      this.#startMarkerPopup.remove();
+    }
+    await this._renderPath(workout.startCoords, workout.endCoords);
+
+    this.#map.fitBounds(bound, {
+      padding: { top: 70, bottom: 50, left: 50, right: 50 },
+    });
+  }
+
+  markerOnClick() {
+    // Override internal functionality
+    mapboxgl.Marker.prototype.onClick = function (handleClick) {
+      return this;
+    };
+    mapboxgl.Marker.prototype._onMapClick = function (t) {
+      const targetElement = t.originalEvent.target;
+      const element = this._element;
+      if (
+        this._handleClick &&
+        (targetElement === element || element.contains(targetElement))
+      ) {
+        this.togglePopup();
+        this._handleClick();
+      }
+    };
   }
 }
 

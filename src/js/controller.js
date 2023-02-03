@@ -30,6 +30,8 @@ const controlForm = async function () {
       model.state,
       model.workouts
     );
+    await mapView.removeStarterMarker();
+    await mapView.preserveMarker(model.state.map.destinationCoords);
     createNewWorkout = model.workouts[model.workouts.length - 1];
     await model.getLocation(createNewWorkout.startCoords);
     await model.getLocation(createNewWorkout.endCoords, 'end');
@@ -45,10 +47,19 @@ const controlDropdown = e => {
   settingsDropdown.hideDropdownClickOutside(e);
 };
 
+const controlWorkoutsView = e => {
+  try {
+    mapView.moveToWorkoutPosition(e, model.workouts);
+  } catch (err) {
+    mapView.renderError(err);
+  }
+};
+
 const init = async () => {
   await controlMap();
   model.createSpanEffect();
   formView.renderForm(controlForm);
+  workoutsView.handlerWorkout(controlWorkoutsView);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
 };

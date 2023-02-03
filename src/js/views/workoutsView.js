@@ -12,7 +12,7 @@ class workoutsView {
   #inputCadence = document.querySelector('.form__input--cadence');
 
   handlerWorkout(handler) {
-    this.#workoutsContainer.addEventListener('click', async e => {
+    this.#workoutsContainer.addEventListener('click', e => {
       handler(e);
     });
   }
@@ -139,8 +139,8 @@ class workoutsView {
           </span>
           <span class="workout__value">${workout.weather.temp}</span>
           <span class="workout__unit">°C</span>
-          <span class="weather__text">${workout.weather.iconText}</span>
         </div>
+        <div class="weather__text">${workout.weather.iconText}</div>
       </div>
     </li>
     `;
