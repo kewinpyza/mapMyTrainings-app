@@ -36,6 +36,11 @@ const controlForm = async function () {
     await model.getLocation(createNewWorkout.startCoords);
     await model.getLocation(createNewWorkout.endCoords, 'end');
     createNewWorkout.location = { ...model.state.location };
+    createNewWorkout.Marker = mapView.addPopupToWorkout(createNewWorkout, 1);
+    model.markers.push({
+      id: createNewWorkout.id,
+      marker: createNewWorkout.Marker,
+    });
     workoutsView.renderWorkout(createNewWorkout);
   } catch (err) {
     mapView.renderError(err);

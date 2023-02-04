@@ -12,6 +12,7 @@ export const state = {
   weather: {},
 };
 export const workouts = [];
+export const markers = [];
 
 export const getPosition = async function () {
   return new Promise((resolve, reject) => {
@@ -108,12 +109,12 @@ export const addTimeToPopup = async min => {
   state.time.start.workoutDate = `${
     months[startDate.getMonth()]
   } ${startDate.getDate()}`;
-  state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+  state.time.start.workoutTime = `${startDate.getHours()}.${startMinutes}`;
 
   state.time.end.workoutDate = `${
     months[endDate.getMonth()]
   } ${startDate.getDate()}`;
-  state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+  state.time.end.workoutTime = `${endDate.getHours()}.${endMinutes}`;
 };
 
 export class Workout {
