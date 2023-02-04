@@ -52,6 +52,14 @@ const controlDropdown = e => {
   settingsDropdown.hideDropdownClickOutside(e);
 };
 
+const controlSettings = (e, element) => {
+  if (!element) return;
+  if (element.classList.contains('edit')) {
+    model.state.edit = true;
+    workoutsView.editWorkout(e, model.workouts);
+  }
+};
+
 const controlWorkoutsView = e => {
   try {
     mapView.moveToWorkoutPosition(e, model.workouts);
@@ -67,5 +75,6 @@ const init = async () => {
   workoutsView.handlerWorkout(controlWorkoutsView);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
+  settingsDropdown.addHandlerSettings(controlSettings);
 };
 init();

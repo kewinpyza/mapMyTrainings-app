@@ -49,7 +49,7 @@ class mapView extends View {
         this.#form.classList.add('hidden');
         this.#myMarker.remove();
         this.#myMarker = '';
-        await this._renderPath(
+        await this.renderPath(
           this.#mapData.currentPosition,
           this.#mapData.currentPosition
         );
@@ -76,7 +76,7 @@ class mapView extends View {
       // Disables the "double click to zoom" interaction
       this.#map.doubleClickZoom.disable();
       // Make fake path which start and end at the same point
-      await this._renderPath(
+      await this.renderPath(
         this.#mapData.currentPosition,
         this.#mapData.currentPosition
       );
@@ -97,11 +97,11 @@ class mapView extends View {
       this.#startMarker.remove();
       this.#startMarker = '';
       delete this.#mapData.startPositionCoords;
-      await this._renderPath(
+      await this.renderPath(
         this.#mapData.currentPosition,
         this.#mapData.destinationCoords
       );
-      this._fetchInputData();
+      this.fetchInputData();
     }
   }
 
@@ -170,23 +170,23 @@ class mapView extends View {
       // Render marker on map and path
       this.renderMarker(this.#mapData.destinationCoords, 2);
       if (this.#startMarker) {
-        await this._renderPath(
+        await this.renderPath(
           this.#mapData.startPositionCoords,
           this.#mapData.destinationCoords
         );
       } else {
-        await this._renderPath(
+        await this.renderPath(
           this.#mapData.currentPosition,
           this.#mapData.destinationCoords
         );
       }
 
-      this._fetchInputData();
+      this.fetchInputData();
       this.#clickCount = 0;
     }
   }
 
-  _fetchInputData() {
+  fetchInputData() {
     const inputDestinationCoords = document.querySelector('.end');
     const inputDistance = document.querySelector('.form__input--distance');
 
@@ -198,7 +198,7 @@ class mapView extends View {
     )} , ${this.#mapData.destinationCoords[0].toFixed(3)})`;
   }
 
-  async _renderPath(startPoint, endPoint) {
+  async renderPath(startPoint, endPoint) {
     const url = `https://api.mapbox.com/directions/v5/mapbox/cycling/${
       startPoint[0]
     },${startPoint[1]};${endPoint[0]},${
@@ -296,11 +296,11 @@ class mapView extends View {
     this.#startMarker.on('dragend', async e => {
       let { lng, lat } = e.target._lngLat;
       this.#mapData.startPositionCoords = [lng, lat];
-      await this._renderPath(
+      await this.renderPath(
         this.#mapData.startPositionCoords,
         this.#mapData.destinationCoords
       );
-      this._fetchInputData();
+      this.fetchInputData();
     });
   }
 
@@ -330,17 +330,17 @@ class mapView extends View {
       let { lng, lat } = e.target._lngLat;
       this.#mapData.destinationCoords = [lng, lat];
       if (this.#starterPosition.selectedIndex === 1) {
-        await this._renderPath(
+        await this.renderPath(
           this.#mapData.startPositionCoords,
           this.#mapData.destinationCoords
         );
-        this._fetchInputData();
+        this.fetchInputData();
       } else {
-        await this._renderPath(
+        await this.renderPath(
           this.#mapData.currentPosition,
           this.#mapData.destinationCoords
         );
-        this._fetchInputData();
+        this.fetchInputData();
       }
     });
   }
@@ -367,7 +367,7 @@ class mapView extends View {
       .addTo(this.#map);
 
     // Make invisible path
-    await this._renderPath(
+    await this.renderPath(
       this.#mapData.currentPosition,
       this.#mapData.currentPosition
     );
@@ -378,7 +378,7 @@ class mapView extends View {
       this.#startMarker.remove();
       this.#startMarker = '';
       // Make invisible path
-      await this._renderPath(
+      await this.renderPath(
         this.#mapData.currentPosition,
         this.#mapData.currentPosition
       );
@@ -387,6 +387,7 @@ class mapView extends View {
 
   removeMarkersEdit(workout) {
     workout.Marker.remove();
+    if (!this.#startMarkerPopup) return;
     this.#startMarkerPopup.remove();
   }
 
@@ -398,7 +399,7 @@ class mapView extends View {
     if (this.#startMarkerPopup) {
       this.#startMarkerPopup.remove();
     }
-    await this._renderPath(workout.startCoords, workout.endCoords);
+    await this.renderPath(workout.startCoords, workout.endCoords);
 
     this.#map.fitBounds(bound, {
       padding: { top: 70, bottom: 50, left: 50, right: 50 },

@@ -10,6 +10,7 @@ export const state = {
   },
   location: {},
   weather: {},
+  edit: false,
 };
 export const workouts = [];
 export const markers = [];

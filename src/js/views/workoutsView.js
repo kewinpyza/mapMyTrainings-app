@@ -6,10 +6,11 @@ class workoutsView {
   #form = document.querySelector('.form');
   #workoutsContainer = document.querySelector('.workouts');
   #inputType = document.querySelector('.form__input--select');
-  #inputStartPoint = document.querySelector('.start');
-  #inputEndPoint = document.querySelector('.end');
   #inputElevation = document.querySelector('.form__input--elevation');
   #inputCadence = document.querySelector('.form__input--cadence');
+  #toggleInput = document.querySelector('.form__input--cadence');
+  #inputDuration = document.querySelector('.form__input--duration');
+  #starterPosition = document.querySelector('.form__input--position-type');
 
   handlerWorkout(handler) {
     this.#workoutsContainer.addEventListener('click', e => {
@@ -145,6 +146,41 @@ class workoutsView {
     </li>
     `;
     this.#form.insertAdjacentHTML('afterend', html);
+  }
+
+  async editWorkout(e, workouts) {
+    const workoutEl = e.target.closest('.workout');
+    const workoutEdited = workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    workoutEl.classList.add('edited');
+    // Show form
+    this.#form.classList.remove('hidden');
+    this.#inputType.value = `${workoutEdited.type}`;
+    this.#toggleInput =
+      this.#inputType.value === 'running'
+        ? this.#inputCadence
+        : this.#inputElevation;
+    this.#toggleInput.value =
+      workoutEdited.type === 'running'
+        ? +workoutEdited.cadence
+        : +workoutEdited.elevationGain;
+
+    // Show workout values at form
+    this.#inputDuration.value = +workoutEdited.duration;
+    this.#starterPosition.value = `CSP`;
+    // Render starting and ending markers
+    mapView.renderMarker(workoutEdited.startCoords, 1);
+    mapView.renderMarker(workoutEdited.endCoords, 2);
+    // Remove popup marker
+    mapView.removeMarkersEdit(workoutEdited);
+    // Display workout path
+    await mapView.renderPath(
+      workoutEdited.startCoords,
+      workoutEdited.endCoords
+    );
+    // Show data on form
+    mapView.fetchInputData();
   }
 }
 

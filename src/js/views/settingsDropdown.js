@@ -13,6 +13,13 @@ class Settings {
     });
   }
 
+  addHandlerSettings(handler) {
+    this.#parentEl.addEventListener('click', e => {
+      const settingsEl = e.target.closest('.settings__dropdown--item');
+      handler(e, settingsEl);
+    });
+  }
+
   showSettingsContainer(e) {
     const workoutEl = e.target.closest('.workout');
     if (!workoutEl) return;
