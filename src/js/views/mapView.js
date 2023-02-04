@@ -287,6 +287,8 @@ class mapView extends View {
         this.#map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
+          duration: 2000,
+          essential: true,
         });
       })
       .addTo(this.#map);
@@ -318,6 +320,8 @@ class mapView extends View {
         this.#map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
+          duration: 2000,
+          essential: true,
         });
       })
       .addTo(this.#map);
@@ -356,6 +360,8 @@ class mapView extends View {
         this.#map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
+          duration: 2000,
+          essential: true,
         });
       })
       .addTo(this.#map);
@@ -477,6 +483,8 @@ class mapView extends View {
         .onClick(() => {
           this.#map.flyTo({
             center: [coords[0], coords[1]],
+            duration: 2000,
+            essential: true,
             zoom: MAP_ZOOM_LEVEL,
           });
         })
@@ -498,6 +506,8 @@ class mapView extends View {
           this.#map.flyTo({
             center: [coords[0], coords[1]],
             zoom: MAP_ZOOM_LEVEL,
+            duration: 2000,
+            essential: true,
           });
         })
         .addTo(this.#map);

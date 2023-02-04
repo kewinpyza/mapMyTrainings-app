@@ -51,7 +51,6 @@
 
   &__fog {
     height: 5.5rem;
-    // position: absolute;
   }
 
   &__card {
@@ -82,3 +81,60 @@
   background-size: cover;
   background-image: url(../images/marker.png);
 }
+
+// Change mapbox popup style
+.mapboxgl {
+  &-popup {
+    &-close-button {
+      display: none;
+    }
+
+    &-anchor-top &-tip {
+      border-bottom-color: $color-grey-1 !important;
+    }
+    &-anchor-left &-tip {
+      border-right-color: $color-grey-1 !important;
+    }
+    &-anchor-right &-tip {
+      border-left-color: $color-grey-1 !important;
+    }
+    &-anchor-bottom &-tip {
+      border-top-color: $color-grey-1 !important;
+    }
+
+    &-content {
+      padding: 0 !important;
+      border: none !important;
+      background-color: $color-grey-1 !important;
+
+      & .running-popup {
+        width: auto;
+        font: 500 1rem/1.5rem 'Open Sans', sans-serif;
+        border-left: 5px solid $color-running;
+        border-radius: 4px;
+        padding: 0.8rem;
+        text-align: center;
+        color: $color-light-2;
+
+        & > *:not(:last-child) {
+          margin-bottom: 0.4rem;
+        }
+      }
+
+      & .cycling-popup {
+        width: auto;
+        font: 500 1rem/1.5rem 'Open Sans', sans-serif;
+        border-left: 5px solid $color-cycling;
+        border-radius: 4px;
+        padding: 0.8rem;
+        text-align: center;
+        color: $color-light-2;
+
+        & > *:not(:last-child) {
+          margin-bottom: 0.4rem;
+        }
+      }
+    }
+  }
+}
+
