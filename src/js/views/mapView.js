@@ -26,7 +26,7 @@ class mapView extends View {
   async renderMap(mapData) {
     this.#mapData = mapData;
     mapboxgl.accessToken =
-      'pk.eyJ1IjoiamFzb25jb2Rpbmc3MjMiLCJhIjoiY2tvN2FlcmF6MW1raDJvbHJhN2ptMG01NCJ9.ZDZ7zl030QE1REiaDIYWnQ';
+      'pk.eyJ1Ijoia3B5emE5OCIsImEiOiJjbGRxZmthdWEwMGVuM25wcHB3aDE0aHl4In0.pBi79GBUNKVIMtIzUc-ZAA';
     this.#accessToken = mapboxgl.accessToken;
 
     this.#map = new mapboxgl.Map({

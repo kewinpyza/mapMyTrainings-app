@@ -13,9 +13,11 @@ class workoutsView {
   #starterPosition = document.querySelector('.form__input--position-type');
 
   handlerWorkout(handler) {
-    this.#workoutsContainer.addEventListener('click', e => {
-      handler(e);
-    });
+    this.#workoutsContainer.addEventListener('click', e => handler(e));
+  }
+
+  handlerMostLiked(handler) {
+    this.#workoutsContainer.addEventListener('click', e => handler(e));
   }
 
   newWorkout(running, cycling, data, workouts) {

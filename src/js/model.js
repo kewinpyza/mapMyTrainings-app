@@ -14,6 +14,7 @@ export const state = {
 };
 export const workouts = [];
 export const markers = [];
+export const bookmarks = [];
 
 export const getPosition = async function () {
   return new Promise((resolve, reject) => {
@@ -189,6 +190,29 @@ export class Cycling extends Workout {
     return this.speed;
   }
 }
+
+// Bookmark most liked workouts
+export const bookmarkMostLikedWorkout = (e, workouts, bookmarks) => {
+  const workoutEl = e.target.closest('.workout');
+  if (!workoutEl) return;
+  const bookmarkClick = e.target.closest('.workout__title');
+  if (!bookmarkClick) return;
+  const workout = workouts.find(work => work.id === workoutEl.dataset.id);
+  const isBookmarked = bookmarkClick.classList.contains('bookmark');
+
+  if (!isBookmarked) {
+    bookmarkClick.classList.add('bookmark');
+    workout.bookmarks = true;
+    bookmarks.push(workout);
+  } else {
+    workout.bookmarks = false;
+    bookmarkClick.classList.remove('bookmark');
+    const workoutIndex = bookmarks.findIndex(
+      work => work.id === workoutEl.dataset.id
+    );
+    bookmarks.splice(workoutIndex, 1);
+  }
+};
 
 // Local Storage
 export const setLocalStorage = function (workouts) {

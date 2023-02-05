@@ -68,11 +68,16 @@ const controlWorkoutsView = e => {
   }
 };
 
+const controlMostLiked = e => {
+  model.bookmarkMostLikedWorkout(e, model.workouts, model.bookmarks);
+};
+
 const init = async () => {
   await controlMap();
   model.createSpanEffect();
   formView.renderForm(controlForm);
   workoutsView.handlerWorkout(controlWorkoutsView);
+  workoutsView.handlerMostLiked(controlMostLiked);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
   settingsDropdown.addHandlerSettings(controlSettings);

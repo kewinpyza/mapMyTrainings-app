@@ -44,13 +44,19 @@
   &__title {
     font-size: 1.6rem;
     grid-column: 1 / 4;
-    // margin-left: -0.3rem;
     font-weight: 700;
     transition: all 0.3s;
 
     &:hover,
     &:hover &--star {
       color: #ff9900;
+    }
+
+    &.bookmark {
+      color: #ff9900;
+      & .workout__title--star {
+        color: #ff9900;
+      }
     }
 
     &--circle {
