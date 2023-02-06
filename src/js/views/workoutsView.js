@@ -1,5 +1,6 @@
 import mapView from './mapView';
 import img from 'url:../../images/marker.png';
+import * as model from '../model';
 
 class workoutsView {
   #map = document.querySelector('#map');
@@ -45,10 +46,12 @@ class workoutsView {
         data.elevation
       );
     }
-
-    // Add new object to workouts array
-    workouts.push(workout);
-    console.log(workouts);
+    if (!data.edit) {
+      // Add new object to workouts array
+      workouts.push(workout);
+    } else {
+      return workout;
+    }
   }
 
   renderWorkout(workout) {
@@ -155,9 +158,13 @@ class workoutsView {
     const workoutEdited = workouts.find(
       work => work.id === workoutEl.dataset.id
     );
+    const workoutEditedIndex = workouts.findIndex(
+      work => work.id === workoutEl.dataset.id
+    );
     workoutEl.classList.add('edited');
     // Show form
     this.#form.classList.remove('hidden');
+    // Show workout type and current values
     this.#inputType.value = `${workoutEdited.type}`;
     this.#toggleInput =
       this.#inputType.value === 'running'
@@ -168,7 +175,7 @@ class workoutsView {
         ? +workoutEdited.cadence
         : +workoutEdited.elevationGain;
 
-    // Show workout values at form
+    // Show workout values on form
     this.#inputDuration.value = +workoutEdited.duration;
     this.#starterPosition.value = `CSP`;
     // Render starting and ending markers
@@ -183,6 +190,31 @@ class workoutsView {
     );
     // Show data on form
     mapView.fetchInputData();
+    // Get edited workout's index
+    model.state.editIndex = workoutEditedIndex;
+  }
+
+  async deleteWorkout(e, workouts) {
+    const workoutEl = e.target.closest('.workout');
+    const workoutDeleted = workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    const workoutDeletedIndex = workouts.findIndex(
+      work => work.id === workoutEl.dataset.id
+    );
+    const markerDeletedIndex = model.markers.findIndex(
+      marker => marker.id === workoutEl.dataset.id
+    );
+    workoutEl.remove();
+    // Remove workout marker from map
+    mapView.removeMarkersEdit(workoutDeleted);
+    // Remove workout path
+    await mapView.removeSetUpMarker();
+    // Clear workout marker from data
+    model.markers.splice(workoutDeletedIndex, 1);
+    workouts.splice(workoutDeletedIndex, 1);
+    // Center View to current position
+    await mapView.showYourLocation();
   }
 }
 

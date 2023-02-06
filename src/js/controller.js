@@ -30,8 +30,8 @@ const controlForm = async function () {
       model.state,
       model.workouts
     );
-    await mapView.removeStarterMarker();
-    await mapView.preserveMarker(model.state.map.destinationCoords);
+    mapView.preserveMarker(model.state.map.pathEnd);
+    await mapView.removeSetUpMarker();
     createNewWorkout = model.workouts[model.workouts.length - 1];
     await model.getLocation(createNewWorkout.startCoords);
     await model.getLocation(createNewWorkout.endCoords, 'end');
@@ -42,6 +42,13 @@ const controlForm = async function () {
       marker: createNewWorkout.Marker,
     });
     workoutsView.renderWorkout(createNewWorkout);
+  } catch (err) {
+    mapView.renderError(err);
+  }
+};
+
+const controlEditForm = async () => {
+  try {
   } catch (err) {
     mapView.renderError(err);
   }
@@ -58,9 +65,12 @@ const controlSettings = (e, element) => {
     model.state.edit = true;
     workoutsView.editWorkout(e, model.workouts);
   }
+  if (element.classList.contains('delete')) {
+    workoutsView.deleteWorkout(e, model.workouts);
+  }
 };
 
-const controlWorkoutsView = e => {
+const controlWorkoutView = e => {
   try {
     mapView.moveToWorkoutPosition(e, model.workouts);
   } catch (err) {
@@ -75,8 +85,8 @@ const controlMostLiked = e => {
 const init = async () => {
   await controlMap();
   model.createSpanEffect();
-  formView.renderForm(controlForm);
-  workoutsView.handlerWorkout(controlWorkoutsView);
+  formView.renderForm(controlForm, controlEditForm);
+  workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);

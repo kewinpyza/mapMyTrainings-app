@@ -1,6 +1,7 @@
 import { MAP_ZOOM_LEVEL } from '../config';
 import { AJAX } from '../helpers';
 import View from './View';
+import * as model from '../model';
 // import markerIcon from 'url:../../images/marker.png';
 
 class mapView extends View {
@@ -17,6 +18,7 @@ class mapView extends View {
   #form = document.querySelector('.form');
   #starterPosition = document.querySelector('.form__input--position-type');
   #parentEl = document.querySelector('.app-bar');
+  #inputCadence = document.querySelector('.form__input--cadence');
 
   constructor() {
     super();
@@ -41,6 +43,7 @@ class mapView extends View {
 
     // Add handle click outside map
     this.#parentEl.addEventListener('click', async e => {
+      if (model.state.edit) return;
       if (
         !this.#form.classList.contains('hidden') &&
         !e.target.closest('.form')
@@ -150,6 +153,11 @@ class mapView extends View {
   }
 
   async _showForm(mapEvent) {
+    if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
+    await this._showFormDoubleClick(mapEvent);
+  }
+
+  async _showFormDoubleClick(mapEvent) {
     // Double click functionality on map
     let timeout;
     this.#clickCount++;
@@ -344,7 +352,7 @@ class mapView extends View {
       }
     });
   }
-  async preserveMarker(coords) {
+  preserveMarker(coords) {
     const markerIcon = document.createElement('div');
     markerIcon.className = 'marker-icon';
 
@@ -365,24 +373,22 @@ class mapView extends View {
         });
       })
       .addTo(this.#map);
+  }
 
+  async removeSetUpMarker() {
+    if (this.#startMarker) {
+      this.#startMarker.remove();
+      this.#startMarker = '';
+    }
+    if (this.#myMarker) {
+      this.#myMarker.remove();
+      this.#myMarker = '';
+    }
     // Make invisible path
     await this.renderPath(
       this.#mapData.currentPosition,
       this.#mapData.currentPosition
     );
-  }
-
-  async removeStarterMarker() {
-    if (this.#startMarker) {
-      this.#startMarker.remove();
-      this.#startMarker = '';
-      // Make invisible path
-      await this.renderPath(
-        this.#mapData.currentPosition,
-        this.#mapData.currentPosition
-      );
-    }
   }
 
   removeMarkersEdit(workout) {
@@ -392,18 +398,35 @@ class mapView extends View {
   }
 
   async moveToWorkoutPosition(e, workouts) {
+    if (!this.#map) return;
     const workoutEl = e.target.closest('.workout');
     if (!workoutEl) return;
+    if (model.state.edit) return;
     const workout = workouts.find(work => work.id === workoutEl.dataset.id);
     let bound = [workout.startCoords, workout.endCoords];
-    if (this.#startMarkerPopup) {
-      this.#startMarkerPopup.remove();
-    }
+    if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
     await this.renderPath(workout.startCoords, workout.endCoords);
 
     this.#map.fitBounds(bound, {
-      padding: { top: 70, bottom: 50, left: 50, right: 50 },
+      padding: { top: 130, bottom: 35, left: 80, right: 80 },
     });
+  }
+
+  async showYourLocation() {
+    this.#map.flyTo({
+      center: [
+        this.#mapData.currentPosition[0],
+        this.#mapData.currentPosition[1],
+      ],
+      zoom: MAP_ZOOM_LEVEL,
+      duration: 2000,
+      essential: true,
+    });
+
+    await this.renderPath(
+      this.#mapData.currentPosition,
+      this.#mapData.currentPosition
+    );
   }
 
   markerOnClick() {
@@ -513,6 +536,7 @@ class mapView extends View {
         })
         .addTo(this.#map);
       this.#preserveMarker.togglePopup();
+
       return this.#preserveMarker;
     }
   }

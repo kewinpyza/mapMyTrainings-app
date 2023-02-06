@@ -1,6 +1,7 @@
 import mapView from './mapView';
 import { timeout } from '../helpers';
 import { TIMEOUT_SEC } from '../config';
+import * as model from '../model';
 
 class formView {
   #form = document.querySelector('.form');
@@ -10,20 +11,28 @@ class formView {
   #inputElevation = document.querySelector('.form__input--elevation');
   #toggleInput = document.querySelector('.form__input--cadence');
 
-  renderForm(handler) {
-    this.#inputType.addEventListener(
-      'change',
-      this._changeInputType.bind(this)
-    );
+  renderForm(form, editForm) {
+    this.#inputType.addEventListener('change', () => {
+      this.toggleElevationField();
+      this.formValidation();
+    });
 
     this.#form.addEventListener('submit', async e => {
       try {
+        let handler = model.state.edit ? editForm : form;
         e.preventDefault();
         if (this.formValidation()) {
           this.#form.classList.add('hidden');
 
           await Promise.race([handler(), timeout(TIMEOUT_SEC)]);
           this.#form.reset();
+          this.#inputCadence
+            .closest('.form__row')
+            .classList.remove('form__row--hidden');
+          this.#inputElevation
+            .closest('.form__row')
+            .classList.add('form__row--hidden');
+          model.state.edit = false;
         }
       } catch (err) {
         mapView.renderError(err);
@@ -31,21 +40,18 @@ class formView {
     });
   }
 
-  _changeInputType() {
+  formValidation() {
+    let checkToggleInput, checkDuration;
     this.#toggleInput =
       this.#inputType.value === 'running'
         ? this.#inputCadence
         : this.#inputElevation;
-    this.toggleElevationField();
-  }
-
-  formValidation() {
-    let checkToggleInput, checkDuration;
 
     if (this.checkRequired(this.#toggleInput))
       checkToggleInput = this.checkInput(this.#toggleInput);
     if (this.checkRequired(this.#inputDuration))
       checkDuration = this.checkInput(this.#inputDuration);
+      
     return checkToggleInput && checkDuration;
   }
 
