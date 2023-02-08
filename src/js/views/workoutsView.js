@@ -155,11 +155,9 @@ class workoutsView {
 
   async editWorkout(e, workouts) {
     const workoutEl = e.target.closest('.workout');
-    const workoutEdited = workouts.find(
-      work => work.id === workoutEl.dataset.id
-    );
+    const workoutEdited = workouts.find(w => w.id === workoutEl.dataset.id);
     const workoutEditedIndex = workouts.findIndex(
-      work => work.id === workoutEl.dataset.id
+      w => w.id === workoutEl.dataset.id
     );
     workoutEl.classList.add('edited');
     // Show form
@@ -174,6 +172,23 @@ class workoutsView {
       workoutEdited.type === 'running'
         ? +workoutEdited.cadence
         : +workoutEdited.elevationGain;
+
+    if (workoutEdited.type === 'running') {
+      this.#inputElevation
+        .closest('.form__row')
+        .classList.add('form__row--hidden');
+      this.#inputCadence
+        .closest('.form__row')
+        .classList.remove('form__row--hidden');
+    }
+    if (workoutEdited.type === 'cycling') {
+      this.#inputCadence
+        .closest('.form__row')
+        .classList.add('form__row--hidden');
+      this.#inputElevation
+        .closest('.form__row')
+        .classList.remove('form__row--hidden');
+    }
 
     // Show workout values on form
     this.#inputDuration.value = +workoutEdited.duration;
@@ -211,7 +226,7 @@ class workoutsView {
     // Remove workout path
     await mapView.removeSetUpMarker();
     // Clear workout marker from data
-    model.markers.splice(workoutDeletedIndex, 1);
+    model.markers.splice(markerDeletedIndex, 1);
     workouts.splice(workoutDeletedIndex, 1);
     // Center View to current position
     await mapView.showYourLocation();

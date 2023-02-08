@@ -19,6 +19,7 @@ class mapView extends View {
   #starterPosition = document.querySelector('.form__input--position-type');
   #parentEl = document.querySelector('.app-bar');
   #inputCadence = document.querySelector('.form__input--cadence');
+  #inputElevation = document.querySelector('.form__input--elevation');
 
   constructor() {
     super();
@@ -52,6 +53,17 @@ class mapView extends View {
         this.#form.classList.add('hidden');
         this.#myMarker.remove();
         this.#myMarker = '';
+        if (this.#startMarker) {
+          this.#startMarker.remove();
+          this.#startMarker = '';
+        }
+        this.#form.reset();
+        this.#inputCadence
+          .closest('.form__row')
+          .classList.remove('form__row--hidden');
+        this.#inputElevation
+          .closest('.form__row')
+          .classList.add('form__row--hidden');
         await this.renderPath(
           this.#mapData.currentPosition,
           this.#mapData.currentPosition
@@ -169,6 +181,10 @@ class mapView extends View {
     if (this.#clickCount === 2) {
       clearTimeout(timeout);
       this.#form.classList.remove('hidden');
+      const dateInput = document.querySelector('.form__input--time');
+      dateInput.onfocus = function (e) {
+        this.type = 'datetime-local';
+      };
 
       // Add destination coords to #mapData
       const { lat, lng } = mapEvent.lngLat;
@@ -392,9 +408,9 @@ class mapView extends View {
   }
 
   removeMarkersEdit(workout) {
-    workout.Marker.remove();
-    if (!this.#startMarkerPopup) return;
-    this.#startMarkerPopup.remove();
+    if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
+    const markerEl = model.markers.find(m => m.id === workout.id);
+    markerEl.marker.remove();
   }
 
   async moveToWorkoutPosition(e, workouts) {
@@ -402,9 +418,10 @@ class mapView extends View {
     const workoutEl = e.target.closest('.workout');
     if (!workoutEl) return;
     if (model.state.edit) return;
-    const workout = workouts.find(work => work.id === workoutEl.dataset.id);
+    const workout = workouts.find(w => w.id === workoutEl.dataset.id);
     let bound = [workout.startCoords, workout.endCoords];
     if (this.#startMarkerPopup) this.#startMarkerPopup.remove();
+    this.addPopupToWorkout(workout);
     await this.renderPath(workout.startCoords, workout.endCoords);
 
     this.#map.fitBounds(bound, {

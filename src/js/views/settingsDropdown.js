@@ -16,6 +16,7 @@ class Settings {
   addHandlerSettings(handler) {
     this.#parentEl.addEventListener('click', e => {
       const settingsEl = e.target.closest('.settings__dropdown--item');
+      if (!settingsEl) return;
       handler(e, settingsEl);
     });
   }
@@ -23,15 +24,15 @@ class Settings {
   showSettingsContainer(e) {
     const workoutEl = e.target.closest('.workout');
     if (!workoutEl) return;
+    const settingsIcon = e.target.closest('.icon__settings');
+    if (!settingsIcon) return;
 
-    if (e.target.classList.contains('icon__settings')) {
-      // Hide settings dropdown container from other workout cards
-      this._hideSettingsContainer();
-      const clickedDropdown = workoutEl.querySelector('.settings__dropdown');
-      clickedDropdown.classList.remove('hidden');
-      const editEl = clickedDropdown.querySelector('.edit');
-      const deleteEl = clickedDropdown.querySelector('.delete');
-    }
+    // Hide settings dropdown container from other workout cards
+    this._hideSettingsContainer();
+    const clickedDropdown = workoutEl.querySelector('.settings__dropdown');
+    clickedDropdown.classList.remove('hidden');
+    // const editEl = clickedDropdown.querySelector('.edit');
+    // const deleteEl = clickedDropdown.querySelector('.delete');
   }
 
   hideDropdownClickOutside(e) {

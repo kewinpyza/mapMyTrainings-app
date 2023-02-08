@@ -159,7 +159,7 @@
       <ul class="workouts">
         <form class="form hidden">
           <div class="form__row form__row--position from">
-            <label class="form__label form__label--position">From</label>
+            <label class="form__label form__label--position-from">From</label>
             <select
               class="form__input form__input--position form__input--position-type start"
             >
@@ -168,12 +168,20 @@
             </select>
           </div>
           <div class="form__row form__row--position to">
-            <label class="form__label form__label--position">To</label>
+            <label class="form__label form__label--position-to">To</label>
             <input
               class="form__input form__input--position end"
               type="text"
               placeholder="Destination"
               readonly
+            />
+          </div>
+          <div class="form__row form__row--time">
+            <label class="form__label form__label--time">Time</label>
+            <input
+              class="form__input form__input--time"
+              type="text"
+              placeholder="NOW (click to change)"
             />
           </div>
           <div class="form__row form__row--type">

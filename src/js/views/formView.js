@@ -14,7 +14,7 @@ class formView {
   renderForm(form, editForm) {
     this.#inputType.addEventListener('change', () => {
       this.toggleElevationField();
-      this.formValidation();
+      // this.formValidation();
     });
 
     this.#form.addEventListener('submit', async e => {
@@ -51,7 +51,7 @@ class formView {
       checkToggleInput = this.checkInput(this.#toggleInput);
     if (this.checkRequired(this.#inputDuration))
       checkDuration = this.checkInput(this.#inputDuration);
-      
+
     return checkToggleInput && checkDuration;
   }
 

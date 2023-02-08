@@ -90,12 +90,15 @@ export const createSpanEffect = function () {
   });
 };
 
-export const addTimeToPopup = async min => {
-  let ms = +min * 60 * 1000;
-  let currentDateMs = Date.now(); // in ms
-  let endWorkoutTimeMs = currentDateMs + ms;
-  let startDate = new Date(currentDateMs);
-  let endDate = new Date(endWorkoutTimeMs);
+export const addTimeToPopup = async (min, date) => {
+  let durationMs = +min * 60 * 1000;
+  let currentTime = date ? date : Date.now();
+  state.time.start.workoutMs = currentTime;
+  let endWorkoutTime = currentTime + durationMs;
+  state.time.end.workoutMs = endWorkoutTime;
+  let startDate = new Date(currentTime);
+  let endDate = new Date(endWorkoutTime);
+
   let startMinutes =
     startDate.getSeconds() < 31
       ? (startDate.getMinutes() + '').padStart(2, 0)
@@ -120,11 +123,12 @@ export const addTimeToPopup = async min => {
 };
 
 export class Workout {
-  date = new Date();
+  _date = new Date();
   // Creating workout ID as last 12 numbers from date
-  id = (Date.now() + '').slice(-12);
+  _id = (Date.now() + '').slice(-12);
 
   constructor(startCoords, endCoords, duration, distance, time, weather) {
+    this.id = this._id;
     this.startCoords = startCoords; // [lat, lng]
     this.endCoords = endCoords; // [lat, lng]
     this.duration = duration; // in min
@@ -137,14 +141,14 @@ export class Workout {
     // prettier-ignore
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    this.description = `${this.type[0].toUpperCase() + this.type.slice(1)} on ${
-      months[this.date.getMonth()]
-    } ${this.date.getDate()}`;
+    this.description = `${
+      this._type[0].toUpperCase() + this._type.slice(1)
+    } on ${months[this._date.getMonth()]} ${this._date.getDate()}`;
   }
 }
 
 export class Running extends Workout {
-  type = 'running';
+  _type = 'running';
   constructor(
     startCoords,
     endCoords,
@@ -158,6 +162,7 @@ export class Running extends Workout {
     this.cadence = cadence;
     this.calcPace();
     this._setDateDescription();
+    this.type = this._type;
   }
 
   calcPace() {
@@ -168,7 +173,7 @@ export class Running extends Workout {
 }
 
 export class Cycling extends Workout {
-  type = 'cycling';
+  _type = 'cycling';
   constructor(
     startCoords,
     endCoords,
@@ -182,6 +187,7 @@ export class Cycling extends Workout {
     this.elevationGain = elevationGain;
     this.calcSpeed();
     this._setDateDescription();
+    this.type = this._type;
   }
 
   calcSpeed() {

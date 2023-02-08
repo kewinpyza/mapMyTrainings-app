@@ -1,3 +1,4 @@
+import workoutsView from './workoutsView';
 import 'core-js/stable';
 import { async } from 'regenerator-runtime';
 
@@ -7,7 +8,25 @@ export default class View {
   _overlay = document.querySelector('.overlay');
   _btnErr = document.querySelector('.error-window__btn--close');
   _btnTry = document.querySelector('.error-window__btn--try');
+  _workoutsContainer = document.querySelector('.workouts');
 
+  /*
+  updateWorkout(markup) {
+    const newDOM = document.createRange().createContextualFragment(markup);
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    const curElements = Array.from(
+      this._workoutsContainer.querySelectorAll('*')
+    ).slice(29);
+    // console.log(this._containerWorkouts.querySelectorAll('*'));
+    newElements.forEach((newEl, i) => {
+      let curEl = curElements[i];
+      // console.log(curEl, newEl.isEqualNode(curEl));
+      if (!newEl.isEqualNode(curEl)) {
+        curEl.outerHTML = newEl.outerHTML;
+      }
+    });
+  }
+  */
 
   renderError(errorMsg) {
     this._textErr.innerHTML = errorMsg;
