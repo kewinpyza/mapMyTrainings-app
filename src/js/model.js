@@ -46,9 +46,15 @@ export const getLocation = async (coords, pos = 'starter') => {
       state.location.starterLocationCountry = geoData.address.country;
     }
     if (pos === 'end') {
-      state.location.endLocationStreet = geoData.address.city_district;
-      state.location.endLocationCity = geoData.address.city;
-      state.location.endLocationCountry = geoData.address.country;
+      state.location.endLocationStreet = !geoData.address.city_district
+        ? '----------'
+        : geoData.address.city_district;
+      state.location.endLocationCity = !geoData.address.city
+        ? '-------  '
+        : geoData.address.city;
+      state.location.endLocationCountry = !geoData.address.country
+        ? '-----'
+        : geoData.address.country;
     }
   } catch (err) {
     throw err;
@@ -65,7 +71,6 @@ export const getWeather = async coords => {
     state.weather.icon = weatherData.current.condition.icon;
     state.weather.iconText = weatherData.current.condition.text;
     state.weather.temp = weatherData.current.temp_c;
-    console.log(weatherData);
   } catch (err) {
     throw err;
   }
@@ -91,39 +96,70 @@ export const createSpanEffect = function () {
 };
 
 export const addTimeToPopup = async (min, date) => {
-  let durationMs = +min * 60 * 1000;
-  let currentTime = date ? date : Date.now();
-  state.time.start.workoutMs = currentTime;
-  let endWorkoutTime = currentTime + durationMs;
-  state.time.end.workoutMs = endWorkoutTime;
-  let startDate = new Date(currentTime);
-  let endDate = new Date(endWorkoutTime);
-
-  let startMinutes =
-    startDate.getSeconds() < 31
-      ? (startDate.getMinutes() + '').padStart(2, 0)
-      : (startDate.getMinutes() + 1 + '').padStart(2, 0);
-  let endMinutes =
-    endDate.getSeconds() < 31
-      ? (endDate.getMinutes() + '').padStart(2, 0)
-      : (endDate.getMinutes() + 1 + '').padStart(2, 0);
-
   // prettier-ignore
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  state.time.start.workoutDate = `${
-    months[startDate.getMonth()]
-  } ${startDate.getDate()}`;
-  state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+  const inputTime = document.querySelector('.form__input--time');
+  let durationMs = +min * 60 * 1000;
+  let currentTime, endWorkoutTime, startDate, endDate, startMinutes, endMinutes;
 
-  state.time.end.workoutDate = `${
-    months[endDate.getMonth()]
-  } ${startDate.getDate()}`;
-  state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+  if (inputTime.type === 'text') {
+    currentTime = date ? date : Date.now();
+    endWorkoutTime = currentTime + durationMs;
+    startDate = new Date(currentTime);
+    endDate = new Date(endWorkoutTime);
+
+    startMinutes =
+      startDate.getSeconds() < 31
+        ? (startDate.getMinutes() + '').padStart(2, 0)
+        : (startDate.getMinutes() + 1 + '').padStart(2, 0);
+    endMinutes =
+      endDate.getSeconds() < 31
+        ? (endDate.getMinutes() + '').padStart(2, 0)
+        : (endDate.getMinutes() + 1 + '').padStart(2, 0);
+
+    state.time.start.workoutDate = `${
+      months[startDate.getMonth()]
+    } ${startDate.getDate()}`;
+    state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+
+    state.time.end.workoutDate = `${
+      months[endDate.getMonth()]
+    } ${startDate.getDate()}`;
+    state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+  } else {
+    currentTime = date ? date : +new Date(inputTime.value);
+    endWorkoutTime = currentTime + durationMs;
+    startDate = new Date(currentTime);
+    endDate = new Date(endWorkoutTime);
+
+    startMinutes =
+      startDate.getSeconds() < 31
+        ? (startDate.getMinutes() + '').padStart(2, 0)
+        : (startDate.getMinutes() + 1 + '').padStart(2, 0);
+    endMinutes =
+      endDate.getSeconds() < 31
+        ? (endDate.getMinutes() + '').padStart(2, 0)
+        : (endDate.getMinutes() + 1 + '').padStart(2, 0);
+
+    state.time.start.workoutDate = `${
+      months[startDate.getMonth()]
+    } ${startDate.getDate()}`;
+    state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+
+    state.time.end.workoutDate = `${
+      months[endDate.getMonth()]
+    } ${startDate.getDate()}`;
+    state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+
+    console.log(new Date(inputTime.value));
+  }
+
+  state.time.start.workoutMs = currentTime;
+  state.time.end.workoutMs = endWorkoutTime;
 };
 
 export class Workout {
-  _date = new Date();
   // Creating workout ID as last 12 numbers from date
   _id = (Date.now() + '').slice(-12);
 
@@ -138,12 +174,9 @@ export class Workout {
   }
 
   _setDateDescription() {
-    // prettier-ignore
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
     this.description = `${
       this._type[0].toUpperCase() + this._type.slice(1)
-    } on ${months[this._date.getMonth()]} ${this._date.getDate()}`;
+    } on ${state.time.start.workoutDate}`;
   }
 }
 

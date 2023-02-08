@@ -19,6 +19,7 @@ class formView {
 
     this.#form.addEventListener('submit', async e => {
       try {
+        const inputTime = document.querySelector('.form__input--time');
         let handler = model.state.edit ? editForm : form;
         e.preventDefault();
         if (this.formValidation()) {
@@ -33,6 +34,7 @@ class formView {
             .closest('.form__row')
             .classList.add('form__row--hidden');
           model.state.edit = false;
+          inputTime.type = 'text';
         }
       } catch (err) {
         mapView.renderError(err);
