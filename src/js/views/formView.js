@@ -27,17 +27,18 @@ class formView {
 
           await Promise.race([handler(), timeout(TIMEOUT_SEC)]);
           this.#form.reset();
-          this.#inputCadence
-            .closest('.form__row')
-            .classList.remove('form__row--hidden');
           this.#inputElevation
             .closest('.form__row')
             .classList.add('form__row--hidden');
+          this.#inputCadence
+            .closest('.form__row')
+            .classList.remove('form__row--hidden');
           model.state.edit = false;
           inputTime.type = 'text';
         }
       } catch (err) {
-        mapView.renderError(err);
+        // mapView.renderError(err);
+        console.log(err);
       }
     });
   }

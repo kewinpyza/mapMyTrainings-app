@@ -55,13 +55,24 @@ class workoutsView {
   }
 
   renderWorkout(workout) {
+    const markup = this.renderMarkup(workout);
+    this.#form.insertAdjacentHTML('afterend', markup);
+  }
+
+  renderEditWorkout(workout, editIndex) {
+    const markup = this.renderMarkup(workout);
+    const editedWorkout = document.querySelectorAll('.workout');
+    editedWorkout[editIndex].insertAdjacentHTML('afterend', markup);
+  }
+
+  renderMarkup(workout) {
     const fullyHours = Math.floor(workout.duration / 60);
     const workoutTimeHour = `${fullyHours}:${(
       Math.round(workout.duration) -
       fullyHours * 60 +
       ''
     ).padStart(2, 0)}`;
-    let html = `
+    return `
     <li class="workout workout__${workout.type}" data-id="${workout.id}">
       <ul id="dropdown" class="settings__dropdown hidden">
         <li class="settings__dropdown--item edit">
@@ -150,7 +161,6 @@ class workoutsView {
       </div>
     </li>
     `;
-    this.#form.insertAdjacentHTML('afterend', html);
   }
 
   async editWorkout(e, workouts) {
@@ -230,6 +240,24 @@ class workoutsView {
     workouts.splice(workoutDeletedIndex, 1);
     // Center View to current position
     await mapView.showYourLocation();
+  }
+
+  updateMarkupOnMap() {
+    let idOnScreen = [];
+    const workoutsOnScreen = Array.from(document.querySelectorAll('.workout'));
+    idOnScreen = workoutsOnScreen.map(workout => {
+      return workout.dataset.id;
+    });
+
+    let workoutsArr = [...model.workouts].reverse();
+    let markupWorkouts = workoutsArr.filter(workout => {
+      return idOnScreen.includes(workout.id);
+    });
+
+    const workoutMarkup = markupWorkouts.reduce((markup, workout) => {
+      return (markup += this.renderMarkup(workout));
+    }, '');
+    mapView.updateWorkout(workoutMarkup);
   }
 }
 

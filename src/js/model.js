@@ -103,7 +103,7 @@ export const addTimeToPopup = async (min, date) => {
   let durationMs = +min * 60 * 1000;
   let currentTime, endWorkoutTime, startDate, endDate, startMinutes, endMinutes;
 
-  if (inputTime.type === 'text') {
+  if (inputTime.type === 'text' || !inputTime.value) {
     currentTime = date ? date : Date.now();
     endWorkoutTime = currentTime + durationMs;
     startDate = new Date(currentTime);

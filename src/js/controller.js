@@ -41,9 +41,6 @@ const controlForm = async function () {
       marker: mapView.addPopupToWorkout(createNewWorkout, 1),
     });
     workoutsView.renderWorkout(createNewWorkout);
-    console.log('F', model.state);
-    console.log('F', model.workouts);
-    console.log('F', model.markers);
   } catch (err) {
     // mapView.renderError(err);
     console.log(err);
@@ -52,10 +49,45 @@ const controlForm = async function () {
 
 const controlEditForm = async () => {
   try {
-    await controlForm();
-    // let editingWorkout;
-    // Object.assign(model.state, formView.getFormValues());
-    // console.log(model.state);
+    let editingWorkout;
+    Object.assign(model.state, formView.getFormValues());
+    model.state.weather = model.workouts[model.state.editIndex].weather;
+    let startWorkout =
+      model.workouts[model.state.editIndex].time.start.workoutMs;
+    model.addTimeToPopup(model.state.duration, startWorkout);
+    editingWorkout = workoutsView.newWorkout(
+      model.Running,
+      model.Cycling,
+      model.state,
+      model.workouts
+    );
+    editingWorkout.description = `${
+      editingWorkout.type[0].toUpperCase() + editingWorkout.type.slice(1)
+    } on ${editingWorkout.time.start.workoutDate}`;
+    editingWorkout.id = model.workouts[model.state.editIndex].id;
+    mapView.preserveMarker(model.state.map.pathEnd);
+    await mapView.removeSetUpMarker();
+    await model.getLocation(editingWorkout.startCoords);
+    await model.getLocation(editingWorkout.endCoords, 'end');
+    editingWorkout.location = { ...model.state.location };
+    model.workouts.splice(model.state.editIndex, 1, editingWorkout);
+    let editMarker = {
+      id: editingWorkout.id,
+      marker: mapView.addPopupToWorkout(editingWorkout, 1),
+    };
+    const markerIndex = model.markers.findIndex(
+      m => m.id === editingWorkout.id
+    );
+    model.markers.splice(markerIndex, 1, editMarker);
+    workoutsView.renderEditWorkout(editingWorkout, model.state.editIndex);
+    document.querySelectorAll('.workout')[model.state.editIndex].remove();
+
+    // delete model.workouts[model.state.editIndex];
+
+    delete model.state.editIndex;
+    console.log(model.workouts);
+    console.log(model.state);
+    console.log(model.markers);
   } catch (err) {
     console.error(err);
   }
