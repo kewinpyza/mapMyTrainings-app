@@ -10,22 +10,6 @@ export default class View {
   _btnTry = document.querySelector('.error-window__btn--try');
   _workoutsContainer = document.querySelector('.workouts');
 
-  // updateWorkout(markup) {
-  //   const newDOM = document.createRange().createContextualFragment(markup);
-  //   const newElements = Array.from(newDOM.querySelectorAll('*'));
-  //   const curElements = Array.from(
-  //     this._workoutsContainer.querySelectorAll('*')
-  //   ).slice(29);
-  //   // console.log(this._containerWorkouts.querySelectorAll('*'));
-  //   newElements.forEach((newEl, i) => {
-  //     let curEl = curElements[i];
-  //     // console.log(curEl, newEl.isEqualNode(curEl));
-  //     if (!newEl.isEqualNode(curEl)) {
-  //       curEl.outerHTML = newEl.outerHTML;
-  //     }
-  //   });
-  // }
-
   renderError(errorMsg) {
     this._textErr.innerHTML = errorMsg;
     this._closeWindow();

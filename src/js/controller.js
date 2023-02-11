@@ -53,7 +53,7 @@ const controlEditForm = async () => {
     Object.assign(model.state, formView.getFormValues());
     model.state.weather = model.workouts[model.state.editIndex].weather;
     let startWorkout =
-      model.workouts[model.state.editIndex].time.start.workoutMs;
+      model.workouts[model.state.editIndex].time.startWorkoutMs;
     model.addTimeToPopup(model.state.duration, startWorkout);
     editingWorkout = workoutsView.newWorkout(
       model.Running,
@@ -63,13 +63,15 @@ const controlEditForm = async () => {
     );
     editingWorkout.description = `${
       editingWorkout.type[0].toUpperCase() + editingWorkout.type.slice(1)
-    } on ${editingWorkout.time.start.workoutDate}`;
+    } on ${editingWorkout.time.startWorkoutDate}`;
     editingWorkout.id = model.workouts[model.state.editIndex].id;
     mapView.preserveMarker(model.state.map.pathEnd);
     await mapView.removeSetUpMarker();
     await model.getLocation(editingWorkout.startCoords);
     await model.getLocation(editingWorkout.endCoords, 'end');
     editingWorkout.location = { ...model.state.location };
+    const workoutsArray = [...document.querySelectorAll('.workout')].reverse();
+    console.log(workoutsArray);
     model.workouts.splice(model.state.editIndex, 1, editingWorkout);
     let editMarker = {
       id: editingWorkout.id,
@@ -80,9 +82,8 @@ const controlEditForm = async () => {
     );
     model.markers.splice(markerIndex, 1, editMarker);
     workoutsView.renderEditWorkout(editingWorkout, model.state.editIndex);
-    document.querySelectorAll('.workout')[model.state.editIndex].remove();
 
-    // delete model.workouts[model.state.editIndex];
+    workoutsArray[model.state.editIndex].remove();
 
     delete model.state.editIndex;
     console.log(model.workouts);

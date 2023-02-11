@@ -61,8 +61,9 @@ class workoutsView {
 
   renderEditWorkout(workout, editIndex) {
     const markup = this.renderMarkup(workout);
-    const editedWorkout = document.querySelectorAll('.workout');
-    editedWorkout[editIndex].insertAdjacentHTML('afterend', markup);
+    const workoutsArr = [...document.querySelectorAll('.workout')].reverse();
+    console.log('wv', workoutsArr);
+    workoutsArr[editIndex].insertAdjacentHTML('afterend', markup);
   }
 
   renderMarkup(workout) {
@@ -88,7 +89,7 @@ class workoutsView {
         <span class="workout__title--circle">
           <i class="workout__title--star fa-solid fa-star"></i>
         </span>
-        ${workout.description}, ${workout.time.start.workoutTime}
+        ${workout.description}, ${workout.time.startWorkout}
       </h2>
       <i class="icon__settings fa-solid fa-gear"></i>
       <div class="workout__info">
@@ -222,13 +223,13 @@ class workoutsView {
   async deleteWorkout(e, workouts) {
     const workoutEl = e.target.closest('.workout');
     const workoutDeleted = workouts.find(
-      work => work.id === workoutEl.dataset.id
+      w => w.id === workoutEl.dataset.id
     );
     const workoutDeletedIndex = workouts.findIndex(
-      work => work.id === workoutEl.dataset.id
+      w => w.id === workoutEl.dataset.id
     );
     const markerDeletedIndex = model.markers.findIndex(
-      marker => marker.id === workoutEl.dataset.id
+      m => m.id === workoutEl.dataset.id
     );
     workoutEl.remove();
     // Remove workout marker from map
@@ -240,24 +241,6 @@ class workoutsView {
     workouts.splice(workoutDeletedIndex, 1);
     // Center View to current position
     await mapView.showYourLocation();
-  }
-
-  updateMarkupOnMap() {
-    let idOnScreen = [];
-    const workoutsOnScreen = Array.from(document.querySelectorAll('.workout'));
-    idOnScreen = workoutsOnScreen.map(workout => {
-      return workout.dataset.id;
-    });
-
-    let workoutsArr = [...model.workouts].reverse();
-    let markupWorkouts = workoutsArr.filter(workout => {
-      return idOnScreen.includes(workout.id);
-    });
-
-    const workoutMarkup = markupWorkouts.reduce((markup, workout) => {
-      return (markup += this.renderMarkup(workout));
-    }, '');
-    mapView.updateWorkout(workoutMarkup);
   }
 }
 

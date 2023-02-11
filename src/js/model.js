@@ -4,10 +4,7 @@ import { WEATHER_API_KEY } from './config';
 
 export const state = {
   map: {},
-  time: {
-    start: {},
-    end: {},
-  },
+  time: {},
   location: {},
   weather: {},
   edit: false,
@@ -118,17 +115,17 @@ export const addTimeToPopup = async (min, date) => {
         ? (endDate.getMinutes() + '').padStart(2, 0)
         : (endDate.getMinutes() + 1 + '').padStart(2, 0);
 
-    state.time.start.workoutDate = `${
+    state.time.startWorkoutDate = `${
       months[startDate.getMonth()]
     } ${startDate.getDate()}`;
-    state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+    state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
 
-    state.time.end.workoutDate = `${
+    state.time.endWorkoutDate = `${
       months[endDate.getMonth()]
     } ${startDate.getDate()}`;
-    state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+    state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
   } else {
-    currentTime = date ? date : +new Date(inputTime.value);
+    currentTime = +new Date(inputTime.value);
     endWorkoutTime = currentTime + durationMs;
     startDate = new Date(currentTime);
     endDate = new Date(endWorkoutTime);
@@ -142,21 +139,21 @@ export const addTimeToPopup = async (min, date) => {
         ? (endDate.getMinutes() + '').padStart(2, 0)
         : (endDate.getMinutes() + 1 + '').padStart(2, 0);
 
-    state.time.start.workoutDate = `${
+    state.time.startWorkoutDate = `${
       months[startDate.getMonth()]
     } ${startDate.getDate()}`;
-    state.time.start.workoutTime = `${startDate.getHours()}:${startMinutes}`;
+    state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
 
-    state.time.end.workoutDate = `${
+    state.time.endWorkoutDate = `${
       months[endDate.getMonth()]
     } ${startDate.getDate()}`;
-    state.time.end.workoutTime = `${endDate.getHours()}:${endMinutes}`;
+    state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
 
     console.log(new Date(inputTime.value));
   }
 
-  state.time.start.workoutMs = currentTime;
-  state.time.end.workoutMs = endWorkoutTime;
+  state.time.startWorkoutMs = currentTime;
+  state.time.endWorkoutMs = endWorkoutTime;
 };
 
 export class Workout {
@@ -176,7 +173,7 @@ export class Workout {
   _setDateDescription() {
     this.description = `${
       this._type[0].toUpperCase() + this._type.slice(1)
-    } on ${state.time.start.workoutDate}`;
+    } on ${state.time.startWorkoutDate}`;
   }
 }
 

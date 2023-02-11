@@ -472,7 +472,7 @@ class mapView extends View {
         <div>
           ${workout.type === 'running' ? '🏃‍♂️ ' : '🚴‍♀️ '} ${
       workout.type[0].toUpperCase() + workout.type.slice(1)
-    } <span>on</span> ${workout.time.start.workoutDate}
+    } <span>on</span> ${workout.time.startWorkoutDate}
         </div>
         <div class="city">${workout.location.starterLocationCity}, ${
       workout.location.starterLocationCountry
@@ -480,7 +480,7 @@ class mapView extends View {
         </div>
         <div class="street">${workout.location.starterLocationStreet}</div>
         <div class="time"><span>Start at </span>${
-          workout.time.start.workoutTime
+          workout.time.startWorkout
         }</div>
       </div>
     `;
@@ -490,7 +490,7 @@ class mapView extends View {
         <div>
           ${workout.type === 'running' ? '🏃‍♂️ ' : '🚴‍♀️ '} ${
       workout.type[0].toUpperCase() + workout.type.slice(1)
-    } <span>on</span> ${workout.time.end.workoutDate}
+    } <span>on</span> ${workout.time.endWorkoutDate}
         </div>
         <div class="city">${workout.location.endLocationCity}, ${
       workout.location.endLocationCountry
@@ -498,7 +498,7 @@ class mapView extends View {
         </div>
         <div class="street">${workout.location.endLocationStreet}</div>
         <div class="time"><span>Arrived at </span>${
-          workout.time.end.workoutTime
+          workout.time.endWorkout
         }</div>
       </div>
     `;
