@@ -1,6 +1,5 @@
-import workoutsView from './workoutsView';
 import 'core-js/stable';
-import { async } from 'regenerator-runtime';
+import 'regenerator-runtime/runtime';
 
 export default class View {
   _windowErr = document.querySelector('.error-window');

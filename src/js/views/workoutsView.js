@@ -3,22 +3,21 @@ import img from 'url:../../images/marker.png';
 import * as model from '../model';
 
 class workoutsView {
-  #map = document.querySelector('#map');
-  #form = document.querySelector('.form');
-  #workoutsContainer = document.querySelector('.workouts');
-  #inputType = document.querySelector('.form__input--select');
-  #inputElevation = document.querySelector('.form__input--elevation');
-  #inputCadence = document.querySelector('.form__input--cadence');
-  #toggleInput = document.querySelector('.form__input--cadence');
-  #inputDuration = document.querySelector('.form__input--duration');
-  #starterPosition = document.querySelector('.form__input--position-type');
+  _form = document.querySelector('.form');
+  _workoutsContainer = document.querySelector('.workouts');
+  _inputType = document.querySelector('.form__input--select');
+  _inputElevation = document.querySelector('.form__input--elevation');
+  _inputCadence = document.querySelector('.form__input--cadence');
+  _toggleInput = document.querySelector('.form__input--cadence');
+  _inputDuration = document.querySelector('.form__input--duration');
+  _starterPosition = document.querySelector('.form__input--position-type');
 
   handlerWorkout(handler) {
-    this.#workoutsContainer.addEventListener('click', e => handler(e));
+    this._workoutsContainer.addEventListener('click', e => handler(e));
   }
 
   handlerMostLiked(handler) {
-    this.#workoutsContainer.addEventListener('click', e => handler(e));
+    this._workoutsContainer.addEventListener('click', e => handler(e));
   }
 
   newWorkout(running, cycling, data, workouts) {
@@ -56,13 +55,12 @@ class workoutsView {
 
   renderWorkout(workout) {
     const markup = this.renderMarkup(workout);
-    this.#form.insertAdjacentHTML('afterend', markup);
+    this._form.insertAdjacentHTML('afterend', markup);
   }
 
   renderEditWorkout(workout, editIndex) {
     const markup = this.renderMarkup(workout);
     const workoutsArr = [...document.querySelectorAll('.workout')].reverse();
-    console.log('wv', workoutsArr);
     workoutsArr[editIndex].insertAdjacentHTML('afterend', markup);
   }
 
@@ -172,38 +170,43 @@ class workoutsView {
     );
     workoutEl.classList.add('edited');
     // Show form
-    this.#form.classList.remove('hidden');
+    this._form.classList.remove('hidden');
+    // Placeholder trick on datetime-local
+    const dateInput = document.querySelector('.form__input--time');
+    dateInput.onfocus = function (e) {
+      this.type = 'datetime-local';
+    };
     // Show workout type and current values
-    this.#inputType.value = `${workoutEdited.type}`;
-    this.#toggleInput =
-      this.#inputType.value === 'running'
-        ? this.#inputCadence
-        : this.#inputElevation;
-    this.#toggleInput.value =
+    this._inputType.value = `${workoutEdited.type}`;
+    this._toggleInput =
+      this._inputType.value === 'running'
+        ? this._inputCadence
+        : this._inputElevation;
+    this._toggleInput.value =
       workoutEdited.type === 'running'
         ? +workoutEdited.cadence
         : +workoutEdited.elevationGain;
 
     if (workoutEdited.type === 'running') {
-      this.#inputElevation
+      this._inputElevation
         .closest('.form__row')
         .classList.add('form__row--hidden');
-      this.#inputCadence
+      this._inputCadence
         .closest('.form__row')
         .classList.remove('form__row--hidden');
     }
     if (workoutEdited.type === 'cycling') {
-      this.#inputCadence
+      this._inputCadence
         .closest('.form__row')
         .classList.add('form__row--hidden');
-      this.#inputElevation
+      this._inputElevation
         .closest('.form__row')
         .classList.remove('form__row--hidden');
     }
 
     // Show workout values on form
-    this.#inputDuration.value = +workoutEdited.duration;
-    this.#starterPosition.value = `CSP`;
+    this._inputDuration.value = +workoutEdited.duration;
+    this._starterPosition.value = `CSP`;
     // Render starting and ending markers
     mapView.renderMarker(workoutEdited.startCoords, 1);
     mapView.renderMarker(workoutEdited.endCoords, 2);
@@ -221,10 +224,9 @@ class workoutsView {
   }
 
   async deleteWorkout(e, workouts) {
+    if (model.state.edit) return;
     const workoutEl = e.target.closest('.workout');
-    const workoutDeleted = workouts.find(
-      w => w.id === workoutEl.dataset.id
-    );
+    const workoutDeleted = workouts.find(w => w.id === workoutEl.dataset.id);
     const workoutDeletedIndex = workouts.findIndex(
       w => w.id === workoutEl.dataset.id
     );
@@ -241,6 +243,7 @@ class workoutsView {
     workouts.splice(workoutDeletedIndex, 1);
     // Center View to current position
     await mapView.showYourLocation();
+    model.setLocalStorage(model.workouts);
   }
 }
 

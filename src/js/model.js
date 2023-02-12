@@ -1,4 +1,4 @@
-import { async } from 'regenerator-runtime';
+import 'regenerator-runtime/runtime';
 import { AJAX } from './helpers';
 import { WEATHER_API_KEY } from './config';
 
@@ -9,9 +9,9 @@ export const state = {
   weather: {},
   edit: false,
 };
-export const workouts = [];
-export const markers = [];
-export const bookmarks = [];
+export let workouts = [];
+export let markers = [];
+export let bookmarks = [];
 
 export const getPosition = async function () {
   return new Promise((resolve, reject) => {
@@ -38,17 +38,23 @@ export const getLocation = async (coords, pos = 'starter') => {
       `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
     );
     if (pos === 'starter') {
-      state.location.starterLocationStreet = geoData.address.city_district;
-      state.location.starterLocationCity = geoData.address.city;
+      console.log(geoData);
+      state.location.starterLocationStreet = geoData.address.road
+        ? geoData.address.road
+        : '------';
+      state.location.starterLocationCity = geoData.address.city
+        ? geoData.address.city
+        : geoData.address.municipality;
       state.location.starterLocationCountry = geoData.address.country;
     }
     if (pos === 'end') {
-      state.location.endLocationStreet = !geoData.address.city_district
-        ? '----------'
-        : geoData.address.city_district;
-      state.location.endLocationCity = !geoData.address.city
-        ? '-------  '
-        : geoData.address.city;
+      console.log(geoData);
+      state.location.endLocationStreet = geoData.address.road
+        ? geoData.address.road
+        : '----';
+      state.location.endLocationCity = geoData.address.city
+        ? geoData.address.city
+        : geoData.address.municipality;
       state.location.endLocationCountry = !geoData.address.country
         ? '-----'
         : geoData.address.country;
@@ -92,7 +98,7 @@ export const createSpanEffect = function () {
   });
 };
 
-export const addTimeToPopup = async (min, date) => {
+export const getWorkoutTime = async (min, date) => {
   // prettier-ignore
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -233,7 +239,7 @@ export const bookmarkMostLikedWorkout = (e, workouts, bookmarks) => {
   if (!workoutEl) return;
   const bookmarkClick = e.target.closest('.workout__title');
   if (!bookmarkClick) return;
-  const workout = workouts.find(work => work.id === workoutEl.dataset.id);
+  const workout = workouts.find(w => w.id === workoutEl.dataset.id);
   const isBookmarked = bookmarkClick.classList.contains('bookmark');
 
   if (!isBookmarked) {
@@ -244,25 +250,38 @@ export const bookmarkMostLikedWorkout = (e, workouts, bookmarks) => {
     workout.bookmarks = false;
     bookmarkClick.classList.remove('bookmark');
     const workoutIndex = bookmarks.findIndex(
-      work => work.id === workoutEl.dataset.id
+      w => w.id === workoutEl.dataset.id
     );
     bookmarks.splice(workoutIndex, 1);
   }
 };
 
+export const initialBookmarks = workouts => {
+  workouts.forEach(workout => {
+    if (workout.bookmarks) bookmarks.push(workout);
+  });
+  const workoutsOnLoad = [...document.querySelectorAll('.workout')];
+  let bookmarkedWorkouts = [];
+  bookmarkedWorkouts = bookmarks.map(workout => workout.id);
+  let bookmarksOnLoad = workoutsOnLoad.filter(workout =>
+    bookmarkedWorkouts.includes(workout.dataset.id)
+  );
+  bookmarksOnLoad.forEach(bookmark =>
+    bookmark.querySelector('.workout__title').classList.add('bookmark')
+  );
+};
+
 // Local Storage
-export const setLocalStorage = function (workouts) {
+export const setLocalStorage = workouts =>
   localStorage.setItem('workouts', JSON.stringify(workouts));
-};
 
-export const getLocalStorage = function () {
+export const getLocalStorage = () => {
   const data = JSON.parse(localStorage.getItem('workouts'));
-
   if (!data) return;
-  state.workouts = data;
+  workouts = data;
 };
 
-export const clearData = function () {
+export const clearData = () => {
   localStorage.removeItem('workouts');
   location.reload();
 };

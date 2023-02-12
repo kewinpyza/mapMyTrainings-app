@@ -1,20 +1,16 @@
 class Settings {
-  #parentEl = document.querySelector('.app-bar');
-  #workoutsContainer = document.querySelector('.workouts');
+  _parentEl = document.querySelector('.app-bar');
+  _workoutsContainer = document.querySelector('.workouts');
 
   hideSettingsDropdown(handler) {
-    this.#parentEl.addEventListener('click', e => {
-      handler(e);
-    });
+    this._parentEl.addEventListener('click', e => handler(e));
   }
   showSettingsDropdown(handler) {
-    this.#workoutsContainer.addEventListener('click', e => {
-      handler(e);
-    });
+    this._workoutsContainer.addEventListener('click', e => handler(e));
   }
 
   addHandlerSettings(handler) {
-    this.#parentEl.addEventListener('click', e => {
+    this._parentEl.addEventListener('click', e => {
       const settingsEl = e.target.closest('.settings__dropdown--item');
       if (!settingsEl) return;
       handler(e, settingsEl);
@@ -31,13 +27,11 @@ class Settings {
     this._hideSettingsContainer();
     const clickedDropdown = workoutEl.querySelector('.settings__dropdown');
     clickedDropdown.classList.remove('hidden');
-    // const editEl = clickedDropdown.querySelector('.edit');
-    // const deleteEl = clickedDropdown.querySelector('.delete');
   }
 
   hideDropdownClickOutside(e) {
     let dropdownArr = [];
-    const settingsEl = this.#parentEl.querySelectorAll('.settings__dropdown');
+    const settingsEl = this._parentEl.querySelectorAll('.settings__dropdown');
     settingsEl.forEach(el => dropdownArr.push(el));
     const allHidden = dropdownArr.every(item =>
       item.classList.contains('hidden')
@@ -53,7 +47,7 @@ class Settings {
   }
 
   _hideSettingsContainer() {
-    const dropdownItems = this.#workoutsContainer.querySelectorAll(
+    const dropdownItems = this._workoutsContainer.querySelectorAll(
       '.settings__dropdown'
     );
     if (!dropdownItems) return;

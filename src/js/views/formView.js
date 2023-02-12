@@ -4,33 +4,33 @@ import { TIMEOUT_SEC } from '../config';
 import * as model from '../model';
 
 class formView {
-  #form = document.querySelector('.form');
-  #inputDuration = document.querySelector('.form__input--duration');
-  #inputType = document.querySelector('.form__input--select');
-  #inputCadence = document.querySelector('.form__input--cadence');
-  #inputElevation = document.querySelector('.form__input--elevation');
-  #toggleInput = document.querySelector('.form__input--cadence');
+  _form = document.querySelector('.form');
+  _inputDuration = document.querySelector('.form__input--duration');
+  _inputType = document.querySelector('.form__input--select');
+  _inputCadence = document.querySelector('.form__input--cadence');
+  _inputElevation = document.querySelector('.form__input--elevation');
+  _toggleInput = document.querySelector('.form__input--cadence');
 
   renderForm(form, editForm) {
-    this.#inputType.addEventListener('change', () => {
+    this._inputType.addEventListener('change', () => {
       this.toggleElevationField();
       // this.formValidation();
     });
 
-    this.#form.addEventListener('submit', async e => {
+    this._form.addEventListener('submit', async e => {
       try {
         const inputTime = document.querySelector('.form__input--time');
         let handler = model.state.edit ? editForm : form;
         e.preventDefault();
         if (this.formValidation()) {
-          this.#form.classList.add('hidden');
+          this._form.classList.add('hidden');
 
           await Promise.race([handler(), timeout(TIMEOUT_SEC)]);
-          this.#form.reset();
-          this.#inputElevation
+          this._form.reset();
+          this._inputElevation
             .closest('.form__row')
             .classList.add('form__row--hidden');
-          this.#inputCadence
+          this._inputCadence
             .closest('.form__row')
             .classList.remove('form__row--hidden');
           model.state.edit = false;
@@ -45,15 +45,15 @@ class formView {
 
   formValidation() {
     let checkToggleInput, checkDuration;
-    this.#toggleInput =
-      this.#inputType.value === 'running'
-        ? this.#inputCadence
-        : this.#inputElevation;
+    this._toggleInput =
+      this._inputType.value === 'running'
+        ? this._inputCadence
+        : this._inputElevation;
 
-    if (this.checkRequired(this.#toggleInput))
-      checkToggleInput = this.checkInput(this.#toggleInput);
-    if (this.checkRequired(this.#inputDuration))
-      checkDuration = this.checkInput(this.#inputDuration);
+    if (this.checkRequired(this._toggleInput))
+      checkToggleInput = this.checkInput(this._toggleInput);
+    if (this.checkRequired(this._inputDuration))
+      checkDuration = this.checkInput(this._inputDuration);
 
     return checkToggleInput && checkDuration;
   }
@@ -74,7 +74,7 @@ class formView {
   checkInput(inp) {
     const validInp = isFinite(inp.value);
     const positiveNum = inp.value > 0;
-    const type = this.#inputType.value;
+    const type = this._inputType.value;
 
     if (inp.id === 'elevation' && !validInp) {
       this.showError(
@@ -104,10 +104,10 @@ class formView {
   }
 
   toggleElevationField() {
-    this.#inputElevation
+    this._inputElevation
       .closest('.form__row')
       .classList.toggle('form__row--hidden');
-    this.#inputCadence
+    this._inputCadence
       .closest('.form__row')
       .classList.toggle('form__row--hidden');
   }
@@ -127,9 +127,9 @@ class formView {
 
   getFormValues() {
     const formValues = {};
-    formValues[this.#toggleInput.id] = this.#toggleInput.value;
-    formValues.duration = this.#inputDuration.value;
-    formValues.type = this.#inputType.value;
+    formValues[this._toggleInput.id] = this._toggleInput.value;
+    formValues.duration = this._inputDuration.value;
+    formValues.type = this._inputType.value;
     return formValues;
   }
 }
