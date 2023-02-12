@@ -38,7 +38,6 @@ export const getLocation = async (coords, pos = 'starter') => {
       `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
     );
     if (pos === 'starter') {
-      console.log(geoData);
       state.location.starterLocationStreet = geoData.address.road
         ? geoData.address.road
         : '------';
@@ -48,7 +47,6 @@ export const getLocation = async (coords, pos = 'starter') => {
       state.location.starterLocationCountry = geoData.address.country;
     }
     if (pos === 'end') {
-      console.log(geoData);
       state.location.endLocationStreet = geoData.address.road
         ? geoData.address.road
         : '----';
@@ -79,10 +77,8 @@ export const getWeather = async coords => {
   }
 };
 
-const controlBtns = document.querySelectorAll('.controls__btn');
-const controls = document.querySelector('body');
-
-export const createSpanEffect = function () {
+export const createSpanEffect = () => {
+  const controlBtns = document.querySelectorAll('.controls__btn');
   controlBtns.forEach(btn => {
     btn.addEventListener('click', e => {
       let x = e.offsetX + 'px';
@@ -103,61 +99,38 @@ export const getWorkoutTime = async (min, date) => {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   const inputTime = document.querySelector('.form__input--time');
+  // Convert workout duration on ms and create variables
   let durationMs = +min * 60 * 1000;
   let currentTime, endWorkoutTime, startDate, endDate, startMinutes, endMinutes;
 
-  if (inputTime.type === 'text' || !inputTime.value) {
+  // Set current time accroding to input type
+  if (inputTime.type === 'text' || !inputTime.value)
     currentTime = date ? date : Date.now();
-    endWorkoutTime = currentTime + durationMs;
-    startDate = new Date(currentTime);
-    endDate = new Date(endWorkoutTime);
+  else currentTime = +new Date(inputTime.value);
 
-    startMinutes =
-      startDate.getSeconds() < 31
-        ? (startDate.getMinutes() + '').padStart(2, 0)
-        : (startDate.getMinutes() + 1 + '').padStart(2, 0);
-    endMinutes =
-      endDate.getSeconds() < 31
-        ? (endDate.getMinutes() + '').padStart(2, 0)
-        : (endDate.getMinutes() + 1 + '').padStart(2, 0);
-
-    state.time.startWorkoutDate = `${
-      months[startDate.getMonth()]
-    } ${startDate.getDate()}`;
-    state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
-
-    state.time.endWorkoutDate = `${
-      months[endDate.getMonth()]
-    } ${startDate.getDate()}`;
-    state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
-  } else {
-    currentTime = +new Date(inputTime.value);
-    endWorkoutTime = currentTime + durationMs;
-    startDate = new Date(currentTime);
-    endDate = new Date(endWorkoutTime);
-
-    startMinutes =
-      startDate.getSeconds() < 31
-        ? (startDate.getMinutes() + '').padStart(2, 0)
-        : (startDate.getMinutes() + 1 + '').padStart(2, 0);
-    endMinutes =
-      endDate.getSeconds() < 31
-        ? (endDate.getMinutes() + '').padStart(2, 0)
-        : (endDate.getMinutes() + 1 + '').padStart(2, 0);
-
-    state.time.startWorkoutDate = `${
-      months[startDate.getMonth()]
-    } ${startDate.getDate()}`;
-    state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
-
-    state.time.endWorkoutDate = `${
-      months[endDate.getMonth()]
-    } ${startDate.getDate()}`;
-    state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
-
-    console.log(new Date(inputTime.value));
-  }
-
+  endWorkoutTime = currentTime + durationMs;
+  startDate = new Date(currentTime);
+  endDate = new Date(endWorkoutTime);
+  // Minutes to pattern 2 signs '00'
+  startMinutes =
+    startDate.getSeconds() < 31
+      ? (startDate.getMinutes() + '').padStart(2, 0)
+      : (startDate.getMinutes() + 1 + '').padStart(2, 0);
+  endMinutes =
+    endDate.getSeconds() < 31
+      ? (endDate.getMinutes() + '').padStart(2, 0)
+      : (endDate.getMinutes() + 1 + '').padStart(2, 0);
+  // Get start/end workout date
+  state.time.startWorkoutDate = `${
+    months[startDate.getMonth()]
+  } ${startDate.getDate()}`;
+  state.time.endWorkoutDate = `${
+    months[endDate.getMonth()]
+  } ${endDate.getDate()}`;
+  // Get start/end workout time
+  state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
+  state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
+  // Save start/end of workout date in ms
   state.time.startWorkoutMs = currentTime;
   state.time.endWorkoutMs = endWorkoutTime;
 };
