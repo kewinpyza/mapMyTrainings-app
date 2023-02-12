@@ -1,8 +1,8 @@
-import { MAP_ZOOM_LEVEL } from '../config';
+import { MAP_ZOOM_LEVEL, PitchToggle, MapboxGLButtonControl } from '../config';
 import { AJAX } from '../helpers';
 import View from './View';
+import workoutsView from './workoutsView';
 import * as model from '../model';
-// import markerIcon from 'url:../../images/marker.png';
 
 class mapView extends View {
   _mapData;
@@ -38,9 +38,6 @@ class mapView extends View {
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this._mapData.currentPosition, // starting position [lng, lat]
       zoom: MAP_ZOOM_LEVEL, // starting zoom
-      // pitch: 45,
-      // bearing: -17.6,
-      // antialias: true,
     });
 
     // Add handle click outside map
@@ -54,7 +51,6 @@ class mapView extends View {
         this._form.classList.add('hidden');
         this._myMarker.remove();
         this._myMarker = '';
-        /*
         if (this._startMarker) {
           this._startMarker.remove();
           this._startMarker = '';
@@ -66,7 +62,6 @@ class mapView extends View {
         this._inputElevation
           .closest('.form__row')
           .classList.add('form__row--hidden');
-        */
         await this.renderPath(
           this._mapData.currentPosition,
           this._mapData.currentPosition
@@ -91,6 +86,7 @@ class mapView extends View {
       this._map.addControl(new mapboxgl.FullscreenControl());
       // Add zoom and rotation controls to the map
       this._map.addControl(new mapboxgl.NavigationControl());
+      this.addButtonsToMap();
       // Disables the "double click to zoom" interaction
       this._map.doubleClickZoom.disable();
       // Make fake path which start and end at the same point
@@ -165,6 +161,19 @@ class mapView extends View {
         labelLayerId
       );
     });
+  }
+
+  addButtonsToMap() {
+    const currentPosBtn = new MapboxGLButtonControl({
+      className: 'mapbox-gl-draw-location',
+      title: 'Show your position',
+      eventHandler: this.showYourLocation.bind(this),
+    });
+    this._map.addControl(currentPosBtn, 'top-left');
+    this._map.addControl(
+      new PitchToggle({ minpitchzoom: MAP_ZOOM_LEVEL }),
+      'top-left'
+    );
   }
 
   async _showForm(mapEvent) {

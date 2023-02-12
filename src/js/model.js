@@ -49,13 +49,11 @@ export const getLocation = async (coords, pos = 'starter') => {
     if (pos === 'end') {
       state.location.endLocationStreet = geoData.address.road
         ? geoData.address.road
-        : '----';
+        : '------';
       state.location.endLocationCity = geoData.address.city
         ? geoData.address.city
         : geoData.address.municipality;
-      state.location.endLocationCountry = !geoData.address.country
-        ? '-----'
-        : geoData.address.country;
+      state.location.endLocationCountry = geoData.address.country;
     }
   } catch (err) {
     throw err;
@@ -121,12 +119,12 @@ export const getWorkoutTime = async (min, date) => {
       ? (endDate.getMinutes() + '').padStart(2, 0)
       : (endDate.getMinutes() + 1 + '').padStart(2, 0);
   // Get start/end workout date
-  state.time.startWorkoutDate = `${
+  state.time.startWorkoutDate = `${startDate.getDate()} ${
     months[startDate.getMonth()]
-  } ${startDate.getDate()}`;
-  state.time.endWorkoutDate = `${
+  } '${(startDate.getFullYear() + '').slice(-2)}`;
+  state.time.endWorkoutDate = `${endDate.getDate()} ${
     months[endDate.getMonth()]
-  } ${endDate.getDate()}`;
+  } '${(endDate.getFullYear() + '').slice(-2)}`;
   // Get start/end workout time
   state.time.startWorkout = `${startDate.getHours()}:${startMinutes}`;
   state.time.endWorkout = `${endDate.getHours()}:${endMinutes}`;
