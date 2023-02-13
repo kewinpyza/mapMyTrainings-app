@@ -325,8 +325,6 @@ class mapView extends View {
         this._map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
-          duration: 2000,
-          essential: true,
         });
       })
       .addTo(this._map);
@@ -365,8 +363,6 @@ class mapView extends View {
         this._map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
-          duration: 2000,
-          essential: true,
         });
       })
       .addTo(this._map);
@@ -405,8 +401,6 @@ class mapView extends View {
         this._map.flyTo({
           center: [coords[0], coords[1]],
           zoom: MAP_ZOOM_LEVEL,
-          duration: 2000,
-          essential: true,
         });
       })
       .addTo(this._map);
@@ -446,8 +440,30 @@ class mapView extends View {
     await this.renderPath(workout.startCoords, workout.endCoords);
 
     this._map.fitBounds(bound, {
-      padding: { top: 150, bottom: 25, left: 125, right: 125 },
+      padding: { top: 135, bottom: 15, left: 110, right: 125 },
     });
+  }
+
+  async overviewAllMarkers() {
+    if (model.state.edit) return;
+    if (model.workouts.length === 0) return;
+    let allLatitudes = model.workouts.map(workout => workout.endCoords[0]);
+    let allLongitudes = model.workouts.map(workout => workout.endCoords[1]);
+    let minLat = Math.min(...allLatitudes);
+    let maxLat = Math.max(...allLatitudes);
+    let minLng = Math.min(...allLongitudes);
+    let maxLng = Math.max(...allLongitudes);
+    this._map.fitBounds(
+      [
+        [maxLat, minLng],
+        [minLat, maxLng],
+      ],
+      {
+        padding: { top: 135, bottom: 15, left: 110, right: 125 },
+      }
+    );
+    if (this._startMarkerPopup) this._startMarkerPopup.remove();
+    await this.removeSetUpMarkers();
   }
 
   async showYourLocation() {
@@ -457,8 +473,6 @@ class mapView extends View {
         this._mapData.currentPosition[1],
       ],
       zoom: MAP_ZOOM_LEVEL,
-      // duration: 2000,
-      // essential: true,
     });
 
     await this.renderPath(
@@ -533,6 +547,25 @@ class mapView extends View {
       .setHTML(markup)
       .addTo(this._map);
 
+    if (index === 0) {
+      const startMarker = document.createElement('div');
+      startMarker.className = 'starter-icon';
+      this._startMarkerPopup = new mapboxgl.Marker({
+        element: startMarker,
+        offset: [0, -25],
+      })
+        .setLngLat(coords)
+        .setPopup(popup)
+        .onClick(() => {
+          this._map.flyTo({
+            center: [coords[0], coords[1]],
+            zoom: MAP_ZOOM_LEVEL,
+          });
+        })
+        .addTo(this._map);
+      this._startMarkerPopup.togglePopup();
+    }
+
     if (index === 1) {
       if (this._preserveMarker) this._preserveMarker.remove();
       const endMarker = document.createElement('div');
@@ -547,35 +580,12 @@ class mapView extends View {
           this._map.flyTo({
             center: [coords[0], coords[1]],
             zoom: MAP_ZOOM_LEVEL,
-            duration: 2000,
-            essential: true,
           });
         })
         .addTo(this._map);
       this._preserveMarkerSaved.togglePopup();
 
       return this._preserveMarkerSaved;
-    }
-
-    if (index === 0) {
-      const startMarker = document.createElement('div');
-      startMarker.className = 'starter-icon';
-      this._startMarkerPopup = new mapboxgl.Marker({
-        element: startMarker,
-        offset: [0, -25],
-      })
-        .setLngLat(coords)
-        .setPopup(popup)
-        .onClick(() => {
-          this._map.flyTo({
-            center: [coords[0], coords[1]],
-            duration: 2000,
-            essential: true,
-            zoom: MAP_ZOOM_LEVEL,
-          });
-        })
-        .addTo(this._map);
-      this._startMarkerPopup.togglePopup();
     }
   }
 }

@@ -11,7 +11,8 @@ class buttonsApp {
     this._clearWorkoutsBtn.addEventListener('click', () => handler());
   }
 
-  clearWorkouts() {
+  clearWorkouts(workouts) {
+    if (workouts.length === 0) return;
     localStorage.removeItem('workouts');
     setTimeout(() => {
       location.reload();

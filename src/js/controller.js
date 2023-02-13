@@ -146,8 +146,12 @@ const controlSettings = (e, element) => {
   }
 };
 
-const controlButtons = () => {
-  buttonsApp.clearWorkouts();
+const controlClearButton = () => {
+  buttonsApp.clearWorkouts(model.workouts);
+};
+
+const controlOverviewButton = () => {
+  mapView.overviewAllMarkers();
 };
 
 const controlWorkoutView = async e => {
@@ -169,8 +173,8 @@ const init = async () => {
   formView.renderForm(controlForm, controlEditForm);
   workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
-  // buttonsApp.addHandlerOverview(controlButtons);
-  buttonsApp.addHandlerClear(controlButtons);
+  buttonsApp.addHandlerOverview(controlOverviewButton);
+  buttonsApp.addHandlerClear(controlClearButton);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
   settingsDropdown.addHandlerSettings(controlSettings);

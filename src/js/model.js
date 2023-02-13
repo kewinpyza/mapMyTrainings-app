@@ -248,8 +248,3 @@ export const getLocalStorage = () => {
   if (!data) return;
   workouts = data;
 };
-
-// export const clearData = () => {
-//   localStorage.removeItem('workouts');
-//   location.reload();
-// };
