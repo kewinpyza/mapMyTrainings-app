@@ -237,7 +237,7 @@ class workoutsView {
     // Remove workout marker from map
     mapView.removeMarkersEdit(workoutDeleted);
     // Remove workout path
-    await mapView.removeSetUpMarker();
+    await mapView.removeSetUpMarkers();
     // Clear workout marker from data
     model.markers.splice(markerDeletedIndex, 1);
     workouts.splice(workoutDeletedIndex, 1);

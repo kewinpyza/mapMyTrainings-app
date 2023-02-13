@@ -1,7 +1,7 @@
 import { MAP_ZOOM_LEVEL, PitchToggle, MapboxGLButtonControl } from '../config';
 import { AJAX } from '../helpers';
 import View from './View';
-import workoutsView from './workoutsView';
+import buttonsApp from './buttonsAppView';
 import * as model from '../model';
 
 class mapView extends View {
@@ -89,6 +89,8 @@ class mapView extends View {
       this.addButtonsToMap();
       // Disables the "double click to zoom" interaction
       this._map.doubleClickZoom.disable();
+      // Span effect buttons
+      buttonsApp.createSpanEffect();
       // Make fake path which start and end at the same point
       await this.renderPath(
         this._mapData.currentPosition,

@@ -38,20 +38,34 @@ export const getLocation = async (coords, pos = 'starter') => {
       `If some error occurs, just try to reload the page again. I'm using this API for free, so there can be a data fetch limit at once.`
     );
     if (pos === 'starter') {
+      console.log(geoData.address);
       state.location.starterLocationStreet = geoData.address.road
         ? geoData.address.road
-        : '------';
+        : geoData.address.municipality
+        ? geoData.address.municipality
+        : geoData.address.county;
       state.location.starterLocationCity = geoData.address.city
         ? geoData.address.city
+        : geoData.address.town
+        ? geoData.address.town
+        : geoData.address.village
+        ? geoData.address.village
         : geoData.address.municipality;
       state.location.starterLocationCountry = geoData.address.country;
     }
     if (pos === 'end') {
+      console.log(geoData.address);
       state.location.endLocationStreet = geoData.address.road
         ? geoData.address.road
-        : '------';
+        : geoData.address.municipality
+        ? geoData.address.municipality
+        : geoData.address.county;
       state.location.endLocationCity = geoData.address.city
         ? geoData.address.city
+        : geoData.address.town
+        ? geoData.address.town
+        : geoData.address.village
+        ? geoData.address.village
         : geoData.address.municipality;
       state.location.endLocationCountry = geoData.address.country;
     }
@@ -73,23 +87,6 @@ export const getWeather = async coords => {
   } catch (err) {
     throw err;
   }
-};
-
-export const createSpanEffect = () => {
-  const controlBtns = document.querySelectorAll('.controls__btn');
-  controlBtns.forEach(btn => {
-    btn.addEventListener('click', e => {
-      let x = e.offsetX + 'px';
-      let y = e.offsetY + 'px';
-
-      const spanEffect = document.createElement('span');
-      spanEffect.classList.add('span-effect');
-      spanEffect.style.left = x;
-      spanEffect.style.top = y;
-
-      btn.append(spanEffect);
-    });
-  });
 };
 
 export const getWorkoutTime = async (min, date) => {
@@ -252,7 +249,7 @@ export const getLocalStorage = () => {
   workouts = data;
 };
 
-export const clearData = () => {
-  localStorage.removeItem('workouts');
-  location.reload();
-};
+// export const clearData = () => {
+//   localStorage.removeItem('workouts');
+//   location.reload();
+// };

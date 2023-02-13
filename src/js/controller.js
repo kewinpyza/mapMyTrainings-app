@@ -4,6 +4,7 @@ import mapView from './views/mapView';
 import formView from './views/formView';
 import workoutsView from './views/workoutsView';
 import settingsDropdown from './views/settingsDropdown';
+import buttonsApp from './views/buttonsAppView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -145,6 +146,10 @@ const controlSettings = (e, element) => {
   }
 };
 
+const controlButtons = () => {
+  buttonsApp.clearWorkouts();
+};
+
 const controlWorkoutView = async e => {
   try {
     await mapView.moveToWorkoutPosition(e, model.workouts);
@@ -161,10 +166,11 @@ const controlMostLiked = e => {
 const init = async () => {
   await controlMap();
   controlWorkout();
-  model.createSpanEffect();
   formView.renderForm(controlForm, controlEditForm);
   workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
+  // buttonsApp.addHandlerOverview(controlButtons);
+  buttonsApp.addHandlerClear(controlButtons);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
   settingsDropdown.addHandlerSettings(controlSettings);
