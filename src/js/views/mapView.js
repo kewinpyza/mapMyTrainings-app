@@ -445,8 +445,6 @@ class mapView extends View {
   }
 
   async overviewAllMarkers() {
-    if (model.state.edit) return;
-    if (model.workouts.length === 0) return;
     let allLatitudes = model.workouts.map(workout => workout.endCoords[0]);
     let allLongitudes = model.workouts.map(workout => workout.endCoords[1]);
     let minLat = Math.min(...allLatitudes);

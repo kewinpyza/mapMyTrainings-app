@@ -123,8 +123,6 @@ const controlEditForm = async () => {
     // Save workout in local storage
     model.setLocalStorage(model.workouts);
     delete model.state.editIndex;
-    // update markup on load
-    // workoutsView.updateMarkupOnMap();
   } catch (err) {
     mapView.renderError(err);
   }
@@ -146,12 +144,14 @@ const controlSettings = (e, element) => {
   }
 };
 
-const controlClearButton = () => {
-  buttonsApp.clearWorkouts(model.workouts);
-};
+const controlClearButton = () => buttonsApp.showConfirmationWindow();
 
 const controlOverviewButton = () => {
-  mapView.overviewAllMarkers();
+  if (model.state.edit) return;
+  if (model.workouts.length === 0) return;
+  model.workouts.length === 1
+    ? mapView.showYourLocation()
+    : mapView.overviewAllMarkers();
 };
 
 const controlWorkoutView = async e => {
@@ -174,7 +174,7 @@ const init = async () => {
   workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
   buttonsApp.addHandlerOverview(controlOverviewButton);
-  buttonsApp.addHandlerClear(controlClearButton);
+  buttonsApp.addHandlerClear(controlClearButton, model.workouts);
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
   settingsDropdown.addHandlerSettings(controlSettings);
