@@ -117,7 +117,7 @@
           <input
             type="checkbox"
             class="controls__hamburger--checkbox"
-            id="sort-toggle"
+            id="hamburger-toggle"
           />
           <label class="controls__hamburger--button" for="sort-toggle">
             <span class="controls__hamburger--icon">&nbsp;</span>
@@ -125,29 +125,36 @@
           <div class="controls__hamburger--container">&nbsp;</div>
           <nav class="controls__hamburger--nav controls__hamburger--nav-active">
             <ul class="controls__hamburger--list">
-              <li>
-                <a href="#1" class="controls__hamburger--link">All types</a>
+              <li class="controls__hamburger--item sort__all">
+                <a href="javascript:;" class="controls__hamburger--link">All types</a>
               </li>
-              <li>
-                <a href="#2" class="controls__hamburger--link"> 🏃‍♂️ Running</a>
+              <li class="controls__hamburger--item sort__running">
+                <a href="javascript:;" class="controls__hamburger--link"> 🏃‍♂️ Running</a>
               </li>
-              <li>
-                <a href="#3" class="controls__hamburger--link"> 🚴‍♀️ Cycling</a>
+              <li class="controls__hamburger--item sort__cycling">
+                <a href="javascript:;" class="controls__hamburger--link"> 🚴‍♀️ Cycling</a>
               </li>
-              <li>
-                <a href="#4" class="controls__hamburger--link">🤩 Most liked</a>
+              <li class="controls__hamburger--item sort__mliked">
+                <a href="javascript:;" class="controls__hamburger--link">🤩 Most liked</a>
               </li>
             </ul>
           </nav>
         </div>
       </div>
 
-      <ul class="sort__container hidden">
-        <li class="sort__btn"><a class="sort__btn--icon" href="#">📆</a></li>
-        <li class="sort__btn"><a class="sort__btn--icon" href="#">🏃‍♂️</a></li>
-        <li class="sort__btn"><a class="sort__btn--icon" href="#">🚴‍♀️</a></li>
-        <li class="sort__btn"><a class="sort__btn--icon" href="#">⏱</a></li>
-        <li class="sort__btn"><a class="sort__btn--icon" href="#">⚡</a></li>
+      <ul class="sort__container zero-height">
+        <li class="sort__btn sort__btn--date">
+          <a href="javascript:;">📆</a>
+        </li>
+        <li class="sort__btn sort__btn--distance">
+          <a href="javascript:;">🏁</a>
+        </li>
+        <li class="sort__btn sort__btn--duration">
+          <a href="javascript:;">⏱</a>
+        </li>
+        <li class="sort__btn sort__btn--pace">
+          <a href="javascript:;">⚡</a>
+        </li>
       </ul>
       <hr class="sort__devider" />
 

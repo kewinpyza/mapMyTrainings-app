@@ -5,6 +5,7 @@ import formView from './views/formView';
 import workoutsView from './views/workoutsView';
 import settingsDropdown from './views/settingsDropdown';
 import buttonsApp from './views/buttonsAppView';
+import sortView from './views/sortView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -162,6 +163,14 @@ const controlWorkoutView = async e => {
   }
 };
 
+const controlHamburger = e => {
+  if (model.state.edit) return;
+  sortView.removeSelectedUnderline();
+  sortView.sortStateHamburger(e);
+};
+
+const controlSort = e => {};
+
 const controlMostLiked = e => {
   model.bookmarkMostLikedWorkout(e, model.workouts, model.bookmarks);
   model.setLocalStorage(model.workouts);
@@ -170,6 +179,7 @@ const controlMostLiked = e => {
 const init = async () => {
   await controlMap();
   controlWorkout();
+  sortView.toggleSortButtons();
   formView.renderForm(controlForm, controlEditForm);
   workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
@@ -178,5 +188,7 @@ const init = async () => {
   settingsDropdown.hideSettingsDropdown(controlDropdown);
   settingsDropdown.showSettingsDropdown(controlDropdown);
   settingsDropdown.addHandlerSettings(controlSettings);
+  sortView.addHandlerSort(controlSort);
+  sortView.addHandlerHamburger(controlHamburger);
 };
 init();

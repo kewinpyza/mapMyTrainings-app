@@ -7,7 +7,7 @@ class buttonsApp {
   _noBtn = document.querySelector('.confirmation__window--button-no');
 
   addHandlerOverview(handler) {
-    this._overviewBtn.addEventListener('click', e => handler(e));
+    this._overviewBtn.addEventListener('click', () => handler());
   }
   addHandlerClear(handler, workouts) {
     this._clearWorkoutsBtn.addEventListener('click', () => {

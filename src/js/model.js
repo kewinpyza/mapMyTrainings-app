@@ -8,6 +8,8 @@ export const state = {
   location: {},
   weather: {},
   edit: false,
+  sortOption: false,
+  sortType: 'All',
 };
 export let workouts = [];
 export let markers = [];
