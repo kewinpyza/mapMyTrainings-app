@@ -1,6 +1,7 @@
 import mapView from './mapView';
 import img from 'url:../../images/marker.png';
 import * as model from '../model';
+import sortView from './sortView';
 
 class workoutsView {
   _form = document.querySelector('.form');
@@ -162,6 +163,80 @@ class workoutsView {
     `;
   }
 
+  sortHamburgerType(type) {
+    this._workoutsContainer
+      .querySelectorAll('.workout')
+      .forEach(w => w.remove());
+
+    if (type === 'All') {
+      model.workouts.forEach(workout => this.renderWorkout(workout));
+      const stateHtml = sortView.generateAppbarState(model.workouts);
+      mapView.updateAppbarState(stateHtml);
+    }
+    if (type === '🏃‍♂️ Running') {
+      const workoutsRunning = model.workouts.filter(w => w.type === 'running');
+      workoutsRunning.forEach(workout => this.renderWorkout(workout));
+      const stateHtml = sortView.generateAppbarState(workoutsRunning);
+      mapView.updateAppbarState(stateHtml);
+    }
+    if (type === '🚴‍♀️ Cycling') {
+      const workoutsCycling = model.workouts.filter(w => w.type === 'cycling');
+      workoutsCycling.forEach(workout => this.renderWorkout(workout));
+      const stateHtml = sortView.generateAppbarState(workoutsCycling);
+      mapView.updateAppbarState(stateHtml);
+    }
+    if (type === '🤩 Most liked') {
+      model.bookmarks.forEach(workout => this.renderWorkout(workout));
+      const stateHtml = sortView.generateAppbarState(model.bookmarks);
+      mapView.updateAppbarState(stateHtml);
+    }
+  }
+
+  allWorkoutsView() {
+    const workoutsEl = document.querySelectorAll('.workout');
+    let workoutsIdArr = [];
+    const allWorkoutsArray = Array.from(workoutsEl);
+    workoutsIdArr = allWorkoutsArray.map(w => w.dataset.id);
+    return model.workouts.filter(workout => workoutsIdArr.includes(workout.id));
+  }
+
+  sortWorkoutsBy(type) {
+    const workoutEl = document.querySelector('.workout');
+    if (!workoutEl) return;
+    let workoutsArr = this.allWorkoutsView();
+    if (workoutsArr.length === 0) return;
+    let sortedWorkoutsArr;
+    if (type == 'date') {
+      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
+        return b.time.startWorkoutMs - a.time.startWorkoutMs;
+      });
+    }
+    if (type == 'distance') {
+      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
+        return b.distance - a.distance;
+      });
+    }
+    if (type == 'duration') {
+      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
+        return b.duration - a.duration;
+      });
+    }
+    if (type == 'pace') {
+      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
+        a = a.pace ? +a.pace : +a.speed;
+        b = b.pace ? +b.pace : +b.speed;
+        return b - a;
+      });
+    }
+
+    let workoutsMarkup = sortedWorkoutsArr.reduce((markup, workout) => {
+      return (markup += this.renderMarkup(workout));
+    }, '');
+
+    console.log(sortedWorkoutsArr);
+    mapView.updateWorkout(workoutsMarkup);
+  }
+
   async editWorkout(e, workouts) {
     const workoutEl = e.target.closest('.workout');
     const workoutEdited = workouts.find(w => w.id === workoutEl.dataset.id);
@@ -244,6 +319,7 @@ class workoutsView {
     // Center View to current position
     await mapView.showYourLocation();
     model.setLocalStorage(model.workouts);
+    this.sortHamburgerType(model.state.sortType);
   }
 }
 

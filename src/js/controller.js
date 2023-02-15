@@ -30,6 +30,8 @@ const controlWorkout = () => {
     });
   });
   model.initialBookmarks(model.workouts);
+  const stateSectionHtml = sortView.generateAppbarState(model.workouts);
+  mapView.updateAppbarState(stateSectionHtml);
 };
 
 const controlForm = async function () {
@@ -67,6 +69,8 @@ const controlForm = async function () {
     workoutsView.renderWorkout(createNewWorkout);
     // Save workout in local storage
     model.setLocalStorage(model.workouts);
+    const stateSectionHtml = sortView.generateAppbarState(model.workouts);
+    mapView.updateAppbarState(stateSectionHtml);
   } catch (err) {
     mapView.renderError(err);
   }
@@ -124,6 +128,7 @@ const controlEditForm = async () => {
     // Save workout in local storage
     model.setLocalStorage(model.workouts);
     delete model.state.editIndex;
+    workoutsView.updateWorkoutMarkupOnScreen();
   } catch (err) {
     mapView.renderError(err);
   }
@@ -166,10 +171,24 @@ const controlWorkoutView = async e => {
 const controlHamburger = e => {
   if (model.state.edit) return;
   sortView.removeSelectedUnderline();
-  sortView.sortStateHamburger(e);
+  sortView.selectSortTypeHamburger(e);
+  workoutsView.sortHamburgerType(model.state.sortType);
 };
 
-const controlSort = e => {};
+const controlSort = e => {
+  if (model.state.edit) return;
+  const sortOption = e.target.closest('.sort__btn');
+  sortView.removeSelectedUnderline();
+  e.target.closest('.sort__btn').classList.add('selected');
+  if (sortOption.classList.contains('sort__btn--date'))
+    workoutsView.sortWorkoutsBy('date');
+  if (sortOption.classList.contains('sort__btn--distance'))
+    workoutsView.sortWorkoutsBy('distance');
+  if (sortOption.classList.contains('sort__btn--duration'))
+    workoutsView.sortWorkoutsBy('duration');
+  if (sortOption.classList.contains('sort__btn--pace'))
+    workoutsView.sortWorkoutsBy('pace');
+};
 
 const controlMostLiked = e => {
   model.bookmarkMostLikedWorkout(e, model.workouts, model.bookmarks);

@@ -26,4 +26,35 @@ export default class View {
       closer.addEventListener('click', this._toggleError.bind(this))
     );
   }
+
+  updateWorkout(markup) {
+    const newDOM = document.createRange().createContextualFragment(markup);
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    console.log(newElements);
+    const curElements = Array.from(
+      this._workoutsContainer.querySelectorAll('*')
+    ).slice(32);
+    console.log(curElements);
+
+    newElements.forEach((newEl, i) => {
+      let curEl = curElements[i];
+      if (!newEl.isEqualNode(curEl)) {
+        curEl.outerHTML = newEl.outerHTML;
+      }
+    });
+  }
+
+  updateAppbarState(html) {
+    const stateSection = document.querySelector('.state');
+    const newDOM = document.createRange().createContextualFragment(html);
+    const newElements = Array.from(newDOM.querySelectorAll('*')).slice(1);
+    const currentElements = Array.from(stateSection.querySelectorAll('*'));
+    console.log(newElements);
+    console.log(currentElements);
+
+    newElements.forEach((newEl, i) => {
+      let curEl = currentElements[i];
+      if (!newEl.isEqualNode(curEl)) curEl.outerHTML = newEl.outerHTML;
+    });
+  }
 }

@@ -5,13 +5,17 @@ class sortView {
   _sortContainer = document.querySelector('.sort__container');
 
   addHandlerSort(handler) {
-    // const sortDate = document.querySelector('.sort__btn--date');
-    // const sortDistance = document.querySelector('.sort__btn--distance');
-    // const sortDuration = document.querySelector('.sort__btn--duration');
-    // const sortPace = document.querySelector('.sort__btn--pace');
-    const sortButtons = document.querySelectorAll('.sort__btn');
+    const sortDate = document.querySelector('.sort__btn--date');
+    const sortDistance = document.querySelector('.sort__btn--distance');
+    const sortDuration = document.querySelector('.sort__btn--duration');
+    const sortPace = document.querySelector('.sort__btn--pace');
+    // const sortButtons = document.querySelectorAll('.sort__btn');
 
-    sortButtons.forEach(btn => btn.addEventListener('click', e => handler(e)));
+    // sortButtons.forEach(btn => btn.addEventListener('click', e => handler(e)));
+    sortDate.addEventListener('click', e => handler(e));
+    sortDistance.addEventListener('click', e => handler(e));
+    sortDuration.addEventListener('click', e => handler(e));
+    sortPace.addEventListener('click', e => handler(e));
   }
 
   addHandlerHamburger(handler) {
@@ -26,7 +30,7 @@ class sortView {
     });
   }
 
-  sortStateHamburger(e) {
+  selectSortTypeHamburger(e) {
     const sortTypeAll = e.target.closest('.sort__all');
     const sortTypeRunning = e.target.closest('.sort__running');
     const sortTypeCycling = e.target.closest('.sort__cycling');
@@ -49,8 +53,9 @@ class sortView {
   }
 
   removeSelectedUnderline() {
-    aTagsSort = Array.from(this._sortContainer.getElementsByTagName('a'));
-    aTagsSort.forEach(el => el.classList.remove('selected'));
+    const sortBtns = document.querySelectorAll('.sort__btn');
+    let sortBtnArr = Array.from(sortBtns);
+    sortBtnArr.forEach(el => el.classList.remove('selected'));
   }
 
   generateAppbarState(workouts) {
