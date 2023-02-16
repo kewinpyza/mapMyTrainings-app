@@ -1,0 +1,47 @@
+.icon {
+  &__settings {
+    font-size: 1.7rem;
+    margin-top: 0.2rem;
+    grid-column: 4 / -1;
+    grid-row: 1 / 2;
+    justify-self: end;
+    position: relative;
+    transition: all 0.3s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &__fog {
+    height: 5.5rem;
+  }
+
+  &__card {
+    height: 2.5rem;
+    margin-right: 0.7rem;
+  }
+
+  &__edit,
+  &__delete {
+    font-size: 1.6rem;
+    margin-right: 0.5rem;
+    width: 2rem;
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+}
+
+.starter-icon {
+  width: 2.8rem;
+  height: 4rem;
+  background-size: cover;
+  background-image: url(../images/startMarker.png);
+}
+
+.marker-icon {
+  width: 2.8rem;
+  height: 4rem;
+  background-size: cover;
+  background-image: url(../images/marker.png);
+}

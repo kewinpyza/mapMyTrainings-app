@@ -1,7 +1,80 @@
 /* MAP */
 #map {
   height: 100%;
+  background-color: $color-light-1;
   flex: 1;
   position: relative;
-  background-color: $color-light-1;
+}
+
+// Change mapbox popup style
+.mapboxgl {
+  &-popup {
+    &-close-button {
+      display: none;
+    }
+
+    &-anchor-top &-tip {
+      border-bottom-color: $color-grey-1 !important;
+    }
+    &-anchor-left &-tip {
+      border-right-color: $color-grey-1 !important;
+    }
+    &-anchor-right &-tip {
+      border-left-color: $color-grey-1 !important;
+    }
+    &-anchor-bottom &-tip {
+      border-top-color: $color-grey-1 !important;
+    }
+
+    &-content {
+      background-color: $color-grey-1 !important;
+      padding: 0 !important;
+      border: none !important;
+
+      & .running-popup {
+        width: auto;
+        font: 500 1rem/1.5rem 'Open Sans', sans-serif;
+        text-align: center;
+        color: $color-light-2;
+        padding: 0.8rem;
+        border-left: 5px solid $color-running;
+        border-radius: 4px;
+
+        & > *:not(:last-child) {
+          margin-bottom: 0.4rem;
+        }
+      }
+
+      & .cycling-popup {
+        width: auto;
+        font: 500 1rem/1.5rem 'Open Sans', sans-serif;
+        text-align: center;
+        color: $color-light-2;
+        padding: 0.8rem;
+        border-left: 5px solid $color-cycling;
+        border-radius: 4px;
+
+        & > *:not(:last-child) {
+          margin-bottom: 0.4rem;
+        }
+      }
+    }
+  }
+}
+
+.mapbox-gl-draw-location {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem 2rem;
+  pointer-events: auto;
+  background-image: url(../images/SVG/location-crosshairs.svg);
+}
+
+/* // From: Pitch toggle control for Mapbox GL JS — http://fuzzytolerance.info/blog/2017/01/30/Pitch-toggle-control-for-Mapbox-GL-JS/ */
+.mapboxgl-ctrl-pitchtoggle-3d {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+ICAgIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLEFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmOyBmb250LXdlaWdodDogYm9sZDsgdGV4dC1hbmNob3I6IG1pZGRsZTsiPjNEPC90ZXh0Pjwvc3ZnPg==);
+}
+
+.mapboxgl-ctrl-pitchtoggle-2d {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+ICAgIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLEFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmOyBmb250LXdlaWdodDogYm9sZDsgdGV4dC1hbmNob3I6IG1pZGRsZTsiPjJEPC90ZXh0Pjwvc3ZnPg==);
 }

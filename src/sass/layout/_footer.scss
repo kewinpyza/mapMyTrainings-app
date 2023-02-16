@@ -1,15 +1,14 @@
 .copyright {
-  text-align: center;
-  margin-top: auto;
   font-size: 1.4rem;
+  text-align: center;
   color: $color-light-1;
+  margin-top: auto;
 }
 
 .github-link {
   &:link,
   &:visited {
     color: #00a2ff;
-
     transition: all 0.3s ease;
 
     &:hover,

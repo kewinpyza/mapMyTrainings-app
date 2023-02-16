@@ -18,21 +18,21 @@
   cursor: pointer;
   display: grid;
   position: relative;
-  grid-template-columns: repeat(4, 1fr);
   gap: 1rem 1.2rem;
+  grid-template-columns: repeat(4, 1fr);
   transition: all 0.5s;
 
   &:hover,
   &.edited {
-    transform: translateY(-0.3rem);
-    background-color: rgb(244, 244, 244);
     color: $color-grey-2;
+    background-color: #f4f4f4;
     box-shadow: 0 0.6rem 2.4rem rgba(#000, 0.35);
+    transform: translateY(-0.3rem);
   }
 
   &:hover &__unit,
   &.edited &__unit {
-    color: rgb(85, 85, 85);
+    color: #555555;
   }
 
   &__running {
@@ -44,19 +44,19 @@
 
   &__title {
     font-size: 1.5rem;
-    grid-column: 1 / 4;
     font-weight: 700;
+    grid-column: 1 / 4;
     transition: all 0.3s;
 
     &:hover,
     &:hover &--star {
-      color: #ff9900;
+      color: $color-orange--1;
     }
 
     &.bookmark {
-      color: #ff9900;
+      color: $color-orange--1;
       & .workout__title--star {
-        color: #ff9900;
+        color: $color-orange--1;
       }
     }
 
@@ -65,20 +65,20 @@
       height: 2rem;
       border-radius: 50%;
       background-color: $color-light-2;
+      margin-right: 0.7rem;
+      box-shadow: 0 0 0.5rem 0.2rem rgba(#000, 0.2);
       position: relative;
       display: inline-block;
       transform: translateY(0.3rem);
-      margin-right: 0.7rem;
-      box-shadow: 0 0 0.5rem 0.2rem rgba(#000, 0.2);
     }
 
     &--star {
-      position: absolute;
       font-size: 1.4rem;
+      color: $color-grey-2;
+      transform: translate(-50%, -50%);
+      position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      color: $color-grey-2;
       transition: all 0.3s;
     }
   }
@@ -111,9 +111,9 @@
 
   &__unit {
     font-size: 1.1rem;
-    color: $color-light-1;
-    text-transform: uppercase;
     font-weight: 800;
+    text-transform: uppercase;
+    color: $color-light-1;
     transition: all 0.3s;
   }
 
@@ -136,8 +136,8 @@
 
   &__street {
     font-size: 1.5rem;
-    margin-right: 1rem;
     font-weight: 400;
+    margin-right: 1rem;
   }
 
   &__city {
@@ -148,15 +148,15 @@
 
 .weather {
   &__icon {
-    position: relative;
     margin-right: 0.5rem;
+    position: relative;
     bottom: 15%;
   }
   &__text {
+    font-size: 1.1rem;
+    font-weight: 600;
     position: absolute;
     bottom: 0;
     right: 5%;
-    font-size: 1.1rem;
-    font-weight: 600;
   }
 }

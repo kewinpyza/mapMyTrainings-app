@@ -3,11 +3,9 @@
   border-radius: 6px;
   padding: 1.6rem 1.6rem 1rem;
   margin-bottom: 1.6rem;
-
   display: grid;
   grid-template-columns: repeat(20, 1fr);
   gap: 0.6rem 1rem;
-
   transition: all 0.5s, transform 1ms;
 
   &.hidden {
@@ -63,21 +61,29 @@
     &--btn {
       grid-row: 3;
       grid-column: span 4;
-      background-image: linear-gradient(to bottom right, #5de000, #eb7a10);
-      color: #fff;
-      width: 100%;
+      background-image: linear-gradient(
+        to bottom right,
+        $color-green--1,
+        $color-orange--2
+      );
       font-weight: 600;
+      width: 100%;
+      color: #fff;
       padding: 0.5rem 0;
+      border-radius: 10px;
       margin-top: 0.5rem;
       border: none;
       display: flex;
       justify-content: center;
-      border-radius: 10px;
       transition: all 0.3s ease;
 
       &:hover,
       &:active {
-        background-image: linear-gradient(to bottom right, #eb7a10, #5de000);
+        background-image: linear-gradient(
+          to bottom right,
+          $color-orange--2,
+          $color-green--1
+        );
         cursor: pointer;
       }
     }
@@ -88,9 +94,9 @@
   }
 
   &__label {
-    flex: 0 0 45%;
     font-size: 1.5rem;
     font-weight: 600;
+    flex: 0 0 45%;
     &--position-from,
     &--type {
       flex: 0 0 30%;
@@ -107,10 +113,10 @@
   }
 
   &__input {
-    width: 100%;
-    padding: 0.3rem 0.7rem;
     font-family: inherit;
     font-size: 1.3rem;
+    width: 100%;
+    padding: 0.3rem 0.7rem;
     border: none;
     border-radius: 3px;
     background-color: $color-light-2;
@@ -124,25 +130,25 @@
       }
     }
     &--distance {
-      outline: none;
-      background-color: #fff;
       font-size: 1.2rem;
       font-weight: 500;
+      background-color: #fff;
+      outline: none;
     }
 
     &:focus {
-      outline: none;
       background-color: #fff;
+      outline: none;
     }
   }
 }
 
 .validation {
   &__msg {
-    display: grid;
     font-weight: 700;
-    color: #ffb300;
     word-spacing: 0.1rem;
+    color: $color-orange--1;
+    display: grid;
     transition: all 0.7s;
 
     &--duration {

@@ -1,23 +1,38 @@
 .pin__starter {
-  position: relative;
   width: 1.8rem;
   height: 1.8rem;
-  border-radius: 50%;
   background-color: $color-pin-blue;
   border: 2px solid $color-light-2;
+  border-radius: 50%;
+  position: relative;
 
   &::after {
     content: '';
+    background-color: $color-location-circle;
     position: absolute;
-    z-index: -5;
     top: 50%;
     left: 50%;
     border-radius: 50%;
     padding: 1.8rem;
     transform-origin: center;
-    background-color: $color-location-circle;
     animation: locatorScale 1300ms linear infinite;
+    z-index: -5;
   }
 }
 
+@keyframes locatorScale {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
 
+  40% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
