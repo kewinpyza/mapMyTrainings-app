@@ -30,9 +30,9 @@ class Settings {
   }
 
   hideDropdownClickOutside(e) {
-    let dropdownArr = [];
-    const settingsEl = this._parentEl.querySelectorAll('.settings__dropdown');
-    settingsEl.forEach(el => dropdownArr.push(el));
+    let dropdownArr = [
+      ...this._parentEl.querySelectorAll('.settings__dropdown'),
+    ];
     const allHidden = dropdownArr.every(item =>
       item.classList.contains('hidden')
     );

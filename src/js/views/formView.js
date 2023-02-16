@@ -1,4 +1,3 @@
-import mapView from './mapView';
 import { timeout } from '../helpers';
 import { TIMEOUT_SEC } from '../config';
 import * as model from '../model';
@@ -12,10 +11,10 @@ class formView {
   _toggleInput = document.querySelector('.form__input--cadence');
 
   renderForm(form, editForm) {
-    this._inputType.addEventListener('change', () => {
-      this.toggleElevationField();
-      // this.formValidation();
-    });
+    this._inputType.addEventListener(
+      'change',
+      this.toggleElevationField.bind(this)
+    );
 
     this._form.addEventListener('submit', async e => {
       try {
@@ -37,8 +36,7 @@ class formView {
           inputTime.type = 'text';
         }
       } catch (err) {
-        // mapView.renderError(err);
-        console.log(err);
+        mapView.renderError(err);
       }
     });
   }
@@ -74,24 +72,27 @@ class formView {
   checkInput(inp) {
     const validInp = isFinite(inp.value);
     const positiveNum = inp.value > 0;
-    const type = this._inputType.value;
 
-    if (inp.id === 'elevation' && !validInp) {
-      this.showError(
-        inp,
-        `${this.getInputName(inp)} must be a number! Negative is also possible.`
-      );
-      return false;
-    }
-    if (inp.id === 'elevation' && validInp) {
-      this.hideError(inp);
-      return true;
+    if (inp.id === 'elevation') {
+      if (!validInp) {
+        this.showError(
+          inp,
+          `${this.getInputName(
+            inp
+          )} must be a number! Negative is also possible.`
+        );
+        return false;
+      } else {
+        this.hideError(inp);
+        return true;
+      }
     }
     if (!validInp || !positiveNum) {
       this.showError(
         inp,
         `${this.getInputName(inp)} must be a positive number!`
       );
+      return false;
     } else {
       this.hideError(inp);
       return true;

@@ -22,6 +22,7 @@ const controlMap = async function () {
 
 const controlWorkout = () => {
   model.getLocalStorage();
+  console.log(model.workouts, model.markers);
   model.workouts.forEach(workout => {
     workoutsView.renderWorkout(workout);
     model.markers.push({
@@ -30,8 +31,7 @@ const controlWorkout = () => {
     });
   });
   model.initialBookmarks(model.workouts);
-  const stateSectionHtml = sortView.generateAppbarState(model.workouts);
-  mapView.updateAppbarState(stateSectionHtml);
+  mapView.updateAppbarState(model.workouts, model.state.sortType);
 };
 
 const controlForm = async function () {
@@ -69,8 +69,7 @@ const controlForm = async function () {
     workoutsView.renderWorkout(createNewWorkout);
     // Save workout in local storage
     model.setLocalStorage(model.workouts);
-    const stateSectionHtml = sortView.generateAppbarState(model.workouts);
-    mapView.updateAppbarState(stateSectionHtml);
+    mapView.updateAppbarState(model.workouts);
   } catch (err) {
     mapView.renderError(err);
   }
@@ -128,7 +127,6 @@ const controlEditForm = async () => {
     // Save workout in local storage
     model.setLocalStorage(model.workouts);
     delete model.state.editIndex;
-    workoutsView.updateWorkoutMarkupOnScreen();
   } catch (err) {
     mapView.renderError(err);
   }
@@ -179,7 +177,7 @@ const controlSort = e => {
   if (model.state.edit) return;
   const sortOption = e.target.closest('.sort__btn');
   sortView.removeSelectedUnderline();
-  e.target.closest('.sort__btn').classList.add('selected');
+  sortOption.classList.add('selected');
   if (sortOption.classList.contains('sort__btn--date'))
     workoutsView.sortWorkoutsBy('date');
   if (sortOption.classList.contains('sort__btn--distance'))

@@ -27,34 +27,29 @@ export default class View {
     );
   }
 
-  updateWorkout(markup) {
-    const newDOM = document.createRange().createContextualFragment(markup);
-    const newElements = Array.from(newDOM.querySelectorAll('*'));
-    console.log(newElements);
-    const curElements = Array.from(
-      this._workoutsContainer.querySelectorAll('*')
-    ).slice(32);
-    console.log(curElements);
+  updateWorkout(markups) {
+    const newDOM = document.createRange().createContextualFragment(markups);
+    const newElementsArr = [...newDOM.querySelectorAll('*')];
+    console.log(newElementsArr);
+    // slice(32) to remove all form's elements
+    const curElementsArr = [
+      ...this._workoutsContainer.querySelectorAll('*'),
+    ].slice(32);
+    console.log(curElementsArr);
 
-    newElements.forEach((newEl, i) => {
-      let curEl = curElements[i];
-      if (!newEl.isEqualNode(curEl)) {
-        curEl.outerHTML = newEl.outerHTML;
-      }
+    newElementsArr.forEach((newEl, i) => {
+      let currentEl = curElementsArr[i];
+      if (!newEl.isEqualNode(currentEl)) currentEl.outerHTML = newEl.outerHTML;
     });
   }
 
-  updateAppbarState(html) {
-    const stateSection = document.querySelector('.state');
-    const newDOM = document.createRange().createContextualFragment(html);
-    const newElements = Array.from(newDOM.querySelectorAll('*')).slice(1);
-    const currentElements = Array.from(stateSection.querySelectorAll('*'));
-    console.log(newElements);
-    console.log(currentElements);
+  updateAppbarState(workouts, type) {
+    const stateType = document.querySelector('.state__type--text-workout');
+    const workoutsQuantity = document.querySelector(
+      '.state__number--text-quantity'
+    );
 
-    newElements.forEach((newEl, i) => {
-      let curEl = currentElements[i];
-      if (!newEl.isEqualNode(curEl)) curEl.outerHTML = newEl.outerHTML;
-    });
+    if (type) stateType.textContent = type;
+    workoutsQuantity.textContent = workouts.length;
   }
 }

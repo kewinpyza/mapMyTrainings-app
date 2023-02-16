@@ -9,11 +9,11 @@ class mapView extends View {
   _accessToken;
   _clickCount = 0;
   _pathData;
-  _myMarker;
-  _startMarker;
-  _startMarkerPopup;
-  _preserveMarker;
-  _preserveMarkerSaved;
+  _markerMain;
+  _markerStart;
+  _markerStartPopup;
+  _markerPreserved;
+  _markerPreservedSaved;
 
   _map = document.querySelector('#map');
   _form = document.querySelector('.form');
@@ -49,11 +49,11 @@ class mapView extends View {
       ) {
         // Remove marker and path when closing form
         this._form.classList.add('hidden');
-        this._myMarker.remove();
-        this._myMarker = '';
-        if (this._startMarker) {
-          this._startMarker.remove();
-          this._startMarker = '';
+        this._markerMain.remove();
+        this._markerMain = '';
+        if (this._markerStart) {
+          this._markerStart.remove();
+          this._markerStart = '';
         }
         this._form.reset();
         this._inputCadence
@@ -78,13 +78,11 @@ class mapView extends View {
     // Add handle click events on map
     this._map.on('click', this._showForm.bind(this));
     this._map.on('load', async () => {
-      // Add starting pin location on map
+      // Add starting pin location on the map
       this.renderMarker(this._mapData.currentPosition);
-      // Add geocoder to map
+      // Add buttons to the map
       this._map.addControl(geocoder);
-      // Add full screen control on map
       this._map.addControl(new mapboxgl.FullscreenControl());
-      // Add zoom and rotation controls to the map
       this._map.addControl(new mapboxgl.NavigationControl());
       this.addButtonsToMap();
       // Disables the "double click to zoom" interaction
@@ -110,8 +108,8 @@ class mapView extends View {
     if (this._starterPosition.selectedIndex === 1) {
       this.renderMarker(this._mapData.currentPosition, 1);
     } else {
-      this._startMarker.remove();
-      this._startMarker = '';
+      this._markerStart.remove();
+      this._markerStart = '';
       delete this._mapData.startPositionCoords;
       await this.renderPath(
         this._mapData.currentPosition,
@@ -179,10 +177,8 @@ class mapView extends View {
   }
 
   async _showForm(mapEvent) {
-    if (!model.state.edit) {
-      if (this._inputCadence.value) return;
-    }
-    if (this._startMarkerPopup) this._startMarkerPopup.remove();
+    if (model.state.sortType !== 'All') return;
+    if (this._markerStartPopup) this._markerStartPopup.remove();
     await this._showFormDoubleClick(mapEvent);
   }
 
@@ -200,9 +196,9 @@ class mapView extends View {
       this._form.classList.remove('hidden');
       // Placeholder trick on datetime-local
       const dateInput = document.querySelector('.form__input--time');
-      dateInput.onfocus = function (e) {
+      dateInput.addEventListener('focus', function () {
         this.type = 'datetime-local';
-      };
+      });
 
       // Add destination coords to _mapData
       const { lat, lng } = mapEvent.lngLat;
@@ -211,7 +207,7 @@ class mapView extends View {
 
       // Render marker on map and path
       this.renderMarker(this._mapData.destinationCoords, 2);
-      if (this._startMarker) {
+      if (this._markerStart) {
         await this.renderPath(
           this._mapData.startPositionCoords,
           this._mapData.destinationCoords
@@ -289,27 +285,27 @@ class mapView extends View {
 
   async renderMarker(coords, index = 0) {
     if (index === 0) this._renderStartingPin(coords);
-    if (index === 1) this._changeStartingPin(coords);
+    if (index === 1) this._setStartMarker(coords);
     if (index === 2) this._renderMarkerTo(coords);
   }
 
   async _renderMarkerTo(coords) {
-    if (!this._myMarker) {
+    if (!this._markerMain) {
       await this._updateMarkerTo(coords);
     } else {
-      this._myMarker.remove();
-      this._myMarker = '';
+      this._markerMain.remove();
+      this._markerMain = '';
       await this._updateMarkerTo(coords);
     }
   }
 
   _renderStartingPin(coords) {
-    const startingMarkerEl = document.createElement('div');
-    startingMarkerEl.className = 'pin__starter';
-    new mapboxgl.Marker(startingMarkerEl).setLngLat(coords).addTo(this._map);
+    const startPinLocation = document.createElement('div');
+    startPinLocation.className = 'pin__starter';
+    new mapboxgl.Marker(startPinLocation).setLngLat(coords).addTo(this._map);
   }
 
-  async _changeStartingPin(coords) {
+  async _setStartMarker(coords) {
     const starterIcon = document.createElement('div');
     starterIcon.className = 'starter-icon';
 
@@ -319,7 +315,7 @@ class mapView extends View {
       offset: [0, -25],
     };
 
-    this._startMarker = new mapboxgl.Marker(markerOptions)
+    this._markerStart = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
       .onClick(() => {
         this._map.flyTo({
@@ -329,7 +325,7 @@ class mapView extends View {
       })
       .addTo(this._map);
     this._mapData.startPositionCoords = coords;
-    this._startMarker.on('dragend', async e => {
+    this._markerStart.on('dragend', async e => {
       let { lng, lat } = e.target._lngLat;
       this._mapData.startPositionCoords = [lng, lat];
       if (model.state.edit) {
@@ -357,7 +353,7 @@ class mapView extends View {
       offset: [0, -25],
     };
 
-    this._myMarker = new mapboxgl.Marker(markerOptions)
+    this._markerMain = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
       .onClick(() => {
         this._map.flyTo({
@@ -367,7 +363,7 @@ class mapView extends View {
       })
       .addTo(this._map);
 
-    this._myMarker.on('dragend', async e => {
+    this._markerMain.on('dragend', async e => {
       let { lng, lat } = e.target._lngLat;
       this._mapData.destinationCoords = [lng, lat];
       if (this._starterPosition.selectedIndex === 1) {
@@ -395,7 +391,7 @@ class mapView extends View {
       offset: [0, -25],
     };
 
-    this._preserveMarker = new mapboxgl.Marker(markerOptions)
+    this._markerPreserved = new mapboxgl.Marker(markerOptions)
       .setLngLat(coords)
       .onClick(() => {
         this._map.flyTo({
@@ -407,13 +403,13 @@ class mapView extends View {
   }
 
   async removeSetUpMarkers() {
-    if (this._startMarker) {
-      this._startMarker.remove();
-      this._startMarker = '';
+    if (this._markerMain) {
+      this._markerMain.remove();
+      this._markerMain = '';
     }
-    if (this._myMarker) {
-      this._myMarker.remove();
-      this._myMarker = '';
+    if (this._markerStart) {
+      this._markerStart.remove();
+      this._markerStart = '';
     }
     // Make invisible path
     await this.renderPath(
@@ -423,7 +419,7 @@ class mapView extends View {
   }
 
   removeMarkersEdit(workout) {
-    if (this._startMarkerPopup) this._startMarkerPopup.remove();
+    if (this._markerStartPopup) this._markerStartPopup.remove();
     const markerEl = model.markers.find(m => m.id === workout.id);
     markerEl.marker.remove();
   }
@@ -435,7 +431,7 @@ class mapView extends View {
     if (model.state.edit) return;
     const workout = workouts.find(w => w.id === workoutEl.dataset.id);
     let bound = [workout.startCoords, workout.endCoords];
-    if (this._startMarkerPopup) this._startMarkerPopup.remove();
+    if (this._markerStartPopup) this._markerStartPopup.remove();
     this.addPopupToWorkout(workout);
     await this.renderPath(workout.startCoords, workout.endCoords);
 
@@ -460,7 +456,7 @@ class mapView extends View {
         padding: { top: 135, bottom: 15, left: 110, right: 125 },
       }
     );
-    if (this._startMarkerPopup) this._startMarkerPopup.remove();
+    if (this._markerStartPopup) this._markerStartPopup.remove();
     await this.removeSetUpMarkers();
   }
 
@@ -548,7 +544,7 @@ class mapView extends View {
     if (index === 0) {
       const startMarker = document.createElement('div');
       startMarker.className = 'starter-icon';
-      this._startMarkerPopup = new mapboxgl.Marker({
+      this._markerStartPopup = new mapboxgl.Marker({
         element: startMarker,
         offset: [0, -25],
       })
@@ -561,14 +557,14 @@ class mapView extends View {
           });
         })
         .addTo(this._map);
-      this._startMarkerPopup.togglePopup();
+      this._markerStartPopup.togglePopup();
     }
 
     if (index === 1) {
-      if (this._preserveMarker) this._preserveMarker.remove();
+      if (this._markerPreserved) this._markerPreserved.remove();
       const endMarker = document.createElement('div');
       endMarker.className = 'marker-icon';
-      this._preserveMarkerSaved = new mapboxgl.Marker({
+      this._markerPreservedSaved = new mapboxgl.Marker({
         element: endMarker,
         offset: [0, -25],
       })
@@ -581,9 +577,9 @@ class mapView extends View {
           });
         })
         .addTo(this._map);
-      this._preserveMarkerSaved.togglePopup();
+      this._markerPreservedSaved.togglePopup();
 
-      return this._preserveMarkerSaved;
+      return this._markerPreservedSaved;
     }
   }
 }

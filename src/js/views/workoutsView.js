@@ -1,7 +1,6 @@
 import mapView from './mapView';
 import img from 'url:../../images/marker.png';
 import * as model from '../model';
-import sortView from './sortView';
 
 class workoutsView {
   _form = document.querySelector('.form');
@@ -50,6 +49,7 @@ class workoutsView {
       // Add new object to workouts array
       workouts.push(workout);
     } else {
+      // Or return workout object
       return workout;
     }
   }
@@ -84,7 +84,7 @@ class workoutsView {
           <span class="settings__dropdown--name">Delete</span>
         </li>
       </ul>
-      <h2 class="workout__title">
+      <h2 class="workout__title ${workout.bookmarks ? 'bookmark' : ''}">
         <span class="workout__title--circle">
           <i class="workout__title--star fa-solid fa-star"></i>
         </span>
@@ -164,31 +164,32 @@ class workoutsView {
   }
 
   sortHamburgerType(type) {
+    // Clear all workouts markup
     this._workoutsContainer
       .querySelectorAll('.workout')
       .forEach(w => w.remove());
 
+    // Update workouts list depending on the type of sorting
     if (type === 'All') {
       model.workouts.forEach(workout => this.renderWorkout(workout));
-      const stateHtml = sortView.generateAppbarState(model.workouts);
-      mapView.updateAppbarState(stateHtml);
+      mapView.updateAppbarState(model.workouts, type);
+    }
+    if (type === '🤩 Most liked') {
+      model.bookmarks.forEach(workout => {
+        this.renderWorkout(workout);
+      });
+      console.log(model.bookmarks);
+      mapView.updateAppbarState(model.bookmarks, type);
     }
     if (type === '🏃‍♂️ Running') {
       const workoutsRunning = model.workouts.filter(w => w.type === 'running');
       workoutsRunning.forEach(workout => this.renderWorkout(workout));
-      const stateHtml = sortView.generateAppbarState(workoutsRunning);
-      mapView.updateAppbarState(stateHtml);
+      mapView.updateAppbarState(workoutsRunning, type);
     }
     if (type === '🚴‍♀️ Cycling') {
       const workoutsCycling = model.workouts.filter(w => w.type === 'cycling');
       workoutsCycling.forEach(workout => this.renderWorkout(workout));
-      const stateHtml = sortView.generateAppbarState(workoutsCycling);
-      mapView.updateAppbarState(stateHtml);
-    }
-    if (type === '🤩 Most liked') {
-      model.bookmarks.forEach(workout => this.renderWorkout(workout));
-      const stateHtml = sortView.generateAppbarState(model.bookmarks);
-      mapView.updateAppbarState(stateHtml);
+      mapView.updateAppbarState(workoutsCycling, type);
     }
   }
 
@@ -201,25 +202,25 @@ class workoutsView {
   }
 
   sortWorkoutsBy(type) {
+    let sortedWorkoutsArr;
     const workoutEl = document.querySelector('.workout');
     if (!workoutEl) return;
     let workoutsArr = this.allWorkoutsView();
     if (workoutsArr.length === 0) return;
-    let sortedWorkoutsArr;
     if (type == 'date') {
-      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
-        return b.time.startWorkoutMs - a.time.startWorkoutMs;
-      });
+      sortedWorkoutsArr = [...workoutsArr].sort(
+        (a, b) => b.time.startWorkoutMs - a.time.startWorkoutMs
+      );
     }
     if (type == 'distance') {
-      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
-        return b.distance - a.distance;
-      });
+      sortedWorkoutsArr = [...workoutsArr].sort(
+        (a, b) => b.distance - a.distance
+      );
     }
     if (type == 'duration') {
-      sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
-        return b.duration - a.duration;
-      });
+      sortedWorkoutsArr = [...workoutsArr].sort(
+        (a, b) => b.duration - a.duration
+      );
     }
     if (type == 'pace') {
       sortedWorkoutsArr = [...workoutsArr].sort((a, b) => {
@@ -229,11 +230,12 @@ class workoutsView {
       });
     }
 
-    let workoutsMarkup = sortedWorkoutsArr.reduce((markup, workout) => {
-      return (markup += this.renderMarkup(workout));
-    }, '');
+    // Generate all workouts markup
+    let workoutsMarkup = sortedWorkoutsArr.reduce(
+      (markup, workout) => (markup += this.renderMarkup(workout)),
+      ''
+    );
 
-    console.log(sortedWorkoutsArr);
     mapView.updateWorkout(workoutsMarkup);
   }
 
@@ -248,9 +250,10 @@ class workoutsView {
     this._form.classList.remove('hidden');
     // Placeholder trick on datetime-local
     const dateInput = document.querySelector('.form__input--time');
-    dateInput.onfocus = function (e) {
+    dateInput.addEventListener('focus', function () {
       this.type = 'datetime-local';
-    };
+    });
+
     // Show workout type and current values
     this._inputType.value = `${workoutEdited.type}`;
     this._toggleInput =
@@ -308,6 +311,7 @@ class workoutsView {
     const markerDeletedIndex = model.markers.findIndex(
       m => m.id === workoutEl.dataset.id
     );
+    // Remove workout element html
     workoutEl.remove();
     // Remove workout marker from map
     mapView.removeMarkersEdit(workoutDeleted);
