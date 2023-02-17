@@ -178,7 +178,6 @@ class workoutsView {
       model.bookmarks.forEach(workout => {
         this.renderWorkout(workout);
       });
-      console.log(model.bookmarks);
       mapView.updateAppbarState(model.bookmarks, type);
     }
     if (type === '🏃‍♂️ Running') {

@@ -441,16 +441,18 @@ class mapView extends View {
   }
 
   async overviewAllMarkers() {
-    let allLatitudes = model.workouts.map(workout => workout.endCoords[0]);
-    let allLongitudes = model.workouts.map(workout => workout.endCoords[1]);
+    let allLatitudes = model.workouts.map(workout => workout.endCoords[1]);
+    let allLongitudes = model.workouts.map(workout => workout.endCoords[0]);
+    console.log(allLatitudes);
+    console.log(allLongitudes);
     let minLat = Math.min(...allLatitudes);
     let maxLat = Math.max(...allLatitudes);
     let minLng = Math.min(...allLongitudes);
     let maxLng = Math.max(...allLongitudes);
     this._map.fitBounds(
       [
-        [maxLat, minLng],
-        [minLat, maxLng],
+        [minLng, minLat],
+        [maxLng, maxLat],
       ],
       {
         padding: { top: 135, bottom: 15, left: 110, right: 125 },

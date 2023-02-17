@@ -1,26 +1,26 @@
 .confirmation {
-  position: absolute;
-  top: 0;
-  left: 0;
+  font-size: 2rem;
+  font-weight: 700;
   height: 100%;
   width: 100%;
   background-color: rgba(#000, 0.65);
-  z-index: 44444;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
-  font-weight: 700;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 44444;
 
   &.hidden {
     display: none;
   }
 
   &__window {
+    min-height: 15rem;
     background-color: #3d464e;
     padding: 2.5rem 3rem 2rem;
     border-radius: 1rem;
-    min-height: 15rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -29,7 +29,7 @@
       margin-bottom: 2rem;
 
       & span {
-        color: rgb(253, 155, 7);
+        color: $color-orange--1;
       }
     }
 
@@ -40,12 +40,12 @@
     }
 
     &--button {
-      padding: 1.3rem;
-      border-radius: 50% 0;
       min-width: 7rem;
-      border: none;
       font-size: 1.8rem;
       font-weight: 500;
+      padding: 1.3rem;
+      border-radius: 50% 0;
+      border: none;
       cursor: pointer;
       opacity: 0.8;
       transition: all 0.3s;
@@ -56,10 +56,10 @@
       }
 
       &-yes {
-        background-color: rgb(244, 227, 0);
+        background-color: $color-yellow-1;
       }
       &-no {
-        background-color: rgb(255, 0, 17);
+        background-color: $color-red--1;
       }
     }
   }

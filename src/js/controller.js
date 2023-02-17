@@ -22,7 +22,6 @@ const controlMap = async function () {
 
 const controlWorkout = () => {
   model.getLocalStorage();
-  console.log(model.workouts, model.markers);
   model.workouts.forEach(workout => {
     workoutsView.renderWorkout(workout);
     model.markers.push({

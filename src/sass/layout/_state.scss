@@ -31,73 +31,9 @@
       &-quantity {
         font-size: 1.8rem;
         font-weight: 400;
-        color: #ebe122;
+        color: $color-yellow-1;
         margin-left: 3px;
       }
     }
-  }
-}
-
-.sort {
-  &__container {
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-    overflow: hidden;
-    margin-top: 0.2rem;
-    height: 3.2rem;
-    padding: 0.4rem 0;
-    transition: all 0.6s;
-
-    &.zero-height {
-      height: 0;
-    }
-  }
-
-  &__btn {
-    position: relative;
-
-    & a {
-      &,
-      &:link,
-      &:visited {
-        text-decoration: none;
-        font-size: 1.8rem;
-      }
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0%;
-      background-color: #ebe122;
-      height: 2.5px;
-      border-radius: 5px;
-      transition: 0.3s ease-in-out;
-    }
-    &:hover {
-      &::after {
-        width: 110%;
-      }
-    }
-    &.selected {
-      &::after {
-        width: 110%;
-      }
-    }
-    &:active,
-    &:checked {
-      transform: translateY(-2px);
-      &::after {
-        width: 110%;
-      }
-    }
-  }
-
-  &__devider {
-    margin: 0.4rem 0 0.7rem;
-    border: 1px solid $color-light-3;
   }
 }

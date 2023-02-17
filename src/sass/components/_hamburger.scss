@@ -91,19 +91,19 @@
     &,
     &:link,
     &:visited {
+      font-weight: 600;
       text-decoration: none;
       text-transform: uppercase;
-      position: relative;
-      transition: all 0.2s;
-      cursor: pointer;
-      font-weight: 600;
-      backface-visibility: hidden;
       color: #fff;
+      position: relative;
+      cursor: pointer;
+      backface-visibility: hidden;
+      transition: all 0.2s;
     }
 
     &:hover,
     &:active {
-      color: #fbff00;
+      color: $color-yellow-1;
     }
   }
 
