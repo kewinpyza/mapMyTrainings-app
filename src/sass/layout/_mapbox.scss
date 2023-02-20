@@ -4,6 +4,11 @@
   background-color: $color-light-1;
   flex: 1;
   position: relative;
+
+  @include respond(tablet-small) {
+    width: 100vw;
+    height: 42vh;
+  }
 }
 
 // Change mapbox popup style

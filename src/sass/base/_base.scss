@@ -3,12 +3,40 @@
 *::before {
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 html {
   // Defines what 1 rem is
   font-size: 62.5%;
+
+  // @include respond(small-phone) {
+  //   font-size: 50%;
+  // }
+
+  // @include respond(phone) {
+  //   font-size: 50%;
+  // }
+
+  // @include respond(tablet-small) {
+  //   font-size: 50%;
+  // }
+
+  @include respond(big-desktop) {
+    font-size: 81.25%;
+  }
+
+  @include respond(tablet-landscape) {
+    font-size: 56.25%;
+  }
+
+  @include respond(tablet-small) {
+    overflow: hidden;
+  }
+
+  @include respond(phone) {
+    font-size: 50%;
+  }
 }
 
 body {
@@ -21,4 +49,9 @@ body {
   overscroll-behavior-y: none;
   position: relative;
   display: flex;
+
+  @include respond(tablet-small) {
+    flex-direction: column;
+    overflow: hidden;
+  }
 }

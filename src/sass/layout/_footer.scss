@@ -2,7 +2,11 @@
   font-size: 1.4rem;
   text-align: center;
   color: $color-light-1;
-  margin-top: auto;
+  margin-top: 1rem;
+
+  @include respond(tablet-small) {
+    display: none;
+  }
 }
 
 .github-link {
