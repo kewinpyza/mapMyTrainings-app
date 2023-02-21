@@ -22,12 +22,24 @@ $breakpoint argument choices:
     }
   }
   @if $breakpoint == phone {
-    @media (max-width: 37.5em) {
-      // 600px
+    @media (max-width: 32.5em) {
+      // 520px
+      @content;
+    }
+  }
+  @if $breakpoint == big-phone {
+    @media (max-width: 38.75em) {
+      // 620px
       @content;
     }
   }
   @if $breakpoint == tablet-small {
+    @media (max-width: 43.75em) {
+      // 700px
+      @content;
+    }
+  }
+  @if $breakpoint == tablet-medium {
     @media (max-width: 53.75em) {
       // 860px
       @content;

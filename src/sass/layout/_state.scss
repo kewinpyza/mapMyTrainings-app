@@ -8,8 +8,21 @@
   align-items: center;
   justify-content: center;
 
+  @include respond(tablet-medium) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   &__type {
     font-size: 1.2rem;
+
+    @include respond(tablet-medium) {
+      font-size: 1.4rem;
+    }
+
+    @include respond(phone) {
+      font-size: 1rem;
+    }
 
     &--text {
       font-weight: 500;
@@ -25,6 +38,14 @@
   &__number {
     font-size: 1rem;
 
+    @include respond(tablet-medium) {
+      font-size: 1.3rem;
+    }
+
+    @include respond(phone) {
+      font-size: 1rem;
+    }
+
     &--text {
       font-weight: 300;
 
@@ -33,6 +54,14 @@
         font-weight: 400;
         color: $color-yellow-1;
         margin-left: 3px;
+
+        @include respond(tablet-medium) {
+          font-size: 2.4rem;
+        }
+
+        @include respond(phone) {
+          font-size: 1.8rem;
+        }
       }
     }
   }

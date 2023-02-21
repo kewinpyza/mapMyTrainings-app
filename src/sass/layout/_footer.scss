@@ -4,7 +4,7 @@
   color: $color-light-1;
   margin-top: 1rem;
 
-  @include respond(tablet-small) {
+  @include respond(tablet-medium) {
     display: none;
   }
 }

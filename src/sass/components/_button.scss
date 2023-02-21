@@ -36,7 +36,7 @@
     font-size: 1.4rem;
     font-weight: 500;
     text-shadow: 1px 1px 0.5px rgb(43, 40, 56), 0 0 1.5rem rgb(43, 40, 56),
-    0 0 0.3rem rgb(43, 40, 56);
+      0 0 0.3rem rgb(43, 40, 56);
     color: $color-light-2;
     padding: 1rem;
     border: none;
@@ -46,8 +46,25 @@
     overflow: hidden;
     transition: all 0.2s;
 
+    @include respond(tablet-medium) {
+      font-size: 2.2rem;
+      padding: 1rem 1.6rem;
+    }
+
+    @include respond(phone) {
+      font-size: 1.6rem;
+      padding: 0.8rem 1.2rem;
+    }
+
     &:not(:last-child) {
       margin-right: 1rem;
+
+      @include respond(tablet-medium) {
+        margin-right: 1.4rem;
+      }
+      @include respond(phone) {
+        margin-right: 1rem;
+      }
     }
 
     &:hover {
@@ -59,27 +76,15 @@
     }
 
     &--sort {
-      background-image: linear-gradient(
-        190deg,
-        #da5400,
-        #ffd000
-      );
+      background-image: linear-gradient(190deg, #da5400, #ffd000);
     }
 
     &--overview {
-      background-image: linear-gradient(
-        270deg,
-        #188bd7,
-        #b416bf
-      );
+      background-image: linear-gradient(270deg, #188bd7, #b416bf);
     }
 
     &--clear {
-      background-image: linear-gradient(
-        120deg,
-        #ff0000,
-        #581111
-      );
+      background-image: linear-gradient(120deg, #ff0000, #581111);
     }
   }
 }

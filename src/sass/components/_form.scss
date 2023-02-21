@@ -8,6 +8,10 @@
   gap: 0.6rem 1rem;
   transition: all 0.5s, transform 1ms;
 
+  @include respond(tablet-medium) {
+    gap: 0.4rem 0.6rem;
+  }
+
   &.hidden {
     transform: translateY(-25rem);
     height: 0;
@@ -15,8 +19,12 @@
     margin-bottom: 0;
     opacity: 0;
 
-    @include respond(tablet-small) {
+    @include respond(tablet-medium) {
       display: none;
+    }
+
+    @include respond(phone) {
+      display: grid;
     }
   }
 

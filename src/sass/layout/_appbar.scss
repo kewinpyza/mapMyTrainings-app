@@ -1,5 +1,5 @@
 .app-bar {
-  max-width: 45%;
+  max-width: 47%;
   width: 50rem;
   background-color: $color-grey-1;
   padding: 2rem 3rem 1.5rem 3.5rem;
@@ -7,11 +7,14 @@
   position: relative;
   flex-direction: column;
 
+  @include respond(tablet-landscape) {
+    padding: 1.6rem 2.2rem 1.4rem 2.2rem;
+  }
   @include respond(tablet-portrait) {
     padding: 1.2rem 2.2rem 1.2rem 2.5rem;
   }
 
-  @include respond(tablet-small) {
+  @include respond(tablet-medium) {
     height: 58vh;
     width: 100%;
     max-width: 100%;
@@ -22,4 +25,8 @@
   height: 6.4rem;
   margin-bottom: 1rem;
   align-self: center;
+
+  @include respond(phone) {
+    height: 4.6rem;
+  }
 }

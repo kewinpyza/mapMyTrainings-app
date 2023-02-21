@@ -73,6 +73,7 @@ class mapView extends View {
       accessToken: this._accessToken,
       mapboxgl: mapboxgl,
       marker: false,
+      placeholder: 'Search',
     });
 
     // Add handle click events on map

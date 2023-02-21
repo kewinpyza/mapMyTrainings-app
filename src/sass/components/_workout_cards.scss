@@ -13,10 +13,13 @@
     height: auto;
   }
 
-  @include respond(tablet-small) {
+  @include respond(tablet-medium) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0 2.5rem;
+    gap: 0 1rem;
+  }
+  @include respond(phone) {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -36,10 +39,6 @@
     padding: 1rem 1.4rem;
     margin-bottom: 1.2rem;
     gap: 0.6rem;
-  }
-
-  @include respond(tablet-small) {
-    // width: 50%;
   }
 
   &:hover,
@@ -63,13 +62,14 @@
   }
 
   &__title {
-    font-size: 1.65rem;
+    font-size: 1.6rem;
     font-weight: 700;
     grid-column: 1 / 4;
+    width: 115%;
     transition: all 0.3s;
 
     @include respond(tablet-landscape) {
-      font-size: 1.5rem;
+      font-size: 1.55rem;
     }
 
     &:hover,

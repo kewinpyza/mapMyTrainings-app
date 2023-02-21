@@ -17,6 +17,16 @@
     top: 0.1rem;
     right: 0;
     z-index: 222;
+
+    @include respond(tablet-medium) {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    @include respond(phone) {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
   }
 
   &--container {
@@ -30,6 +40,15 @@
     backface-visibility: hidden;
     transition: all 0.3s;
     z-index: 111;
+
+    @include respond(tablet-medium) {
+      width: 1.7rem;
+      height: 1.4rem;
+    }
+    @include respond(phone) {
+      width: 1.5rem;
+      height: 1.2rem;
+    }
   }
 
   &--nav {
@@ -52,6 +71,16 @@
     gap: 0.5rem;
     position: absolute;
     left: 5%;
+
+    @include respond(tablet-medium) {
+      font-size: 1.8rem;
+      left: -90%;
+      transform: translate(50%, 0);
+    }
+    @include respond(phone) {
+      font-size: 1.5rem;
+      left: -65%;
+    }
   }
 
   &--icon {
@@ -67,6 +96,11 @@
       height: 3px;
       border-radius: 20px;
       background-color: #fff;
+
+      @include respond(tablet-medium) {
+        width: 3.5rem;
+        height: 3.5px;
+      }
     }
 
     &::after,
@@ -80,10 +114,18 @@
 
     &::after {
       top: 0.7rem;
+
+      @include respond(tablet-medium) {
+        top: 0.85rem;
+      }
     }
 
     &::before {
       top: -0.7rem;
+
+      @include respond(tablet-medium) {
+        top: -0.9rem;
+      }
     }
   }
 
