@@ -9,7 +9,17 @@
   transition: all 0.5s, transform 1ms;
 
   @include respond(tablet-medium) {
-    gap: 0.4rem 0.6rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  @include respond(big-phone) {
+    gap: 0.6rem 1.4rem;
+    padding: 0.8rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  @include respond(phone) {
+    padding: 0.6rem 1.2rem;
   }
 
   &.hidden {
@@ -109,6 +119,19 @@
     font-size: 1.5rem;
     font-weight: 600;
     flex: 0 0 45%;
+
+    @include respond(tablet-medium) {
+      font-size: 1.7rem;
+    }
+
+    @include respond(big-phone) {
+      font-size: 2.4rem;
+    }
+
+    @include respond(big-phone) {
+      font-size: 1.9rem;
+    }
+
     &--position-from,
     &--type {
       flex: 0 0 30%;
@@ -133,12 +156,50 @@
     border-radius: 3px;
     background-color: $color-light-2;
     transition: all 0.3s;
+
+    @include respond(tablet-medium) {
+      font-size: 1.5rem;
+    }
+
+    @include respond(big-phone) {
+      font-size: 2.2rem;
+    }
+
+    @include respond(phone) {
+      font-size: 1.6rem;
+    }
+
     &--position {
       font-size: 1.1rem;
+
+      @include respond(tablet-medium) {
+        font-size: 1.3rem;
+      }
+
+      @include respond(big-phone) {
+        font-size: 1.9rem;
+      }
+
+      @include respond(phone) {
+        font-size: 1.6rem;
+      }
+
       &.end {
         outline: none;
         background-color: #fff;
         font-size: 1rem;
+
+        @include respond(tablet-medium) {
+          font-size: 1.1rem;
+        }
+
+        @include respond(big-phone) {
+          font-size: 1.8rem;
+        }
+
+        @include respond(phone) {
+          font-size: 1.3rem;
+        }
       }
     }
     &--distance {
@@ -146,6 +207,18 @@
       font-weight: 500;
       background-color: #fff;
       outline: none;
+
+      @include respond(tablet-medium) {
+        font-size: 1.35rem;
+      }
+
+      @include respond(big-phone) {
+        font-size: 2.2rem;
+      }
+
+      @include respond(phone) {
+        font-size: 1.5rem;
+      }
     }
 
     &:focus {

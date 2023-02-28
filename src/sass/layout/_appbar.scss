@@ -19,6 +19,11 @@
     width: 100%;
     max-width: 100%;
   }
+
+  @include respond(phone) {
+    padding: 1rem 1.2rem;
+    height: 52vh;
+  }
 }
 
 .logo {

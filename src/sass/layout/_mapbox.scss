@@ -9,6 +9,10 @@
     width: 100vw;
     height: 42vh;
   }
+
+  @include respond(phobe) {
+    height: 48vh;
+  }
 }
 
 // Change mapbox popup style
@@ -74,8 +78,14 @@
     &-geocoder {
       @include respond(tablet-small) {
         font-size: 18px;
-        width: 200px;
-        max-width: 30%;
+        // width: 200px;
+        max-width: 50%;
+      }
+
+      @include respond(small-phone) {
+        min-width: 170px;
+        // width: 50px;
+        font-size: 16px;
       }
       &--input {
         @include respond(tablet-small) {
@@ -84,6 +94,12 @@
       }
       &--icon {
         @include respond(tablet-small) {
+          top: 8px;
+          width: 21px;
+          height: 21px;
+        }
+
+        @include respond(phone) {
           top: 8px;
           width: 21px;
           height: 21px;

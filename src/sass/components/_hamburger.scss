@@ -4,6 +4,10 @@
   right: 0;
   margin-top: 0.6rem;
 
+  @include respond(tablet-medium) {
+    top: -10%;
+  }
+
   &--checkbox {
     display: none;
   }
@@ -23,9 +27,19 @@
       height: 4rem;
     }
 
+    @include respond(tablet-small) {
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+
+    @include respond(big-phone) {
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+
     @include respond(phone) {
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 3.8rem;
+      height: 3.8rem;
     }
   }
 
@@ -45,6 +59,12 @@
       width: 1.7rem;
       height: 1.4rem;
     }
+
+    @include respond(tablet-small) {
+      width: 1.95rem;
+      height: 1.6rem;
+    }
+
     @include respond(phone) {
       width: 1.5rem;
       height: 1.2rem;
@@ -77,6 +97,12 @@
       left: -90%;
       transform: translate(50%, 0);
     }
+
+    @include respond(tablet-small) {
+      font-size: 2.1rem;
+      left: -120%;
+    }
+
     @include respond(phone) {
       font-size: 1.5rem;
       left: -65%;
@@ -97,9 +123,21 @@
       border-radius: 20px;
       background-color: #fff;
 
+      @include respond(tablet-portrait) {
+        height: 2.5px;
+      }
+
       @include respond(tablet-medium) {
         width: 3.5rem;
-        height: 3.5px;
+      }
+
+      @include respond(tablet-small) {
+        width: 4rem;
+        height: 2.5px;
+      }
+
+      @include respond(phone) {
+        width: 3.5rem;
       }
     }
 
@@ -118,6 +156,14 @@
       @include respond(tablet-medium) {
         top: 0.85rem;
       }
+
+      @include respond(tablet-small) {
+        top: 1rem;
+      }
+
+      @include respond(phone) {
+        top: 0.8rem;
+      }
     }
 
     &::before {
@@ -126,13 +172,27 @@
       @include respond(tablet-medium) {
         top: -0.9rem;
       }
+
+      @include respond(tablet-small) {
+        top: -1rem;
+      }
+
+      @include respond(phone) {
+        top: -0.8rem;
+      }
     }
+  }
+
+  &--item {
+    width: 100%;
   }
 
   &--link {
     &,
     &:link,
     &:visited {
+      display: inline-block;
+      width: 100%;
       font-weight: 600;
       text-decoration: none;
       text-transform: uppercase;
