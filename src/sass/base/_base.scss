@@ -50,6 +50,10 @@ html {
   @include respond(small-phone) {
     font-size: 37.5%;
   }
+
+  @include respond(phone-landscape) {
+    font-size: 37.5%;
+  }
 }
 
 body {

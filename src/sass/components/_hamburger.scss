@@ -41,6 +41,11 @@
       width: 3.8rem;
       height: 3.8rem;
     }
+
+    @include respond(phone-landscape) {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
   }
 
   &--container {
@@ -68,6 +73,11 @@
     @include respond(phone) {
       width: 1.5rem;
       height: 1.2rem;
+    }
+
+    @include respond(phone-landscape) {
+      width: 1.95rem;
+      height: 1.35rem;
     }
   }
 
@@ -107,6 +117,11 @@
       font-size: 1.5rem;
       left: -65%;
     }
+
+    @include respond(phone-landscape) {
+      font-size: 1.8rem;
+      left: -50%;
+    }
   }
 
   &--icon {
@@ -138,6 +153,11 @@
 
       @include respond(phone) {
         width: 3.5rem;
+      }
+
+      @include respond(phone-landscape) {
+        width: 3.5rem;
+        height: 2px;
       }
     }
 

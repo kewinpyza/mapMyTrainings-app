@@ -1,6 +1,6 @@
 .pin__starter {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 18px;
+  height: 18px;
   background-color: $color-pin-blue;
   border: 2px solid $color-light-2;
   border-radius: 50%;
@@ -13,7 +13,7 @@
     top: 50%;
     left: 50%;
     border-radius: 50%;
-    padding: 1.8rem;
+    padding: 18px;
     transform-origin: center;
     animation: locatorScale 1300ms linear infinite;
     z-index: -5;
