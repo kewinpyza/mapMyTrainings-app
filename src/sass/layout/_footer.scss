@@ -1,8 +1,9 @@
 .copyright {
   font-size: 1.4rem;
+  width: 100%;
   text-align: center;
   color: $color-light-1;
-  margin-top: 1rem;
+  margin-top: auto;
 
   @include respond(tablet-medium) {
     display: none;

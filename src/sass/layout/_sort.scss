@@ -4,12 +4,12 @@
     justify-content: space-around;
     list-style: none;
     overflow: hidden;
-    margin-top: 0.2rem;
-    height: 3.2rem;
-    padding: 0.4rem 0;
+    margin-top: 0.4rem;
+    min-height: 3.6rem;
     transition: all 0.6s;
 
     &.zero-height {
+      min-height: 0;
       height: 0;
     }
   }
@@ -22,7 +22,7 @@
       &:link,
       &:visited {
         text-decoration: none;
-        font-size: 1.8rem;
+        font-size: 1.9rem;
       }
     }
 
@@ -32,10 +32,14 @@
       height: 2.5px;
       border-radius: 5px;
       position: absolute;
-      bottom: 0;
+      bottom: 10%;
       left: 0;
       background-color: $color-yellow-1;
       transition: 0.3s ease-in-out;
+
+      @include respond(big-phone) {
+        height: 2px;
+      }
     }
     &:hover {
       &::after {

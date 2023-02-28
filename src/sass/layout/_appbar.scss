@@ -1,6 +1,7 @@
 .app-bar {
   max-width: 47%;
   width: 50rem;
+  max-height: 100vh;
   background-color: $color-grey-1;
   padding: 2rem 3rem 1.5rem 3.5rem;
   display: flex;
@@ -15,14 +16,14 @@
   }
 
   @include respond(tablet-medium) {
-    height: 58vh;
+    max-height: 58vh;
     width: 100%;
     max-width: 100%;
   }
 
   @include respond(phone) {
     padding: 1rem 1.2rem;
-    height: 52vh;
+    max-height: 52vh;
   }
 }
 

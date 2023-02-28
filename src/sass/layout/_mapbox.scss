@@ -7,11 +7,11 @@
 
   @include respond(tablet-medium) {
     width: 100vw;
-    height: 42vh;
+    min-height: 42vh;
   }
 
   @include respond(phobe) {
-    height: 48vh;
+    min-height: 48vh;
   }
 }
 
