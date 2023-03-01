@@ -16,15 +16,25 @@ export default class View {
   }
 
   _toggleError() {
-    [this._windowErr, this._overlay, this._btnTry].forEach(el =>
-      el.classList.toggle('hidden')
-    );
+    this._windowErr.classList.remove('hidden');
+    this._overlay.classList.remove('hidden');
   }
 
   _closeWindow() {
-    [this._btnErr, this._overlay, this._btnTry].forEach(closer =>
-      closer.addEventListener('click', this._toggleError.bind(this))
-    );
+    const body = document.querySelector('body');
+    const errorWindow = document.querySelector('.error-window');
+    const overlayEl = document.querySelector('.overlay');
+
+    body.addEventListener('click', function (e) {
+      if (
+        e.target.closest('.overlay') ||
+        e.target.closest('.btn__close--error') ||
+        e.target.closest('.error-window__btn--try')
+      ) {
+        errorWindow.classList.add('hidden');
+        overlayEl.classList.add('hidden');
+      }
+    });
   }
 
   updateWorkout(markups) {
