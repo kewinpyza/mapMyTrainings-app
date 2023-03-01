@@ -199,6 +199,7 @@ const init = async () => {
   formView.renderForm(controlForm, controlEditForm);
   workoutsView.handlerWorkout(controlWorkoutView);
   workoutsView.handlerMostLiked(controlMostLiked);
+  buttonsApp.hideTooltipBox();
   buttonsApp.addHandlerOverview(controlOverviewButton);
   buttonsApp.addHandlerClear(controlClearButton, model.workouts);
   settingsDropdown.hideSettingsDropdown(controlDropdown);

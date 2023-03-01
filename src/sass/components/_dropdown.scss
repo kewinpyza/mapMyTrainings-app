@@ -1,10 +1,10 @@
 .settings {
   &__dropdown {
-    width: 8rem;
+    width: 13rem;
     height: auto;
     color: $color-light-2;
     background-color: #232323;
-    padding: 0.7rem 0.5rem 0.7rem 1.5rem;
+    padding: 1.3rem 0.5rem 1.3rem 1.5rem;
     box-shadow: 0 1rem 2.5rem rgba(#000, 0.5);
     border-radius: 0.3rem;
     backface-visibility: hidden;
@@ -16,14 +16,14 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    row-gap: 0.6rem;
+    row-gap: 1rem;
     visibility: visible;
     opacity: 1;
     z-index: 10;
     transition: all 0.3s;
 
     &--item {
-      font-size: 1.1rem;
+      font-size: 1.7rem;
       list-style: none;
       display: flex;
       transition: all 0.2s;
@@ -36,6 +36,10 @@
       &:hover .icon__delete {
         color: #ff3612;
       }
+    }
+
+    &--name {
+      margin-left: 0.2rem;
     }
 
     &.hidden {

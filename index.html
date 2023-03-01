@@ -65,6 +65,14 @@
     <title>mapMyTrainings</title>
   </head>
   <body>
+    <div class="tooltip__container">
+      <p class="tooltip__text">
+        <span class="tooltip__text--hint">Hint: </span> Double click on the map
+        to display form and add new workout
+      </p>
+      <button class="btn__close btn__close--tooltip">&times;</button>
+      <button class="btn__ok">Ok</button>
+    </div>
     <div class="app-bar">
       <img class="logo" src="src/images/logo1.png" alt="App logo" />
       <div class="state">
@@ -233,7 +241,7 @@
       <h2 class="error-window__heading">💥 Error 💥</h2>
 
       <p class="error-window__text"></p>
-      <button class="error-window__btn--close">&times;</button>
+      <button class="btn__close btn__close--error">&times;</button>
       <a href="" class="btn btn--animated btn--red error-window__btn--try"
         >Try again</a
       >

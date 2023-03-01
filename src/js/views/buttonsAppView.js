@@ -5,6 +5,7 @@ class buttonsApp {
   _confirmationContainer = document.querySelector('.confirmation');
   _yesBtn = document.querySelector('.confirmation__window--button-yes');
   _noBtn = document.querySelector('.confirmation__window--button-no');
+  _tooltipContainer = document.querySelector('.tooltip__container');
 
   addHandlerOverview(handler) {
     this._overviewBtn.addEventListener('click', () => handler());
@@ -16,6 +17,18 @@ class buttonsApp {
         this._confirmationContainer.classList.remove('hidden');
         handler();
       }, 350);
+    });
+  }
+
+  hideTooltipBox() {
+    this._tooltipContainer.addEventListener('click', function (e) {
+      if (
+        e.target.closest('.btn__ok') ||
+        e.target.closest('.btn__close--tooltip')
+      )
+        setTimeout(() => {
+          this.classList.add('hidden');
+        }, 200);
     });
   }
 

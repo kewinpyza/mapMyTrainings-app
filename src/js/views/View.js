@@ -5,7 +5,7 @@ export default class View {
   _windowErr = document.querySelector('.error-window');
   _textErr = document.querySelector('.error-window__text');
   _overlay = document.querySelector('.overlay');
-  _btnErr = document.querySelector('.error-window__btn--close');
+  _btnErr = document.querySelector('.btn__close--error');
   _btnTry = document.querySelector('.error-window__btn--try');
   _workoutsContainer = document.querySelector('.workouts');
 

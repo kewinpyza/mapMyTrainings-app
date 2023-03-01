@@ -1,0 +1,56 @@
+.tooltip {
+  &__container {
+    position: absolute;
+    left: 50%;
+    top: 3%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: center;
+    border-radius: 1.2rem;
+    padding: 4rem 2rem 1.5rem 2rem;
+    transform: translate(-50%, 0);
+    z-index: 3333333;
+    box-shadow: 0 1rem 2.5rem rgba(#000, 0.5);
+    background-image: linear-gradient(
+      210deg,
+      rgba(205, 205, 205, 0.88),
+      rgba(123, 123, 123, 0.88)
+    );
+    animation: moveFromLeft 1s ease-out;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  &__text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 1.5px 1.5px 1px rgb(43, 40, 56), 0 0 1.5rem rgb(43, 40, 56),
+      0 0 0.3rem rgb(43, 40, 56);
+    color: #fff;
+
+    &--hint {
+      color: #fff200;
+      font-weight: 700;
+    }
+  }
+}
+
+@keyframes moveFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  75% {
+    transform: translateX(-35%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+}
