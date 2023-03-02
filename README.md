@@ -31,6 +31,7 @@
 - **_Fully responsive_** on all devices
 
 ### Videos
+
 #### Application tour
 
 https://user-images.githubusercontent.com/114837864/222416334-842e5cf1-e015-4948-a023-bc2b5d976b8d.mp4
@@ -43,7 +44,68 @@ https://user-images.githubusercontent.com/114837864/222416626-b15283fd-9a3e-4821
 
 ### Screenshots
 
-### Tech Stack
+#### Starter Screen
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/starter-state.png)
+
+#### Add new workout
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/form.png)
+
+#### Click on workout card
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/popups.png)
+
+#### Overview button
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/overview.png)
+
+#### 3D view
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/3d-view.png)
+
+#### Map view when zoomed out
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/earth.png)
+
+#### Error message
+
+![image](https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/error.png)
+
+#### Responsive on all devices (below Samsung Galaxy S22 Landscape and Portrait view)
+
+<img src="https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/s22-landscape.jpg" width="620" align="top"/>
+<img src="https://github.com/kewinpyza/mapMyTrainings-app/blob/main/screenshots/s22-portrait.jpg" height="480"/>
+
+## Built with
+
+- [HTML](https://html.com/), [SASS](https://sass-lang.com/), [VanillaJS](https://www.javascript.com/)
+- [Parcel](https://parceljs.org/), [Babel](https://babeljs.io/), [npm](https://www.npmjs.com/)
+- Generate map from [mapbox](https://docs.mapbox.com/mapbox-gl-js/api/) library
+- Geocode location data from [Nominatim Geocoding](https://nominatim.org/release-docs/latest/api/Reverse/) API
+- Weather data and icons from [WeatherAPI](https://www.weatherapi.com/docs/)
+- Icons from [Font Awesome](https://fontawesome.com/)
+- Deploy by [netlify.com](https://www.netlify.com/)
+
+### Running the app locally
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run build
+```
+
+```bash
+npm start
+```
+
+## Tech Stack
 
 <table>
 	<tr>
