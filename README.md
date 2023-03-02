@@ -30,6 +30,19 @@
 - Build project with **_MVC pattern_** and **_SCSS_**
 - **_Fully responsive_** on all devices
 
+### Videos
+#### Application tour
+
+https://user-images.githubusercontent.com/114837864/222416334-842e5cf1-e015-4948-a023-bc2b5d976b8d.mp4
+
+https://user-images.githubusercontent.com/114837864/222416600-c4335b81-6863-4fd6-93c8-fc5a1f66c183.mp4
+
+#### Responsive on all devices
+
+https://user-images.githubusercontent.com/114837864/222416626-b15283fd-9a3e-4821-a84f-0be6cd7b171b.mp4
+
+### Screenshots
+
 ### Tech Stack
 
 <table>
