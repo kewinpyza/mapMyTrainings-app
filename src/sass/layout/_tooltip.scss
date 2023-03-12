@@ -8,7 +8,7 @@
     gap: 1.6rem;
     align-items: center;
     border-radius: 1.2rem;
-    padding: 4rem 2rem 1.5rem 2rem;
+    padding: 5rem 1.5rem 1.5rem 1rem;
     transform: translate(-50%, 0);
     z-index: 3333333;
     box-shadow: 0 1rem 2.5rem rgba(#000, 0.5);
@@ -25,8 +25,10 @@
   }
 
   &__text {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 600;
+    width: 86%;
+    line-height: 1.6;
     text-align: center;
     text-shadow: 1.5px 1.5px 1px rgb(43, 40, 56), 0 0 1.5rem rgb(43, 40, 56),
       0 0 0.3rem rgb(43, 40, 56);
